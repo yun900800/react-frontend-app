@@ -1,0 +1,43 @@
+# .github/workflows/deploy.yml
+name: Frontend Deploy to WebHostMost
+
+on:
+  push:
+    branches:
+      - main # 确保只在主分支上推送代码时触发部署
+
+jobs:
+  build-and-deploy:
+    runs-on: ubuntu-latest
+    
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20' # 确保与你的项目兼容的 Node.js 版本
+
+      - name: Install dependencies
+        run: npm install
+        
+      - name: Build React App with Vite
+        run: npm run build
+        
+      - name: 部署前端文件到服务器
+        uses: appleboy/scp-action@v0.1.7 # 这是一个常用的部署 Actions
+        with:
+          # 从 GitHub Secrets 中读取配置
+          host: ${{ secrets.SSH_HOST }}
+          username: ${{ secrets.SSH_USERNAME }}
+          key: ${{ secrets.SSH_PRIVATE_KEY }}
+          # 要上传的本地文件夹 (Vite 构建的输出目录)
+          source: 'dist/' 
+          # 服务器上的目标路径 (例如：/domains/yourdomain.com/public_html)
+          target: ${{ secrets.DEPLOY_PATH }} 
+          # 确保覆盖旧文件
+          overwrite: true
+          
+      - name: 部署完成
+        run: echo "🎉 前端部署已完成，请检查你的 WebHostMost 域名。"
