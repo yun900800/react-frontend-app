@@ -25,32 +25,23 @@ jobs:
       - name: Build React App with Vite
         run: npm run build
         
-      - name: 部署前端文件到服务器
-        # ⚠️ 注意：v0.1.7 默认使用 rsync 时，对 source 的处理可能不一致。
-        uses: appleboy/scp-action@v0.1.7
-        with:
-          # ... (其他配置保持不变)
-          host: ${{ secrets.SSH_HOST }}
-          username: ${{ secrets.SSH_USERNAME }}
-          key: ${{ secrets.SSH_PRIVATE_KEY }}
-          port: 2323 
+      # -------------------------------------------------------------
+      - name: 部署前端文件到服务器 (纯 Rsync 命令行)
+        # ⚠️ 依赖于您在步骤 3 中使用 webfactory/ssh-agent 加载了密钥
+        run: |
+          # 目标路径。注意：这里必须使用斜杠，因为它引用了 Secret 的值
+          REMOTE_DIR="${{ secrets.DEPLOY_PATH }}"
           
-          # 【关键修改 1】：source 只需要指定要复制的目录名
-          # rsync 默认会处理这个目录，我们通过 options 来控制行为。
-          source: 'dist/' 
+          echo "开始使用 rsync 同步 dist 目录内容..."
           
-          # 【关键修改 2】：target 目录后面必须带斜杠 '/' 
-          # 这告诉 rsync 将源内容复制到目标目录的“内部”。
-          target: ${{ secrets.DEPLOY_PATH }}
-
-          rsync: true
-          overwrite: true
+          # SSH 选项，用于解决主机验证失败
+          SSH_OPTIONS="-o StrictHostKeyChecking=no -p 2323"
           
-          # 【关键修改 3】：使用 --include='.*' 和 --exclude='*' 
-          # 这是一个 rsync 的高级技巧，用来确保隐藏文件被包含，但 *不* 复制顶级目录本身。
-          # 但是，最简单可靠的方式是使用 -rltDvz 选项。
-          # 让我们尝试最稳定的 rsync 选项组合：
-          rsync_options: -rltDvz --delete
+          # rsync 的 --delete-after 选项用于确保文件同步时保持一致性
+          # dist/ 是关键，它告诉 rsync 只复制 dist 目录“内部”的内容
+          rsync -avz --delete -e "ssh ${SSH_OPTIONS}" dist/ ${{ secrets.SSH_USERNAME }}@${{ secrets.SSH_HOST }}:${REMOTE_DIR}
+          
+          echo "文件同步完成。"
           
       - name: 部署完成
         run: echo "🎉 前端部署已完成，请检查你的 WebHostMost 域名。"
