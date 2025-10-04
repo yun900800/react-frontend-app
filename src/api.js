@@ -17,7 +17,7 @@ export async function fetchTestData() {
     const response = await fetch(endpoint, {
       method: 'GET',
       // 如果你的后端需要身份验证（Cookie），credentials 必须是 'include'
-      credentials: 'include', 
+      // credentials: 'include', 
       headers: {
         'Content-Type': 'application/json',
       },
