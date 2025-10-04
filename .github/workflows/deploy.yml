@@ -26,20 +26,31 @@ jobs:
         run: npm run build
         
       - name: 部署前端文件到服务器
-        uses: appleboy/scp-action@v0.1.7 # 这是一个常用的部署 Actions
+        # ⚠️ 注意：v0.1.7 默认使用 rsync 时，对 source 的处理可能不一致。
+        uses: appleboy/scp-action@v0.1.7
         with:
-          # 从 GitHub Secrets 中读取配置
+          # ... (其他配置保持不变)
           host: ${{ secrets.SSH_HOST }}
           username: ${{ secrets.SSH_USERNAME }}
           key: ${{ secrets.SSH_PRIVATE_KEY }}
-          port: 2323 # 根据你的服务器配置调整端口号
-          # 要上传的本地文件夹 (Vite 构建的输出目录)
-          source: 'dist/*' 
-          # 服务器上的目标路径 (例如：/home/xqfisebj/domains/auth.webhost.innocation.dpdns.org/public_html/)
-          target: ${{ secrets.DEPLOY_PATH }} 
+          port: 2323 
+          
+          # 【关键修改 1】：source 只需要指定要复制的目录名
+          # rsync 默认会处理这个目录，我们通过 options 来控制行为。
+          source: 'dist' 
+          
+          # 【关键修改 2】：target 目录后面必须带斜杠 '/' 
+          # 这告诉 rsync 将源内容复制到目标目录的“内部”。
+          target: ${{ secrets.DEPLOY_PATH }}/ 
+          
           rsync: true
-          # 确保覆盖旧文件
           overwrite: true
+          
+          # 【关键修改 3】：使用 --include='.*' 和 --exclude='*' 
+          # 这是一个 rsync 的高级技巧，用来确保隐藏文件被包含，但 *不* 复制顶级目录本身。
+          # 但是，最简单可靠的方式是使用 -rltDvz 选项。
+          # 让我们尝试最稳定的 rsync 选项组合：
+          rsync_options: -rltDvz --delete
           
       - name: 部署完成
         run: echo "🎉 前端部署已完成，请检查你的 WebHostMost 域名。"
