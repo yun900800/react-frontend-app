@@ -23,6 +23,8 @@ export async function fetchTestData() {
       },
     });
 
+    console.log('response',response);
+
     if (!response.ok) {
       const errorText = await response.text();
       throw new Error(`HTTP Error ${response.status}: ${errorText}`);
