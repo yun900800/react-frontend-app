@@ -9,8 +9,8 @@ const BASE_URL = 'http://localhost:40050';
  * @returns {Promise<Object>}
  */
 export async function fetchTestData() {
-  const endpoint = `${BASE_URL}/test`; // 假设后端有一个 /api/test 接口
-  
+  const endpoint = `${BASE_URL}/version`; // 假设后端有一个 /api/version 接口
+
   console.log(`Sending request to: ${endpoint}`);
 
   try {
