@@ -2,7 +2,9 @@
 
 // 替换为你的 WebHostMost 上的后端服务域名 (例如: https://api.yourdomain.com)
 // 确保它与你后端 Express 中的 /api 路由匹配
-const BASE_URL = 'https://webhost.innocation.dpdns.org'; 
+// const BASE_URL = 'https://webhost.innocation.dpdns.org'; 
+const BASE_URL = 'http://bayh.pp.ua:5002'; 
+
 
 /**
  * 封装获取测试数据的请求
@@ -17,7 +19,7 @@ export async function fetchTestData() {
     const response = await fetch(endpoint, {
       method: 'GET',
       // 如果你的后端需要身份验证（Cookie），credentials 必须是 'include'
-      // credentials: 'include', 
+      credentials: 'include', 
       headers: {
         'Content-Type': 'application/json',
       },

@@ -5,7 +5,7 @@ import react from '@vitejs/plugin-react';
 export default defineConfig({
   plugins: [react()],
   // 确保构建时生成的静态资源路径正确，以便 Express 静态服务能够找到
-  base: '/dist/',
+  base: '/',
   build: {
     // Vite 默认构建输出目录就是 'dist'
     outDir: 'dist', 
