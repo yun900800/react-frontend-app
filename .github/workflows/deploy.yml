@@ -37,6 +37,7 @@ jobs:
           source: 'dist/' 
           # 服务器上的目标路径 (例如：/home/xqfisebj/domains/auth.webhost.innocation.dpdns.org/public_html/)
           target: ${{ secrets.DEPLOY_PATH }} 
+          rsync: true
           # 确保覆盖旧文件
           overwrite: true
           
