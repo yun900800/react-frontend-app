@@ -32,9 +32,10 @@ jobs:
           host: ${{ secrets.SSH_HOST }}
           username: ${{ secrets.SSH_USERNAME }}
           key: ${{ secrets.SSH_PRIVATE_KEY }}
+          port: 2323 # 根据你的服务器配置调整端口号
           # 要上传的本地文件夹 (Vite 构建的输出目录)
           source: 'dist/' 
-          # 服务器上的目标路径 (例如：/domains/yourdomain.com/public_html)
+          # 服务器上的目标路径 (例如：/home/xqfisebj/domains/auth.webhost.innocation.dpdns.org/public_html)
           target: ${{ secrets.DEPLOY_PATH }} 
           # 确保覆盖旧文件
           overwrite: true
