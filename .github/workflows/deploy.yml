@@ -33,13 +33,11 @@ jobs:
           key: ${{ secrets.SSH_PRIVATE_KEY }}
           port: 2323 
           
-          # ✅ 一定要有斜杠 `/` 表示“复制 dist 内容”
-          source: 'dist/'
+          source: 'dist/*'
           target: ${{ secrets.DEPLOY_PATH }}/
 
-          rsync: true
+          rsync: false
           overwrite: true
-          rsync_options: -rltDvz --delete
           
       - name: 部署完成
         run: echo "🎉 前端部署已完成，请检查你的 WebHostMost 域名。"
