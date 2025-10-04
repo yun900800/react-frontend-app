@@ -2,7 +2,7 @@
 
 // 替换为你的 WebHostMost 上的后端服务域名 (例如: https://api.yourdomain.com)
 // 确保它与你后端 Express 中的 /api 路由匹配
-const BASE_URL = 'http://localhost:40050'; 
+const BASE_URL = 'https://webhost.innocation.dpdns.org'; 
 
 /**
  * 封装获取测试数据的请求
