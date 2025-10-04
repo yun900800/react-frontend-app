@@ -37,12 +37,12 @@ jobs:
           
           # 【关键修改 1】：source 只需要指定要复制的目录名
           # rsync 默认会处理这个目录，我们通过 options 来控制行为。
-          source: 'dist' 
+          source: 'dist/' 
           
           # 【关键修改 2】：target 目录后面必须带斜杠 '/' 
           # 这告诉 rsync 将源内容复制到目标目录的“内部”。
-          target: ${{ secrets.DEPLOY_PATH }}/ 
-          
+          target: ${{ secrets.DEPLOY_PATH }}
+
           rsync: true
           overwrite: true
           
