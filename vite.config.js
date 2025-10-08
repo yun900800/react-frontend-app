@@ -6,6 +6,12 @@ export default defineConfig({
   plugins: [react()],
   // 确保构建时生成的静态资源路径正确，以便 Express 静态服务能够找到
   base: '/',
+  server: {
+    // This allows access from devices on the local network (LAN)
+    host: true, 
+    // You can also specify the port if you need a different one
+    // port: 3000, 
+  },
   build: {
     // Vite 默认构建输出目录就是 'dist'
     outDir: 'dist', 

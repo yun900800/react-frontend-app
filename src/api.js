@@ -2,8 +2,8 @@
 
 // 替换为你的 WebHostMost 上的后端服务域名 (例如: https://api.yourdomain.com)
 // 确保它与你后端 Express 中的 /api 路由匹配
-const BASE_URL = 'http://localhost:5002'; 
-// const BASE_URL = 'https://bayh.pp.ua';   
+// const BASE_URL = 'http://localhost:5002'; 
+const BASE_URL = 'https://bayh.pp.ua';   
 
 
 /**

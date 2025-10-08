@@ -7,7 +7,7 @@
 
 .section {
     position: relative;
-    min-height: 100vh;
+    height: 100vh;
     background: #557085;
     display: flex;
     justify-content: center;

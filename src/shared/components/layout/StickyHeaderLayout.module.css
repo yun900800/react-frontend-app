@@ -1,0 +1,29 @@
+/* 粘性头部样式 */
+.sticky_header {
+    /* 关键属性：让元素在滚动时“粘住” */
+    position: sticky;
+    top: 0; /* 粘在视口的顶部 */
+    
+    /* 样式美化 */
+    padding: 1rem 2rem;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    z-index: 1000; /* 确保导航栏在其他内容之上 */
+    box-shadow: 0 2px 5px var(--shadow-color);
+}
+
+.content {
+    padding-top: 60px; /* 为固定的头部留出空间，防止内容被遮挡 */
+}
+
+@media (max-width: 768px) {
+    .sticky_header {
+        padding: 0.5rem 0;
+        font-size: 16px;
+    }
+
+    .content {
+        padding-top: 1px; /* 调整移动设备上的顶部填充 */
+    }
+}

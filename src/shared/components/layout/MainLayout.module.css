@@ -1,0 +1,23 @@
+/* 针对 MainLayout 的内容区域样式 */
+.main_content_wrapper {
+    max-width: 800px;
+    margin: 0 auto; /* 居中显示内容 */
+    padding-left: 20px; /* 考虑两侧 padding */
+    padding-right: 20px;
+}
+
+/* 覆盖 StickyHeaderLayout 中 header 的背景颜色，确保 Link 看得清 */
+.main_header_custom {
+    background-color: white; /* 假设你想用白色背景 */
+}
+
+.main_content_custom {
+    background-color: bisque;
+}
+
+@media (max-width: 768px) {
+    .main_content_wrapper {
+        padding-left: 2px; /* 移动设备上减少 padding */
+        padding-right: 2px;
+    }
+}
