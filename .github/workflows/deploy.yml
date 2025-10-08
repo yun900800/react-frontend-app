@@ -4,7 +4,7 @@ name: Frontend Deploy to WebHostMost
 on:
   push:
     branches:
-      - master # 确保只在主分支上推送代码时触发部署
+      - main # 确保只在主分支上推送代码时触发部署
 
 jobs:
   build-and-deploy:

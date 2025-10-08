@@ -2,6 +2,7 @@
 import React from 'react';
 import { BrowserRouter as Router, Routes, Route, Link } from 'react-router-dom';
 import TestComponent from './components/TestComponent';
+import LoginPage from './features/auth/pages/LoginPage';
 
 function App() {
   return (
@@ -16,6 +17,7 @@ function App() {
           <Routes>
             <Route path="/" element={<h2>欢迎使用前端测试应用</h2>} />
             <Route path="/test" element={<TestComponent />} />
+            <Route path="/login" element={<LoginPage />} />
           </Routes>
         </main>
       </div>
