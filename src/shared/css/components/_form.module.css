@@ -1,0 +1,62 @@
+/*
+ * _form.module.css
+ *
+ * This file contains styles for form components,
+ * including form layout, groups, and inputs.
+ */
+
+.formContainer {
+  display: flex;
+  flex-direction: column;
+  gap: var(--size-2);
+}
+
+.form {
+  display: flex;
+  flex-direction: column;
+  gap: var(--size-2);
+}
+
+.formSection {
+  padding: var(--size-2);
+  border: var(--border-size-1) solid var(--border-color);
+  composes: rounded-md from "../_utils.module.css";
+  display: flex;
+  flex-direction: column;
+  gap: var(--size-2);
+}
+
+.formGroup {
+  display: flex;
+  flex-direction: column;
+  gap: var(--size-0);
+}
+
+.label {
+  font-size: var(--font-size-0);
+  font-weight: var(--font-weight-3);
+}
+
+.input,
+.textarea {
+  display: block;
+  width: 100%;
+  padding: var(--size-1) var(--size-2);
+  border: var(--border-size-1) solid var(--color-border-input);
+  box-shadow: 0 1px 2px 0 var(--shadow-color);
+  box-sizing: border-box;
+  composes: rounded-sm from "../_utils.module.css";
+}
+
+.input:focus,
+.textarea:focus {
+  outline: var(--border-size-2) solid transparent;
+  outline-offset: var(--border-size-2);
+  border-color: var(--color-primary);
+  box-shadow: 0 0 0 var(--border-size-2) var(--color-primary);
+}
+
+.textarea {
+  min-height: 100px;
+  resize: vertical;
+}

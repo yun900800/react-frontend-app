@@ -1,0 +1,65 @@
+/*
+ * _button.module.css
+ *
+ * This file contains styles for all button components.
+ */
+
+.actionButton {
+  /* border: none; */
+  padding: var(--size-1) var(--size-2);
+  cursor: pointer;
+  font-size: var(--font-size-0);
+  transition: background-color 0.2s ease-in-out;
+  margin-right: var(--size-0);
+  font-weight: var(--font-weight-3);
+  composes: rounded-sm from "../_utils.module.css";
+}
+
+.submitButton {
+  composes: actionButton;
+  composes: shadow-md rounded-md from "../_utils.module.css";
+  padding: var(--size-1) var(--size-2);
+  font-size: var(--font-size-0);
+  /* background-color: oklch(var(--color-primary)); */
+}
+
+/* .submitButton:hover:not(:disabled) {
+  background-color: oklch(var(--color-background2));
+} */
+
+.submitButton:disabled {
+  background-color: #9ca3af;
+  cursor: not-allowed;
+}
+
+.submitButtonLoading {
+  opacity: 0.7;
+  cursor: not-allowed;
+}
+
+.editButton {
+  composes: actionButton;
+  background-color: var(--color-primary);
+}
+
+.editButton:hover {
+  background-color: var(--color-primary2);
+}
+
+.deleteButton {
+  composes: actionButton;
+  background-color: var(--color-tertiary);
+}
+
+.deleteButton:hover {
+  background-color: oklch(from var(--color-tertiary) l c calc(h - 15));
+}
+
+.cancelButton {
+  composes: actionButton;
+  background-color: oklch(var(--db-dark));
+}
+
+.cancelButton:hover {
+  background-color: oklch(from var(--db-dark) l c calc(h + 10));
+}

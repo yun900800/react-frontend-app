@@ -8,11 +8,11 @@
 
 /* 覆盖 StickyHeaderLayout 中 header 的背景颜色，确保 Link 看得清 */
 .main_header_custom {
-    background-color: white; /* 假设你想用白色背景 */
+    background-color: oklch(var(--masthead-primary)); /* 假设你想用白色背景 */
 }
 
 .main_content_custom {
-    background-color: bisque;
+    background-color: oklch(var(--color-background2));
 }
 
 @media (max-width: 768px) {

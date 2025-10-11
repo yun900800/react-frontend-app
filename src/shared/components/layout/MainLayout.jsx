@@ -4,6 +4,7 @@ import React from 'react';
 import { Link, Outlet,useNavigate } from 'react-router-dom';
 import StickyHeaderLayout from './StickyHeaderLayout';
 import * as styles from './MainLayout.module.css'; // 引入样式文件
+import ThemeToggle from '../ThemeToggle.jsx';
 
 function MainLayout() {
   // 引入 useNavigate Hook 用于编程导航
@@ -24,30 +25,26 @@ function MainLayout() {
 
   // 1. 定义头部内容组件 (Header Content)
   const headerContent = (
-    <nav style={{ display: 'flex', alignItems: 'center' }}>
+    <nav style={{ display: 'flex', alignItems: 'center' ,color: 'oklch(var(--color-foreground))' }}>
       {/* 导航链接 */}
-      <Link to="/" style={{ marginRight: '15px', textDecoration: 'none', color: 'black' }}>
+      <Link to="/" style={{ marginRight: '15px', textDecoration: 'none'}}>
         🏠 首页
       </Link>
-      <Link to="/test" style={{ textDecoration: 'none', color: 'black' }}>
-        📊 API 接口测试
+      <Link to="/clients" style={{ marginRight: '15px', textDecoration: 'none' }}>
+        🏠 客户端
+      </Link>
+      <Link to="/test" style={{ textDecoration: 'none',  }}>
+        📊 接口
       </Link>
       
       {/* 退出登录按钮 */}
       <button 
         onClick={handleLogout}
-        style={{ 
-          padding: '5px 10px', 
-          backgroundColor: '#dc3545', 
-          color: 'white', 
-          border: 'none', 
-          borderRadius: '5px',
-          cursor: 'pointer',
-          marginLeft: '20px' // 增加一些左边距
-        }}
+        className='primary-button'
       >
-        👋 退出登录
+        👋 退出
       </button>
+      <ThemeToggle style={{ margin: '0 4px', display: 'flex' }} />
     </nav>
     // 注意：StickyHeaderLayout 的 CSS 已经定义了布局和阴影，这里主要关注内部元素的排布
   );

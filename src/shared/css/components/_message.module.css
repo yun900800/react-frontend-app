@@ -1,0 +1,24 @@
+/* --- 状态消息工具类 --- */
+.successMessage {
+  padding: var(--size-2);
+  background-color: #d1fae5;
+  border: var(--border-size-1) solid #6ee7b7;
+  color: #065f46;
+  border-radius: var(--radius-1);
+  box-shadow: 0 1px 2px 0 var(--shadow-color);
+}
+
+.errorMessage {
+  padding: var(--size-2);
+  background-color: #fee2e2;
+  border: var(--border-size-1) solid #fca5a5;
+  color: #991b1b;
+  border-radius: var(--radius-1);
+  box-shadow: 0 1px 2px 0 var(--shadow-color);
+}
+
+.loadingMessage,
+.emptyMessage {
+  text-align: center;
+  color: var(--color-foreground);
+}

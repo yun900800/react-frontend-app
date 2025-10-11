@@ -4,7 +4,7 @@ import React from 'react';
 
 function HomePage() {
   return (
-    <div style={{ padding: '20px', border: '1px solid #ddd', borderRadius: '5px', backgroundColor: '#f9f9f9' }}>
+    <div style={{ padding: '20px', border: '1px solid #ddd', borderRadius: '5px' }}>
       <h1>🏠 欢迎回到首页！</h1>
       <p>这是一个使用 React Router v6 布局路由的应用。</p>
       <p>你可以通过上方的导航栏切换到 API 接口测试页面。</p>

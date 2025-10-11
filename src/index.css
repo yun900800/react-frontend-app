@@ -1,3 +1,71 @@
+:root {
+  /* ----------------------------------
+   * 1. 原子层（基础 OKLCH 色彩 token）
+   * ---------------------------------- */
+  --db-white: 100% 0 0;
+  --db-light: 98.2% .014 85;
+  --db-dark: 40.05% .014 17.74;
+  --db-black: 31.55% .009 17.62;
+  --db-midnight: 30.05% .014 17.74;
+
+  --db-pink: 70.27% .192 13.7;
+  --db-red: 57.82% .19 16.36;
+  --db-yellow: 97.25% .0767 103;
+  --db-green: 86.59% .088 168.12;
+  --db-blue: 62.78% .12 226;
+  --db-blue2: 52.78% .1 226;
+
+  /* 色彩语义 token */
+  --color-background: var(--db-light);
+  --color-background2: var(--db-white);
+  --color-foreground: var(--db-dark);
+
+  --masthead-primary: var(--db-green);
+  --masthead-secondary: var(--db-blue);
+
+  /* 主色（Primary Action Color）。用于最主要的品牌色、核心交互元素和强调信息。 */
+  --color-primary: var(--db-blue);
+  /* 主色变体 2。 用于主色的深色/次深色版本，例如主按钮的 :hover 或 :active 状态。 */
+  --color-primary2: var(--db-blue2);
+
+  --color-link: var(--color-primary);
+  --color-link-hover: var(--color-primary2);
+  --color-link-active: var(--color-primary2);
+
+}
+
+:root[data-theme=light]{
+  --color-background: var(--db-light);
+  --color-background2: var(--db-white);
+  --color-foreground: var(--db-dark);
+
+  --masthead-primary: var(--db-green);
+  --masthead-secondary: var(--db-blue);
+
+  --color-primary: var(--db-blue);
+  --color-primary2: var(--db-blue2);
+
+  --color-link: var(--color-primary);
+  --color-link-hover: var(--color-primary2);
+  --color-link-active: var(--color-primary2);
+}
+
+:root[data-theme=dark] {
+  --color-background: var(--db-black);
+  --color-background2: var(--db-dark);
+  --color-foreground: var(--db-light);
+
+  --masthead-primary: var(--db-blue);
+  --masthead-secondary: var(--db-green);
+
+  --color-primary: var(--db-green);
+  --color-primary2: var(--db-green);
+
+  --color-link: var(--color-primary);
+  --color-link-hover: var(--color-primary2);
+  --color-link-active: var(--color-primary2);
+}
+
 * {
   margin: 0;
   padding: 0;
@@ -7,6 +75,34 @@
 body {
   font-family: Arial, sans-serif;
   line-height: 1.6;
-  background-color: #f4f4f4;
-  color: #333;
+  background: oklch(var(--color-background));
+  color: oklch(var(--color-foreground));
+}
+
+.primary-button {
+  background: oklch(var(--color-primary));
+  color: oklch(var(--color-background2));
+  border: none;
+  padding: 0.5rem 0.5rem;
+  margin-left: 8px;
+  cursor: pointer;
+  border-radius: 4px;
+  transition: background-color 0.3s ease;
+}
+
+.primary-button:hover {
+  background: oklch(var(--color-primary2));
+}
+
+a {
+  color: oklch(var(--color-link)); /* 默认使用主色 */
+  text-decoration: none;
+}
+
+a:hover {
+  color: var(--color-link-hover); /* 注意: 这个变量在你的CSS中未定义，应改为 --color-link-hover */
+}
+
+a:active {
+  color: var(--color-link-active); /* 注意: 这个变量在你的CSS中未定义，应改为 --color-link-active */
 }

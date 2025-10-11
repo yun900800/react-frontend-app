@@ -1,0 +1,42 @@
+.container {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+}
+
+.header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: var(--modal-header-margin-bottom, 20px);
+}
+
+.title {
+  font-size: var(--font-size-1);
+}
+
+
+.body {
+  flex-grow: 1;
+}
+
+.actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: var(--modal-actions-gap, 12px);
+  margin-top: var(--modal-actions-margin-top, 24px);
+}
+
+.closeButton {
+  background: none;
+  border: none;
+  /* 移除固定的 font-size，改为使用 CSS 变量 */
+  font-size: var(--modal-close-button-size, 2rem);
+  cursor: pointer;
+  /* 移除固定的颜色值，改为使用 CSS 变量 */
+  color: var(--modal-close-button-color, #aaa);
+}
+
+.closeButton:hover {
+  color: var(--color-border-input-focus);
+}

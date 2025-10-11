@@ -38,7 +38,6 @@ const TestComponent = () => {
         <>
           <p style={{ color: '#28a745', fontWeight: 'bold' }}>✅ 请求成功！后端返回数据如下:</p>
           <pre style={{ 
-              backgroundColor: '#f8f9fa', 
               padding: '15px', 
               borderRadius: '5px',
               overflowX: 'auto' 

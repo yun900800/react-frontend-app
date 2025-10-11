@@ -1,0 +1,67 @@
+/* utils.module.css */
+
+/* --- Stack 布局工具 --- */
+.stack {
+  display: flex;
+  flex-direction: column;
+  /* 允许通过内联样式或父元素变量覆盖 */
+  gap: var(--stack-gap, var(--size-2));
+}
+
+.stack.horizontal {
+  flex-direction: row;
+}
+
+.text-base {
+  font-size: var(--font-size-0);
+  font-weight: var(--font-weight-1);
+  line-height: var(--line-height-1);
+}
+
+.text-sm {
+  font-size: var(--font-size-m1);
+  font-weight: var(--font-weight-1);
+  line-height: var(--line-height-1);
+}
+
+.bold {
+  font-weight: var(--font-weight-3);
+}
+
+/* --- 颜色工具类 --- */
+.text-primary {
+  color: var(--color-primary);
+}
+
+.text-secondary {
+  color: var(--color-secondary);
+}
+
+.text-tertiary {
+  color: var(--color-tertiary);
+}
+
+.bg-primary {
+  background-color: var(--color-primary);
+}
+
+.bg-secondary {
+  background-color: var(--color-secondary);
+}
+
+/* --- 阴影和圆角工具类 --- */
+.shadow-md {
+  box-shadow: 0 4px 6px -1px var(--shadow-color), 0 2px 4px -2px var(--shadow-color);
+}
+
+.rounded-lg {
+  border-radius: var(--radius-2);
+}
+
+.rounded-md {
+  border-radius: var(--radius-1);
+}
+
+.rounded-sm {
+  border-radius: var(--radius-1);
+}

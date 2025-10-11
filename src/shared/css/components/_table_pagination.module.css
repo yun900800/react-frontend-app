@@ -1,0 +1,81 @@
+/*
+ * _table_pagination.module.css
+ *
+ * This file contains styles for table and pagination components.
+ */
+
+.tableContainer {
+  overflow-x: auto;
+  composes: rounded-md shadow-md from "../_utils.module.css";
+}
+
+.table {
+  min-width: 100%;
+  border-collapse: collapse;
+}
+
+.tableHeader {
+  border-bottom: var(--border-size-1) solid var(--border-color);
+}
+
+.tableHeaderCell {
+  padding: var(--size-1) var(--size-2);
+  text-align: left;
+  font-size: var(--font-size-m1);
+  font-weight: var(--font-weight-3);
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+.tableBody {
+  /* background-color: white; */
+}
+
+.tableRow {
+  border-bottom: var(--border-size-1) solid var(--border-color);
+}
+
+.tableRow:last-child {
+  border-bottom: none;
+}
+
+.tableCell {
+  padding: var(--size-2) var(--size-2);
+  white-space: nowrap;
+  font-size: var(--font-size-0);
+}
+
+.tableCellTextSecondary {
+  color: #6b7280;
+}
+
+/* pagination component */
+.pagination {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-top: var(--size-2);
+}
+
+.paginationButton {
+  padding: var(--size-1) var(--size-2);
+  cursor: pointer;
+  border: none;
+  font-weight: var(--font-weight-3);
+  background-color: var(--color-background2);
+  composes: rounded-md from "../_utils.module.css";
+}
+
+.paginationButton:hover:not(:disabled) {
+  background-color: var(--color-background);
+}
+
+.paginationButton:disabled,
+.disabledButton {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.paginationStatus {
+  color: var(--color-foreground);
+}

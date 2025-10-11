@@ -1,0 +1,44 @@
+/*
+ * _card_media.module.css
+ *
+ * This file contains styles for card and media object components.
+ * It's suitable for general containers and content layouts.
+ */
+
+/* card component start */
+.card {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--card-gap, 1.5em);
+  padding: var(--card-padding, 2.5em);
+  composes: rounded-lg shadow-md from "../_utils.module.css";
+  background-color: oklch(var(--color-background));
+}
+
+/* media object component start */
+.media {
+  --media-gap: 16px;
+  --media-image-size: 64px;
+  display: flex;
+  align-items: flex-start;
+}
+
+.media img {
+  width: var(--media-image-size, 16px);
+  height: var(--media-image-size, 16px);
+  margin-right: var(--media-gap, 8px);
+}
+
+.media--align-center {
+  align-items: center;
+}
+
+.media--reverse {
+  flex-direction: row-reverse;
+}
+
+.media--reverse img {
+  margin-right: 0;
+  margin-left: var(--media-gap);
+}

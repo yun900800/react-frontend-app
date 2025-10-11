@@ -1,0 +1,33 @@
+/*
+ * _navbar.module.css
+ *
+ * This file contains styles for the navigation bar component.
+ */
+
+.navbar {
+  padding: var(--size-1);
+  margin-top: var(--size-2);
+  margin-bottom: var(--size-2);
+  width: 100%;
+  max-width: 36rem;
+  display: flex;
+  justify-content: center;
+  gap: var(--size-2);
+  composes: rounded-lg shadow-md from "../_utils.module.css";
+}
+
+.tabButton {
+  padding: var(--size-1) var(--size-2);
+  border-radius: var(--radius-1);
+  font-weight: var(--font-weight-3);
+  transition: all 200ms ease;
+  cursor: pointer;
+}
+
+.tabButton:hover {
+  background-color: oklch(var(--color-background2));
+}
+
+.activeTab {
+  composes: shadow-md from "../_utils.module.css";
+}

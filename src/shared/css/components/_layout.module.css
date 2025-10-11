@@ -1,0 +1,90 @@
+/* --- App.js 基础容器与布局 --- */
+.container {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: var(--size-2); /* 1.5rem -> var(--size-2) */
+  font-family: var(--font-family); /* sans-serif -> var(--font-family) */
+  box-sizing: border-box;
+}
+
+.contentArea {
+  width: 100%;
+  max-width: 36rem;
+  padding: var(--size-3); /* 2rem -> var(--size-3) */
+  /* 使用 utils 类的组合 */
+  composes: rounded-lg shadow-md from "../_utils.module.css";
+}
+
+
+/* 
+ * 注意这里的stack布局其实本质上是一种抽象，
+ * 后面的form表单布局实际是一种具体实现的应用  
+ */
+/* --- Stack 布局工具 --- */
+.stack {
+  display: flex;
+  flex-direction: column;
+  /* 允许通过内联样式或父元素变量覆盖 */
+  gap: var(--stack-gap, var(--size-2));
+}
+
+.stack.horizontal {
+  flex-direction: row;
+}
+
+/**
+ * Split布局横向的话左右一般，纵向的话按比例分配
+ * 这种模式更有通用性
+ *
+ */
+/* --- SplitLayout --- */
+.split {
+  display: flex;
+  /* 现在的开发中，如果只需要兼容现代浏览器，使用 100svh 就可以了，因为它简单、高效，并且是专门为此而生的。 */
+  height: 100svh;   /* 高度100%填满视口 */
+  /* 而 calc(var(--vh, 1vh) * 100) 则可以作为一种备用方案，当你需要支持更广泛的浏览器，尤其是老旧的浏览器版本时，它是一个非常可靠的解决办法。 */
+  height: calc(var(--vh, 1vh) * 100);
+}
+.split-item {
+  flex: 1;
+  overflow: hidden;
+}
+
+/* 装饰性样式 */
+.bg-light-gray {
+  background: var(--color-primary);
+}
+
+.bg-extra-light-gray {
+  background: var(--color-secondary);
+}
+
+@media (max-width: 768px) {
+    .split {
+        flex-direction: column; /* 在小屏幕上，改为垂直布局 */
+    }
+    .split-item {
+        width: 100%; /* 确保在小屏幕上宽度占满 */
+    }
+    .split-item-mobile-flex-2 {
+      flex: 2;
+      /* 
+       * flex-direction: column 并不是为了让元素占满空间，而是为了改变 Flex 容器的主轴，从而改变其子元素在交叉轴上的默认拉伸行为。
+
+       * 默认 (flex-direction: row): 子元素高度会拉伸。
+
+       * 列布局 (flex-direction: column): 子元素宽度会拉伸，而高度由内容决定或通过 flex 属性分配。
+       * 这两行代码起到的作用就是拉伸宽度
+      */
+      flex-direction: column;
+      display: flex;
+    }
+
+    .split-item-mobile-flex-8 {
+      flex: 8;
+    }
+}
+
+

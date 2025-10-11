@@ -5,6 +5,7 @@ import MainLayout from './shared/components/layout/MainLayout';
 import TestComponent from './components/TestComponent';
 import LoginPage from './features/auth/pages/LoginPage';
 import HomePage from './features/home/pages/HomePage'; 
+import ClientPages from './features/client/pages/ClientPages';
 import ProtectedRoute from './features/auth/components/ProtectedRoute';
 
 function App() {
@@ -22,6 +23,7 @@ function App() {
               
               {/* 其他需要布局的页面 */}
               <Route path="test" element={<TestComponent />} />
+              <Route path="clients" element={<ClientPages />} />
             </Route>
           </Route>
 
