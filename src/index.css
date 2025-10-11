@@ -206,7 +206,7 @@ input, textarea, select {
   border: var(--border-size-2) solid var(--color-border-input);  /* 浅灰色边框 */
   border-radius: var(--size-0);
   /* background-color: oklch(var(--color-background)); */
-  color: oklch(var(--color-foreground)); /* 确保文字颜色也使用语义变量 */
+  color: oklch(var(--db-dark)); /* 确保文字颜色也使用语义变量 */
   width: 100%;  /* 宽度自适应 */
   box-sizing: border-box;
   transition: border-color 0.3s ease, box-shadow 0.3s ease; /* 过渡效果 */

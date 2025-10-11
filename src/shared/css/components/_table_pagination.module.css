@@ -62,7 +62,7 @@
   cursor: pointer;
   border: none;
   font-weight: var(--font-weight-3);
-  background-color: var(--color-background2);
+  background-color: oklch(var(--color-primary));
   composes: rounded-md from "../_utils.module.css";
 }
 

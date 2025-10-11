@@ -1,6 +1,6 @@
 // shared/lib/fetch.js
-// const BASE_URL = 'https://bayh.pp.ua'; // 可选，如 '/api'
-const BASE_URL = "http://localhost:5002"; // 本地调试时使用本地后端地址
+const BASE_URL = 'https://bayh.pp.ua'; // 可选，如 '/api'
+// const BASE_URL = "http://localhost:5002"; // 本地调试时使用本地后端地址
 const DEFAULT_TIMEOUT = 5000; // 默认超时时间 5 秒
 
 // ----------------------------------------------------
