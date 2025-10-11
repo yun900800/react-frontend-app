@@ -52,7 +52,7 @@
 .textarea:focus {
   outline: var(--border-size-2) solid transparent;
   outline-offset: var(--border-size-2);
-  border-color: var(--color-primary);
+  /* border-color: var(--color-primary); */
   box-shadow: 0 0 0 var(--border-size-2) var(--color-primary);
 }
 

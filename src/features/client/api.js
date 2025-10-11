@@ -14,9 +14,26 @@ const BASE_PATH = '/api/client';
  * @returns {object} - 成功时返回 data，失败时抛出错误
  */
 const handleApiResult = (result) => {
+    if (result.status === 401) {
+        console.warn("API Unauthorized (401)，正在跳转到登录页...");
+            
+        // a. 清除过期的 token
+        localStorage.removeItem('token'); 
+        
+        // b. 执行跳转
+        // ** 实际项目中请替换为你的路由跳转方法 **
+        window.location.href = '/login'; 
+        
+        // c. 立即抛出错误或返回一个 Promise.reject，阻止后续业务代码执行
+        // 抛出的错误可以被调用方（如果需要）捕获，但页面已经跳转。
+        const authError = new Error("Authorization Required (401). Redirecting to login.");
+        authError.response = { status: 401 };
+        throw authError;
+    }
     if (result.error) {
         // 将 fetcher 内部的错误信息转换为可抛出的 Error 对象
         const status = result.error.status || 500;
+        
         const message = result.error.data?.error || result.error.message || `API Error with status ${status}`;
         
         // 创建一个包含状态码和数据的错误对象，方便前端捕获

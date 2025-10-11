@@ -1,6 +1,6 @@
 // shared/lib/fetch.js
-const BASE_URL = 'https://bayh.pp.ua'; // 可选，如 '/api'
-// const BASE_URL = "http://localhost:5002"; // 本地调试时使用本地后端地址
+// const BASE_URL = 'https://bayh.pp.ua'; // 可选，如 '/api'
+const BASE_URL = "http://localhost:5002"; // 本地调试时使用本地后端地址
 const DEFAULT_TIMEOUT = 5000; // 默认超时时间 5 秒
 
 // ----------------------------------------------------
@@ -28,7 +28,9 @@ const handleResponse = async (res) => {
   const contentType = res.headers.get('content-type');
   const isJson = contentType && contentType.includes('application/json');
   const data = isJson ? await res.json() : await res.text();
-
+  if (res.status === 401) {
+    return { data: null, status: 401 };
+  }
   if (!res.ok) {
     return { error: { status: res.status, data } };
   }

@@ -5,6 +5,7 @@ import { Link, Outlet,useNavigate } from 'react-router-dom';
 import StickyHeaderLayout from './StickyHeaderLayout';
 import * as styles from './MainLayout.module.css'; // 引入样式文件
 import ThemeToggle from '../ThemeToggle.jsx';
+import { LogOut } from 'lucide-react';
 
 function MainLayout() {
   // 引入 useNavigate Hook 用于编程导航
@@ -36,17 +37,15 @@ function MainLayout() {
       <Link to="/test" style={{ textDecoration: 'none',  }}>
         📊 接口
       </Link>
-      
-      {/* 退出登录按钮 */}
       <button 
         onClick={handleLogout}
-        className='primary-button'
+        className='button-primary'
+        style={{ margin: '0 4px', display: 'flex' }}
       >
-        👋 退出
+        <LogOut onClick={handleLogout} style={{ width: 'var(--font-size-1)', height: 'auto' }}/>
       </button>
       <ThemeToggle style={{ margin: '0 4px', display: 'flex' }} />
     </nav>
-    // 注意：StickyHeaderLayout 的 CSS 已经定义了布局和阴影，这里主要关注内部元素的排布
   );
   
   return (

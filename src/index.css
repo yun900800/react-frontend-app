@@ -15,6 +15,60 @@
   --db-blue: 62.78% .12 226;
   --db-blue2: 52.78% .1 226;
 
+  --shadow-color: rgba(0, 0, 0, 0.1);
+  --border-color: #D1D1D1;
+
+  --🤡: .0625rem; /* 基础单位：1px */
+
+  /* ----------------------------------
+   * 2. 工具层（响应式流体单位等）
+   * ---------------------------------- */
+  /* 适用于较大的字体（如标题：--font-size-2, --font-size-3, --font-size-4），这些标题需要在一个很宽的屏幕范围内进行缩放，以适应超大屏幕。 */
+  --fluid1: calc((100vi - 400 * var(--🤡)) / (1920 - 400));
+  /* 适用于较小的字体（如正文和副标题：--font-size-m1, --font-size-0, --font-size-1），这些文本通常不希望在 1220px 以上的屏幕上继续无限制地放大，以保持最佳阅读体验。 */
+  --fluid2: calc((100vi - 400 * var(--🤡)) / (1220 - 400));
+
+  --font-size-m1: clamp(calc(12 * var(--🤡)), calc(12 * var(--🤡) + 2 * var(--fluid2)), calc(14 * var(--🤡)));
+  --font-size-0: clamp(calc(14 * var(--🤡)), calc(14 * var(--🤡) + 2 * var(--fluid2)), calc(16 * var(--🤡)));
+  --font-size-1: clamp(calc(17 * var(--🤡)), calc(17 * var(--🤡) + 3 * var(--fluid2)), calc(20 * var(--🤡)));
+  --font-size-2: clamp(calc(19 * var(--🤡)), calc(19 * var(--🤡) + 7 * var(--fluid1)), calc(26 * var(--🤡)));
+  --font-size-3: clamp(calc(21 * var(--🤡)), calc(21 * var(--🤡) + 11 * var(--fluid1)), calc(32 * var(--🤡)));
+  --font-size-4: clamp(calc(31 * var(--🤡)), calc(31 * var(--🤡) + 49 * var(--fluid1)), calc(80 * var(--🤡)));
+  --font-size: var(--font-size-1);
+
+  /* 输入框边框颜色 */
+  --color-border-input: var(--border-color); /* 默认值 */
+  --color-border-input-focus: oklch(var(--db-red)); /* 默认聚焦颜色 */
+
+  /* 排版语义 token */
+  --font-family: "Atkinson Hyperlegible Next", sans-serif;
+
+  --font-weight-base: 0;
+  --font-weight-1: calc(var(--font-weight-base) + 400);
+  --font-weight-2: calc(var(--font-weight-base) + 450);
+  --font-weight-3: 500;
+
+  --line-height-1: 1.6;
+  --line-height-2: 1.3;
+
+  /* ----------------------------------
+   * 其他基础 token
+   * ---------------------------------- */
+  --size-0: 4.5px;
+  --size-1: 9px;
+  --size-2: 18px;
+  --size-3: 27px;
+  --size-4: 36px;
+  --size-5: 40.5px;
+
+  /* 边框大小 */
+  --border-size-1: 1px;
+  --border-size-2: 2px;
+
+  /* 圆角大小 */
+  --radius-1: var(--size-0);
+  --radius-2: var(--size-1);
+
   /* 色彩语义 token */
   --color-background: var(--db-light);
   --color-background2: var(--db-white);
@@ -48,6 +102,11 @@
   --color-link: var(--color-primary);
   --color-link-hover: var(--color-primary2);
   --color-link-active: var(--color-primary2);
+
+  /* 输入框边框颜色 */
+  --color-border-input: var(--border-color);
+  --color-border-input-focus: oklch(var(--db-red)); /* 聚焦时使用红色，与你的 --color-tertiary 匹配 */
+
 }
 
 :root[data-theme=dark] {
@@ -64,6 +123,9 @@
   --color-link: var(--color-primary);
   --color-link-hover: var(--color-primary2);
   --color-link-active: var(--color-primary2);
+
+  --color-border-input: oklch(var(--db-dark)); /* 使用深色背景的颜色，但可以稍亮一点，或者直接用--db-light */
+  --color-border-input-focus: oklch(var(--db-blue)); /* 聚焦时使用绿色 */
 }
 
 * {
@@ -77,6 +139,7 @@ body {
   line-height: 1.6;
   background: oklch(var(--color-background));
   color: oklch(var(--color-foreground));
+  font-size: var(--font-size);
 }
 
 .primary-button {
@@ -84,7 +147,6 @@ body {
   color: oklch(var(--color-background2));
   border: none;
   padding: 0.5rem 0.5rem;
-  margin-left: 8px;
   cursor: pointer;
   border-radius: 4px;
   transition: background-color 0.3s ease;
@@ -92,6 +154,32 @@ body {
 
 .primary-button:hover {
   background: oklch(var(--color-primary2));
+}
+
+/* 使用流式字体来定义基础标签 */
+h1 {
+  /* 最大的标题，使用 --font-size-4 */
+  font-size: var(--font-size-4);
+  /* 推荐设置行高，也应该使用流体或 calc */
+  line-height: 1.1; 
+}
+
+h2 {
+  /* 次级标题，使用 --font-size-3 */
+  font-size: var(--font-size-3);
+  line-height: 1.2;
+}
+
+h3 {
+  /* 三级标题，使用 --font-size-2 */
+  font-size: var(--font-size-2);
+  line-height: 1.3;
+}
+
+p {
+  /* 正文，使用默认字体大小或 --font-size-0 */
+  font-size: var(--font-size-0);
+  line-height: 1.5;
 }
 
 a {
@@ -105,4 +193,52 @@ a:hover {
 
 a:active {
   color: var(--color-link-active); /* 注意: 这个变量在你的CSS中未定义，应改为 --color-link-active */
+}
+
+/* 基本输入框样式 */
+input, textarea, select {
+  /* 统一行高为27px */
+  height: var(--size-4);
+  /* 这里去掉会引起视口缩放，输入效果差 */
+  font-size: 16px;
+  /* font-size: clamp(15px, 1rem, 17px); */
+  padding: var(--size-1);
+  border: var(--border-size-2) solid var(--color-border-input);  /* 浅灰色边框 */
+  border-radius: var(--size-0);
+  /* background-color: oklch(var(--color-background)); */
+  color: oklch(var(--color-foreground)); /* 确保文字颜色也使用语义变量 */
+  width: 100%;  /* 宽度自适应 */
+  box-sizing: border-box;
+  transition: border-color 0.3s ease, box-shadow 0.3s ease; /* 过渡效果 */
+}
+
+/* 输入框聚焦时的样式 */
+input:focus, textarea:focus, select:focus {
+  outline: none;  
+  border-color: var(--color-border-input-focus);  /* 聚焦时的边框颜色：深绿 */
+  box-shadow: 0 0 5px rgba(45, 79, 43, 0.5); /* 聚焦时的阴影效果 */
+}
+
+/* 输入框禁用时的样式 */
+input:disabled, textarea:disabled, select:disabled {
+  background-color: #f0f0f0;  /* 禁用时的背景色 */
+  color: #aaa;  /* 禁用时的文字颜色 */
+  border-color: #ddd;  /* 禁用时的边框颜色 */
+}
+
+/* 输入框悬停时的样式 */
+input:hover, textarea:hover, select:hover {
+  border-color: var(--color-border-input-focus); /* 悬停时的边框颜色：绿灰色 */
+}
+
+/* 输入框的占位符文本样式 */
+input::placeholder, textarea::placeholder {
+  color: var(--secondary-color); /* 悬停时占位符的颜色：绿灰色 */
+  font-style: italic;  /* 斜体 */
+}
+
+/* 输入框错误状态的样式 */
+input.error, textarea.error {
+  border-color: #DC3545;  /* 错误时红色边框 */
+  background-color: #F8D7DA;  /* 错误时背景色 */
 }

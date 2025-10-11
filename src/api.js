@@ -13,8 +13,6 @@ const BASE_URL = 'https://bayh.pp.ua';
 export async function fetchTestData() {
   const endpoint = `${BASE_URL}/version`; // 假设后端有一个 /api/version 接口
 
-  console.log(`Sending request to: ${endpoint}`);
-
   try {
     const response = await fetch(endpoint, {
       method: 'GET',
@@ -24,8 +22,6 @@ export async function fetchTestData() {
         'Content-Type': 'application/json',
       },
     });
-
-    console.log('response',response);
 
     if (!response.ok) {
       const errorText = await response.text();
