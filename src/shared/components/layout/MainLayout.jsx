@@ -3,9 +3,10 @@
 import React from 'react';
 import { Link, Outlet,useNavigate } from 'react-router-dom';
 import StickyHeaderLayout from './StickyHeaderLayout';
+import SpacerLayout, {AutoMarginClassName} from './SpacerLayout.tsx';
 import * as styles from './MainLayout.module.css'; // 引入样式文件
 import ThemeToggle from '../ThemeToggle.jsx';
-import { LogOut } from 'lucide-react';
+import { LogOut, Pyramid,House,Cable } from 'lucide-react';
 
 function MainLayout() {
   // 引入 useNavigate Hook 用于编程导航
@@ -26,26 +27,28 @@ function MainLayout() {
 
   // 1. 定义头部内容组件 (Header Content)
   const headerContent = (
-    <nav style={{ display: 'flex', alignItems: 'center' ,color: 'oklch(var(--color-foreground))' }}>
-      {/* 导航链接 */}
-      <Link to="/" style={{ marginRight: '15px', textDecoration: 'none'}}>
-        🏠 首页
+      <SpacerLayout 
+      gap="24px"
+      // 可以在这里传入其他 prop，如 onClick, id 等
+    >
+      <Link to="/" style={{ marginRight: '15px', marginLeft: '2px', textDecoration: 'none'}}>
+        <House style={{  display: 'flex' }}/>
       </Link>
       <Link to="/clients" style={{ marginRight: '15px', textDecoration: 'none' }}>
-        🏠 客户端
+        <Pyramid style={{  display: 'flex' }} />
       </Link>
       <Link to="/test" style={{ textDecoration: 'none',  }}>
-        📊 接口
+        <Cable style={{ display: 'flex' }} />
       </Link>
-      <button 
+      <a 
         onClick={handleLogout}
-        className='button-primary'
-        style={{ margin: '0 4px', display: 'flex' }}
+        className={`button-primary ${AutoMarginClassName}`}
+        style={{ display: 'flex' }} // 使用 margin-left: auto 将按钮推到最右侧
       >
         <LogOut onClick={handleLogout} style={{ width: 'var(--font-size-1)', height: 'auto' }}/>
-      </button>
-      <ThemeToggle style={{ margin: '0 4px', display: 'flex' }} />
-    </nav>
+      </a>
+      <ThemeToggle style={{ display: 'flex', border:0, backgroundColor: 'oklch(var(--color-link))' }} />
+      </SpacerLayout>
   );
   
   return (

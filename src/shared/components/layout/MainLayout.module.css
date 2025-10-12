@@ -9,15 +9,17 @@
 /* 覆盖 StickyHeaderLayout 中 header 的背景颜色，确保 Link 看得清 */
 .main_header_custom {
     background-color: oklch(var(--masthead-primary)); /* 假设你想用白色背景 */
+    padding: 0.5rem 1rem;
 }
 
 .main_content_custom {
     background-color: oklch(var(--color-background2));
+    padding-top: 0;
 }
 
 @media (max-width: 768px) {
     .main_content_wrapper {
-        padding-left: 2px; /* 移动设备上减少 padding */
-        padding-right: 2px;
+        padding-left: 0; /* 移动设备上减少 padding */
+        padding-right: 0;
     }
 }

@@ -242,3 +242,8 @@ input.error, textarea.error {
   border-color: #DC3545;  /* 错误时红色边框 */
   background-color: #F8D7DA;  /* 错误时背景色 */
 }
+
+
+.spacer-auto {
+  margin-left: auto;
+}
