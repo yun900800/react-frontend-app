@@ -9,6 +9,7 @@ import ClientPages from './features/client/pages/ClientPages';
 import CreateClient from './features/client/pages/CreateClient';
 import ClientList from './features/client/pages/ClientList';
 import ProtectedRoute from './features/auth/components/ProtectedRoute';
+import ResponsiveFlowApp from './features/home/pages/ResponsiveFlowApp';
 
 function App() {
   return (
@@ -35,6 +36,7 @@ function App() {
                 <Route index element={<Navigate to="list" replace />} /> 
               </Route>
             </Route>
+            <Route path="/responsive-flow" element={<ResponsiveFlowApp />} />
           </Route>
 
           {/* 3. 可选：404 Not Found 路由 */}

@@ -1,0 +1,50 @@
+/* ResponsiveFlow.module.css */
+
+/* 1. 容器样式 (Flex 容器) */
+.layout {
+    width: 100%;
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 16px;
+
+    /* 核心 Flexbox 布局 */
+    display: flex;
+    gap: 16px; /* 行间距和列间距 */
+    flex-wrap: wrap; /* 允许卡片自动换行 */
+    
+    /* 默认的 align-items: stretch; 确保了 同一行内高度一致！ */
+    justify-content: flex-start; 
+}
+
+/* 2. 项目样式（卡片/内容） */
+.item-3-col {
+    /* 关键布局属性：响应式宽度计算 */
+    flex-basis: calc(33.33% - 16px); 
+    min-width: 250px; 
+    flex-grow: 1; 
+    box-sizing: border-box; 
+    
+    /* 视觉样式（示例） */
+    border: 1px solid #ddd;
+    padding: 15px;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+    background-color: #fff;
+    border-radius: 8px;
+}
+
+/* 3. 响应式规则 */
+@media (max-width: 900px) {
+    .item-3-col {
+        /* 两列布局 */
+        flex-basis: calc(50% - 8px); 
+        min-width: 300px;
+    }
+}
+
+@media (max-width: 600px) {
+    .item-3-col {
+        /* 单列布局 */
+        flex-basis: 100%;
+        min-width: unset;
+    }
+}
