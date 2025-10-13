@@ -37,7 +37,7 @@ function App() {
                 <Route index element={<Navigate to="list" replace />} /> 
               </Route>
             </Route>
-            <Route path="/responsive-flow" element={<ResponsiveFlowApp />} />
+            <Route path="/responsive-layout" element={<ResponsiveFlowApp />} />
             <Route path="/fixed-app" element={<FixedStructureApp />} />
           </Route>
           

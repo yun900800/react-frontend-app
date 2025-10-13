@@ -3,9 +3,8 @@ const Pagination = ({ currentPage, totalPages, onPageChange, styles }) => (
     <button
       onClick={() => onPageChange(currentPage - 1)}
       disabled={currentPage === 1}
-      className={`${styles.paginationButton} ${currentPage === 1 ? styles.disabledButton : ''}`}
+      className={`${styles.paginationButton} bb-custom-icon bb-custom-icon-arrow-left ${currentPage === 1 ? styles.disabledButton : ''}`}
     >
-      上一页
     </button>
     <span className={styles.paginationStatus}>
       第 {currentPage} 页 / 共 {totalPages} 页
@@ -13,9 +12,8 @@ const Pagination = ({ currentPage, totalPages, onPageChange, styles }) => (
     <button
       onClick={() => onPageChange(currentPage + 1)}
       disabled={currentPage === totalPages}
-      className={`${styles.paginationButton} ${currentPage === totalPages ? styles.disabledButton : ''}`}
+      className={`${styles.paginationButton} bb-custom-icon bb-custom-icon-arrow-right ${currentPage === totalPages ? styles.disabledButton : ''}`}
     >
-      下一页
     </button>
   </div>
 );

@@ -12,6 +12,7 @@
   --db-red: 57.82% .19 16.36;
   --db-yellow: 97.25% .0767 103;
   --db-green: 86.59% .088 168.12;
+  --db-green2: 76.59% .078 168.12;
   --db-blue: 62.78% .12 226;
   --db-blue2: 52.78% .1 226;
 
@@ -118,7 +119,7 @@
   --masthead-secondary: var(--db-green);
 
   --color-primary: var(--db-green);
-  --color-primary2: var(--db-green);
+  --color-primary2: var(--db-green2);
 
   --color-link: var(--color-primary);
   --color-link-hover: var(--color-primary2);
@@ -246,4 +247,46 @@ input.error, textarea.error {
 
 .spacer-auto {
   margin-left: auto;
+}
+
+/* 字体图标 */
+@font-face {
+	font-family: 'arrows';
+	src:url('./assets/fonts/arrows/arrows.eot');
+	src:url('./assets/fonts/arrows/arrows.eot?#iefix') format('embedded-opentype'),
+		url('./assets/fonts/arrows/arrows.woff') format('woff'),
+		url('./assets/fonts/arrows/arrows.ttf') format('truetype'),
+		url('./assets/fonts/arrows/arrows.svg#arrows') format('svg');
+	font-weight: normal;
+	font-style: normal;
+}
+
+.bb-custom-icon:before {
+	font-family: 'arrows';
+	speak: none;
+	font-style: normal;
+	font-weight: normal;
+	font-variant: normal;
+	text-transform: none;
+	line-height: 1;
+	font-size: 20px;
+	line-height: 30px;
+	display: block;
+	-webkit-font-smoothing: antialiased;
+}
+
+.bb-custom-icon-first:before,
+.bb-custom-icon-last:before {
+	content: "\e002";
+}
+
+.bb-custom-icon-arrow-left:before,
+.bb-custom-icon-arrow-right:before {
+	content: "\e003";
+}
+
+.bb-custom-icon-arrow-left:before,
+.bb-custom-icon-first:before {
+	-webkit-transform: rotate(180deg);
+	transform: rotate(180deg);
 }

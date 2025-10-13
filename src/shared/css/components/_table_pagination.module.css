@@ -6,6 +6,7 @@
 
 .tableContainer {
   overflow-x: auto;
+  border: var(--border-size-1) solid var(--border-color); /* 外部边框 */
   composes: rounded-md shadow-md from "../_utils.module.css";
 }
 
@@ -15,16 +16,19 @@
 }
 
 .tableHeader {
+  /* border-top: var(--border-size-1) solid var(--border-color); */
   border-bottom: var(--border-size-1) solid var(--border-color);
+  white-space: nowrap;
 }
 
 .tableHeaderCell {
-  padding: var(--size-1) var(--size-2);
-  text-align: left;
+  padding: var(--size-1) var(--size-1);
+  text-align: center;
   font-size: var(--font-size-m1);
   font-weight: var(--font-weight-3);
   text-transform: uppercase;
   letter-spacing: 0.05em;
+  /* border-right: var(--border-size-1) solid var(--border-color); */
 }
 
 .tableBody {
@@ -33,6 +37,7 @@
 
 .tableRow {
   border-bottom: var(--border-size-1) solid var(--border-color);
+  white-space: nowrap;
 }
 
 .tableRow:last-child {
@@ -40,9 +45,9 @@
 }
 
 .tableCell {
-  padding: var(--size-2) var(--size-2);
+  padding: var(--size-0) var(--size-0);
   white-space: nowrap;
-  font-size: var(--font-size-0);
+  font-size: var(--font-size-m1);
 }
 
 .tableCellTextSecondary {
@@ -58,16 +63,16 @@
 }
 
 .paginationButton {
-  padding: var(--size-1) var(--size-2);
+  padding: var(--size-0) var(--size-0);
   cursor: pointer;
   border: none;
-  font-weight: var(--font-weight-3);
+  font-weight: var(--font-weight-1);
   background-color: oklch(var(--color-primary));
   composes: rounded-md from "../_utils.module.css";
 }
 
 .paginationButton:hover:not(:disabled) {
-  background-color: var(--color-background);
+  background-color: oklch(var(--color-primary2));
 }
 
 .paginationButton:disabled,
@@ -77,5 +82,5 @@
 }
 
 .paginationStatus {
-  color: var(--color-foreground);
+  color: oklch(var(--color-foreground));
 }
