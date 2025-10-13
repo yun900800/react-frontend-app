@@ -10,5 +10,16 @@
     <div id="root"></div>
     <div id="toast-root"></div>
     <script type="module" src="/src/main.jsx"></script>
+    <script>
+      const setViewportHeight = () => {
+          // 获取实际的视口高度
+          let vh = window.innerHeight * 0.01; 
+          document.documentElement.style.setProperty('--vh', `${vh}px`);
+      };
+
+      // 立即运行一次，并监听 resize 事件
+      setViewportHeight();
+      window.addEventListener('resize', setViewportHeight);
+    </script>
   </body>
 </html>

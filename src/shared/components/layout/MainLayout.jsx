@@ -32,13 +32,13 @@ function MainLayout() {
       // 可以在这里传入其他 prop，如 onClick, id 等
     >
       <Link to="/" style={{ marginRight: '15px', marginLeft: '2px', textDecoration: 'none'}}>
-        <House style={{  display: 'flex' }}/>
+        <House style={{  display: 'flex',width: 'var(--font-size-1)', height: 'auto' }}/>
       </Link>
       <Link to="/clients" style={{ marginRight: '15px', textDecoration: 'none' }}>
-        <Pyramid style={{  display: 'flex' }} />
+        <Pyramid style={{  display: 'flex',width: 'var(--font-size-1)', height: 'auto' }} />
       </Link>
       <Link to="/test" style={{ textDecoration: 'none',  }}>
-        <Cable style={{ display: 'flex' }} />
+        <Cable style={{ display: 'flex',width: 'var(--font-size-1)', height: 'auto' }} />
       </Link>
       <a 
         onClick={handleLogout}
@@ -47,7 +47,7 @@ function MainLayout() {
       >
         <LogOut onClick={handleLogout} style={{ width: 'var(--font-size-1)', height: 'auto' }}/>
       </a>
-      <ThemeToggle style={{ display: 'flex', border:0, backgroundColor: 'oklch(var(--color-link))' }} />
+      <ThemeToggle style={{ display: 'flex' }} />
       </SpacerLayout>
   );
   

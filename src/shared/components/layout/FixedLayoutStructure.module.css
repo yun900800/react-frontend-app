@@ -1,0 +1,61 @@
+.layout {
+  display: flex;
+  flex-direction: column;
+  /* 现在的开发中，如果只需要兼容现代浏览器，使用 100svh 就可以了，因为它简单、高效，并且是专门为此而生的。 */
+  height: 100svh;   /* 高度100%填满视口 */
+  /* 而 calc(var(--vh, 1vh) * 100) 则可以作为一种备用方案，当你需要支持更广泛的浏览器，尤其是老旧的浏览器版本时，它是一个非常可靠的解决办法。 */
+  height: calc(var(--vh, 1vh) * 100);
+}
+.header {
+    display: flex;
+    justify-content: space-between;
+    background: oklch(var(--color-background2));
+    height: 60px;
+    border-bottom: var(--border-size-2) solid var(--color-quaternary);
+    border-bottom-left-radius: var(--radius-2);
+    border-bottom-right-radius: var(--radius-2);
+}
+
+
+.footer {
+  height: 40px;   /* 固定高度 */
+  background: oklch(var(--color-background2));
+  border-top: var(--border-size-2) solid var(--color-quaternary);
+  border-top-left-radius: var(--radius-2);
+  border-top-right-radius: var(--radius-2);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: var(--font-size-0);
+}
+
+.contentContainer {
+  flex: 1;        /* 自动填充剩余高度 */
+  overflow: hidden; /* 当内容很多时不出现滚动条,控制外部的壳不出现滚动条 */
+  /* overflow-x: hidden; */
+  /* background: var(--background-color);
+  color: var(--text-dark); */
+  position: relative;
+  display: flex;
+}
+
+.content {
+    flex: 1;
+    overflow-y: auto;
+    padding-inline: var(--page-margin);
+}
+
+
+
+/* 菜单按钮样式（依然用媒体查询控制可见性） */
+@media (max-width: 768px) {
+  .header {
+    border-bottom-left-radius: var(--radius-1);
+    border-bottom-right-radius: var(--radius-1);
+  }
+  .contentContainer {
+    flex-direction: column;
+  }
+}
+
+

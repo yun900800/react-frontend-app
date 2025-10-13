@@ -33,12 +33,12 @@ export default function ThemeToggle(props) {
   if (!mounted) return null; // 🚨 SSR 时不渲染，客户端首次挂载后再显示
 
   return (
-    <button onClick={toggleTheme} className="button-primary" style={props.style}>
+    <a onClick={toggleTheme} className="button-primary" style={props.style}>
       {theme === 'light' ? (
         <Sun style={{ width: 'var(--font-size-1)', height: 'auto' }} />
       ) : (
         <Moon style={{ width: 'var(--font-size-1)', height: 'auto' }} />
       )}
-    </button>
+    </a>
   );
 }

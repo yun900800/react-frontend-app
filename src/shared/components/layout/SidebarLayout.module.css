@@ -1,0 +1,76 @@
+.layout {
+    display: flex;
+    height: 100%;
+    /* 这个布局可能嵌套在另一部布局中,它是组件元素的一部分，所以需要这是宽度为100%,否则这个元素不能撑满空间 */
+    width: 100%;
+}
+
+/* 顶层布局时使用的类 */
+.fullViewport {
+  display: flex;
+  height: 100vh;
+    /* 这个布局可能嵌套在另一部布局中,它是组件元素的一部分，所以需要这是宽度为100%,否则这个元素不能撑满空间 */
+  width: 100vw;
+}
+.sidebar {
+    width: 160px;
+    background: oklch(var(--color-background2));
+    color: oklch(var(--color-foreground));
+    padding: 1em;
+    /* 防止元素按比例收缩 */
+    min-width: 0;
+    /* 放置元素溢出 */
+    overflow: hidden;
+}
+.main {
+    flex: 1;
+    padding: 2em;
+    overflow-y: auto;
+}
+
+@media (max-width: 768px){
+    .sidebar {
+        flex: 0.5;
+        min-width: 0;
+        overflow: hidden;
+    }
+    /* 1. 主内容区域 (手机端默认全屏显示) */
+    .main {
+        width: 100%;
+        /* 手机端，因为 sidebar 是 fixed，main 需要占据全部宽度 */
+    }
+
+    /* 2. 侧边栏 (Side Menu) 的定位和隐藏 */
+    .sidebar {
+        /* 使用 fixed 定位，使其悬浮在其他内容之上 */
+        position: fixed; 
+        top: 0;
+        left: 0;
+        width: 70%; /* 菜单宽度，比如屏幕宽度的 70% */
+        height: 100vh; /* 填满整个视口高度 */
+        background-color: white; /* 侧边栏背景 */
+        box-shadow: 2px 0 5px rgba(0, 0, 0, 0.5);
+        
+        /* 默认状态: 隐藏 - 移动到自身宽度的负值，完全移出屏幕 */
+        transform: translateX(-100%); 
+        transition: transform 0.3s ease-out; /* 关键：平滑动画 */
+        z-index: 1000; /* 确保它在最上层 */
+    }
+    
+    /* 3. 侧边栏打开状态 */
+    .sidebarOpen {
+        /* 菜单打开时: 移回原位 */
+        transform: translateX(0); 
+    }
+    
+    /* 4. 遮罩层 (Backdrop) */
+    .backdrop {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100vh;
+        background-color: rgba(0, 0, 0, 0.5); /* 半透明黑色 */
+        z-index: 999; /* 略低于 sidebar */
+    }
+}

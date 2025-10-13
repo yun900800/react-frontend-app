@@ -10,6 +10,7 @@ import CreateClient from './features/client/pages/CreateClient';
 import ClientList from './features/client/pages/ClientList';
 import ProtectedRoute from './features/auth/components/ProtectedRoute';
 import ResponsiveFlowApp from './features/home/pages/ResponsiveFlowApp';
+import FixedStructureApp from './features/home/pages/FixedStructureApp';
 
 function App() {
   return (
@@ -37,8 +38,9 @@ function App() {
               </Route>
             </Route>
             <Route path="/responsive-flow" element={<ResponsiveFlowApp />} />
+            <Route path="/fixed-app" element={<FixedStructureApp />} />
           </Route>
-
+          
           {/* 3. 可选：404 Not Found 路由 */}
           <Route path="*" element={<h2>404 页面未找到</h2>} />
         </Routes>
