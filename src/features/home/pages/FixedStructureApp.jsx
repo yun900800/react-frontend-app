@@ -2,23 +2,27 @@ import React from 'react';
 import FixedLayoutStructure from '../../../shared/components/layout/FixedLayoutStructure';
 import { useSidebar, SidebarProvider } from '../../../shared/components/context/SidebarContext';
 import ConnectedSidebarLayoutSlot from '../../../shared/components/layout/ConnectedSidebarLayoutSlot';
-
+import SpacerLayout, {AutoMarginClassName} from '../../../shared/components/layout/SpacerLayout';
+import {SquareMenu,X,Code} from 'lucide-react'
 const Header = () => { 
-    const { openSidebar } = useSidebar();
+    const { openSidebar, isSidebarOpen } = useSidebar();
     // 假设这是你的汉堡包按钮，它只在移动端显示
     return (
-        <div style={{ display: 'flex', justifyContent: 'space-between' }}>
-            <span>this is the header</span>
-            
-            {/* 2. 将 onMenuClick prop 绑定到原生 DOM 元素的 onClick 事件 */}
-            {/* 当按钮被点击时，onMenuClick（即 openSidebar 函数）被调用 */}
-            <button 
+        <SpacerLayout gap='24px' >
+            <a className={`button-primary`}
+                style={{ display: 'flex', width:'36px', height:'36px', marginLeft: '16px' }}>
+                    <Code style={{ width: 'var(--font-size-1)', height: 'auto' }}/>
+            </a>
+            <a 
                 onClick={openSidebar} // **这是关键**
-                className="primary-button" 
-            >
-                ☰
-            </button>
-        </div>
+                className={`button-primary ${AutoMarginClassName}`}
+                style={{ display: 'flex', width:'36px', height:'36px' }}
+            > { isSidebarOpen ? <X style={{ width: 'var(--font-size-1)', height: 'auto' }}/> 
+                : <SquareMenu style={{ width: 'var(--font-size-1)', height: 'auto' }}/>
+            }
+                
+            </a>
+        </SpacerLayout>
     );
 };
 const FixedStructureApp = () => {
@@ -26,7 +30,44 @@ const FixedStructureApp = () => {
         <SidebarProvider> 
     <FixedLayoutStructure
     header={<Header/>}
-    sidebar={<div>this is the sidebar</div>}
+    sidebar={<div>
+        <p>this is the sidebar</p>
+        <p>this is the sidebar</p>
+        <p>this is the sidebar</p>
+        <p>this is the sidebar</p>
+        <p>this is the sidebar</p>
+        <p>this is the sidebar</p>
+        <p>this is the sidebar</p>
+        <p>this is the sidebar</p>
+        <p>this is the sidebar</p>
+        <p>this is the sidebar</p>
+        <p>this is the sidebar</p>
+        <p>this is the sidebar</p>
+        <p>this is the sidebar</p>
+        <p>this is the sidebar</p>
+        <p>this is the sidebar</p>
+        <p>this is the sidebar</p>
+        <p>this is the sidebar</p>
+        <p>this is the sidebar</p>
+        <p>this is the sidebar</p>
+        <p>this is the sidebar</p>
+        <p>this is the sidebar</p>
+        <p>this is the sidebar</p>
+        <p>this is the sidebar</p>
+        <p>this is the sidebar</p>
+        <p>this is the sidebar</p>
+        <p>this is the sidebar</p>
+        <p>this is the sidebar</p>
+        <p>this is the sidebar</p>
+        <p>this is the sidebar</p>
+        <p>this is the sidebar</p>
+        <p>this is the sidebar</p>
+        <p>this is the sidebar</p>
+        <p>this is the sidebar</p>
+        <p>this is the sidebar</p>
+        <p>this is the sidebar</p>
+        <p>this is the sidebar</p>
+        </div>}
     content={<div>
         <p>this is the content</p>
         <p>this is the content</p>
@@ -54,6 +95,8 @@ const FixedStructureApp = () => {
         </div>}
     footer={<div>this is the footer</div>}
     SidebarLayoutSlot={ConnectedSidebarLayoutSlot}
+    headerHeight='54px'
+    footerHeight='30px'
   />
   </SidebarProvider>); 
 }

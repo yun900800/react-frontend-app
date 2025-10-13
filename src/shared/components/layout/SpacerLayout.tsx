@@ -14,6 +14,7 @@ interface SpacerLayoutProps extends React.HTMLAttributes<HTMLElement> {
 const baseLayoutStyles: React.CSSProperties = {
   width: '100%',
   display: 'flex',
+  alignItems: 'center'
 };
 
 const spacerStyle: React.CSSProperties = {
