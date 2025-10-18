@@ -15,8 +15,9 @@
 .sidebar {
     width: 160px;
     background: oklch(var(--color-background2));
+    
     color: oklch(var(--color-foreground));
-    padding: 1em;
+    /* padding: 1em; */
     /* 防止元素按比例收缩 */
     min-width: 0;
     /* ⭐ 关键新增：解决 Flexbox 子元素被内容撑高的问题 ⭐ */

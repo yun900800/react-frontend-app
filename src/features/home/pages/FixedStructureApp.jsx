@@ -3,6 +3,7 @@ import FixedLayoutStructure from '../../../shared/components/layout/FixedLayoutS
 import { useSidebar, SidebarProvider } from '../../../shared/components/context/SidebarContext';
 import ConnectedSidebarLayoutSlot from '../../../shared/components/layout/ConnectedSidebarLayoutSlot';
 import SpacerLayout, {AutoMarginClassName} from '../../../shared/components/layout/SpacerLayout';
+import Breadcrumb from '../../../shared/components/sidebar/Breadcrumb';
 import {SquareMenu,X,Code} from 'lucide-react'
 const Header = () => { 
     const { openSidebar, isSidebarOpen } = useSidebar();
@@ -25,49 +26,19 @@ const Header = () => {
         </SpacerLayout>
     );
 };
+
+const breadcrumbLinks = [
+    { path: '/', label: 'home' },
+    { path: '/scene', label: 'scene' },
+    { path: '/styled', label: 'styled' },
+    
+  ];
 const FixedStructureApp = () => {
     return (
         <SidebarProvider> 
     <FixedLayoutStructure
     header={<Header/>}
-    sidebar={<div>
-        <p>this is the sidebar</p>
-        <p>this is the sidebar</p>
-        <p>this is the sidebar</p>
-        <p>this is the sidebar</p>
-        <p>this is the sidebar</p>
-        <p>this is the sidebar</p>
-        <p>this is the sidebar</p>
-        <p>this is the sidebar</p>
-        <p>this is the sidebar</p>
-        <p>this is the sidebar</p>
-        <p>this is the sidebar</p>
-        <p>this is the sidebar</p>
-        <p>this is the sidebar</p>
-        <p>this is the sidebar</p>
-        <p>this is the sidebar</p>
-        <p>this is the sidebar</p>
-        <p>this is the sidebar</p>
-        <p>this is the sidebar</p>
-        <p>this is the sidebar</p>
-        <p>this is the sidebar</p>
-        <p>this is the sidebar</p>
-        <p>this is the sidebar</p>
-        <p>this is the sidebar</p>
-        <p>this is the sidebar</p>
-        <p>this is the sidebar</p>
-        <p>this is the sidebar</p>
-        <p>this is the sidebar</p>
-        <p>this is the sidebar</p>
-        <p>this is the sidebar</p>
-        <p>this is the sidebar</p>
-        <p>this is the sidebar</p>
-        <p>this is the sidebar</p>
-        <p>this is the sidebar</p>
-        <p>this is the sidebar</p>
-        <p>this is the sidebar</p>
-        <p>this is the sidebar</p>
-        </div>}
+    sidebar={<Breadcrumb links={breadcrumbLinks} />}
     content={<div>
         <p>this is the content</p>
         <p>this is the content</p>
