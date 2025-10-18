@@ -1,0 +1,59 @@
+.bb-bookblock {
+	width: var(--bb-bookblock-width, 400px);
+	height: var(--bb-bookblock-height, 300px);
+	margin: 0 auto;
+	position: relative;
+	z-index: 100;
+	-webkit-perspective: 1300px;
+	perspective: 1300px;
+	-webkit-backface-visibility: hidden;
+	backface-visibility: hidden;
+    max-width: var(--bb-bookblock-max-width, 840px);
+}
+
+.bb-bookblock img {
+	width: 100%;
+	height: 100%;
+	/* object-fit: cover; */
+}
+
+/* 水平翻转内容区宽度翻倍，实际就是容器的大小 */
+.bb-vertical .bb-content {
+	width: 200%;
+}
+
+/* 垂直翻转高度翻倍，实际就是容器大小 */
+.bb-horizontal .bb-content {
+	height: 200%;
+}
+
+
+
+.bb-item {
+	width: 100%;
+	height: 100%;
+	position: absolute;
+	top: 0;
+	left: 0;
+	display: none;
+	background: #fff;
+}
+
+/* No JS */
+.no-js .bb-bookblock, 
+.no-js ul.bb-custom-grid li {
+	width: auto;
+	height: auto;
+}
+
+.no-js .bb-item {
+	display: block;
+	position: relative;
+}
+
+.show {
+	display: block;
+}
+.hide {
+	display: none;
+}	

@@ -1,0 +1,237 @@
+.bb-page {
+	position: absolute;
+	-webkit-transform-style: preserve-3d;
+	transform-style: preserve-3d;
+	-webkit-transition-property: -webkit-transform;
+	transition-property: transform;
+    transition: transform var(--transition-duration, 1000ms) ease-in-out;
+}
+
+.bb-page-vertical {
+	width: 50%;
+	height: 100%;
+	left: 50%;
+	-webkit-transform-origin: left center;
+	transform-origin: left center;
+}
+
+/* 垂直页面的翻转的层 */
+.bb-page-horizontal {
+	width: 100%;
+	height: 50%;
+	top: 50%;
+	-webkit-transform-origin: center top;
+	transform-origin: center top;
+}
+
+.bb-page > div,
+.bb-outer,
+.bb-content,
+.bb-inner {
+	position: absolute;
+	height: 100%;
+	width: 100%;
+	top: 0;
+	left: 0;
+	-webkit-backface-visibility: hidden;
+	backface-visibility: hidden;
+}
+
+.bb-page > div {
+	width: 100%;
+	-webkit-transform-style: preserve-3d;
+	transform-style: preserve-3d;
+}
+
+.bb-page-vertical .bb-back {
+	-webkit-transform: rotateY(-180deg);
+	transform: rotateY(-180deg);
+}
+
+.bb-page-horizontal .bb-back {
+	-webkit-transform: rotateX(-180deg);
+	transform: rotateX(-180deg);
+}
+
+/* .bb-page-vertical .bb-front .bb-content {
+	left: -100%;
+}
+
+.bb-page-horizontal .bb-front .bb-content {
+	top: -100%;
+} */
+
+.bb-page-vertical .bb-content {
+	width: 200%;
+}
+
+.bb-page-horizontal .bb-content {
+	height: 200%;
+}
+
+.bb-outer {
+	width: 100%;
+	overflow: hidden;
+	z-index: 999;
+}
+
+.bb-overlay, 
+.bb-flipoverlay {
+	background-color: rgba(0, 0, 0, 0.2);
+	position: absolute;
+	top: 0px;
+	left: 0px;
+	width: 100%;
+	height: 100%;
+	opacity: 0;
+}
+
+.bb-flipoverlay {
+	background-color: rgba(0, 0, 0, 0.2);
+}
+
+
+/* 注意，使用module css :first-child 这样的选择器无效 */
+div.bb-page-vertical:first-child,
+div.bb-page-vertical:first-child .bb-back {
+	-webkit-transform: rotateY(180deg);
+	transform: rotateY(180deg);
+}
+
+
+div.bb-page-horizontal:first-child,
+div.bb-page-horizontal:first-child .bb-back {
+	-webkit-transform: rotateX(180deg);
+	transform: rotateX(180deg);
+}
+
+/* Content display */
+.bb-content {
+	background: #fff;
+}
+
+.bb-page-vertical .bb-front .bb-content {
+	left: -100%;
+}
+
+.bb-page-horizontal .bb-front .bb-content {
+	top: -100%;
+}
+
+/* Flipping classes */
+.bb-page-vertical.bb-flip-next,
+.bb-page-vertical.bb-flip-initial {
+	-webkit-transform: rotateY(-180deg);
+	transform: rotateY(-180deg);
+}
+
+.bb-page-vertical.bb-flip-prev {
+	-webkit-transform: rotateY(0deg);
+	transform: rotateY(0deg);
+}
+
+.bb-page-horizontal.bb-flip-next,
+.bb-page-horizontal.bb-flip-initial {
+	-webkit-transform: rotateX(180deg);
+	transform: rotateX(180deg);
+}
+
+.bb-page-horizontal.bb-flip-prev {
+	-webkit-transform: rotateX(0deg);
+	transform: rotateX(0deg);
+}
+
+/* 这部分是翻书到了最后页的情况 */
+
+.bb-page-vertical.bb-flip-next-end {
+	-webkit-transform: rotateY(-15deg);
+	transform: rotateY(-15deg);
+}
+
+.bb-page-vertical.bb-flip-prev-end {
+	-webkit-transform: rotateY(-165deg);
+	transform: rotateY(-165deg);
+}
+
+.bb-page-horizontal.bb-flip-next-end {
+	-webkit-transform: rotateX(15deg);
+	transform: rotateX(15deg);
+}
+
+.bb-page-horizontal.bb-flip-prev-end {
+	-webkit-transform: rotateX(165deg);
+	transform: rotateX(165deg);
+}
+
+
+/* Overlay styles */
+.o-left-next {
+	transition: opacity var(--overlay-duration) linear var(--overlay-duration);
+}
+
+.o-left-next-finished{
+	opacity: var(--shadow-sides);
+}
+
+.o-middle-f-next {
+	transition: opacity var(--overlay-duration) linear;
+}
+
+.o-middle-f-next-finished{
+	opacity: var(--shadow-flip);
+}
+
+.o-middle-b-next {
+	transition: opacity var(--overlay-duration) linear var(--overlay-duration);
+	opacity: var(--shadow-flip);
+}
+
+.o-middle-b-next-finished{
+	opacity: 0;
+}
+
+.o-right-next {
+	transition: opacity var(--overlay-duration) linear;
+	opacity: var(--shadow-sides);
+}
+
+.o-right-next-finished{
+	opacity: 0;
+}
+
+
+/* 向前对应的类 */
+
+.o-left-prev {
+	transition: opacity var(--overlay-duration) linear;
+	opacity: var(--shadow-sides);
+}
+
+.o-left-prev-finished{
+	opacity: 0;
+}
+
+.o-middle-f-prev {
+	transition: opacity var(--overlay-duration) linear var(--overlay-duration);
+	opacity: var(--shadow-flip);
+}
+
+.o-middle-f-prev-finished{
+	opacity: 0;
+}
+
+.o-middle-b-prev {
+	transition: opacity var(--overlay-duration) linear;
+}
+
+.o-middle-b-prev-finished{
+	opacity: var(--shadow-flip);
+}
+
+.o-right-prev {
+	transition: opacity var(--overlay-duration) linear var(--overlay-duration);
+}
+
+.o-right-prev-finished{
+	opacity: var(--shadow-sides);
+}
