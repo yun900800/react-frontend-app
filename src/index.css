@@ -249,6 +249,11 @@ input.error, textarea.error {
   margin-left: auto;
 }
 
+/* 假设这是在你的全局样式文件里 */
+.no-scroll {
+    overflow: hidden; /* 禁用垂直和水平滚动 */
+}
+
 /* 字体图标 */
 @font-face {
 	font-family: 'arrows';

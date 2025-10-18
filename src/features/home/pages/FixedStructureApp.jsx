@@ -29,9 +29,9 @@ const Header = () => {
 
 const breadcrumbLinks = [
     { path: '/', label: 'home' },
-    { path: '/scene', label: 'scene' },
-    { path: '/styled', label: 'styled' },
-    
+    { path: '/responsive-layout', label: 'layout' },
+    { path: '/clients', label: 'clients' },
+
   ];
 const FixedStructureApp = () => {
     return (
