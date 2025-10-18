@@ -23,6 +23,10 @@ const userRegistrationValidators = [
 ];
 
 const { register } = authApi;
+// ❗ 与后端 Honeypot 中间件保持一致的字段名
+const HONEYPOT_FIELD_NAME = 'username_check'; 
+// ❗ 另一个可选的蜜罐字段名
+const HONEYPOT_FIELD_NAME_2 = 'confirm_email_address';
 
 const SignUpForm = ({ toggleForm }) => {
     // 假设我们有一个变量来存储当前语言，例如 'zh' 或 'en'
@@ -56,10 +60,12 @@ const SignUpForm = ({ toggleForm }) => {
 
             // 验证通过后，调用注册 API
             const response = await register(username, password, email);
-
+            console.log('注册接口响应：', response);
             if (response.error) {
-                setError(response.error.data?.message || response.error.message || "注册失败");
-                addToast('注册失败！','error');
+                let errMsg = response.error.data?.message || response.error.message || "注册失败";
+                errMsg += response.error.data?.details ? `: ${response.error.data.details}` : '';
+                setError(errMsg);
+                addToast(errMsg, 'error');
             } else {
                 addToast('注册成功！','success');
                 console.log('注册成功！');
@@ -111,6 +117,25 @@ const SignUpForm = ({ toggleForm }) => {
                         onChange={(e) => setConfirmPassword(e.target.value)}
                         required
                     />
+                    {/* 🤖 蜜罐字段实现 🤖 */}
+                    {/* 使用 CSS 隐藏整个 div，阻止显示和屏幕阅读器读取 (aria-hidden) */}
+                    <div style={{ display: 'none' }} aria-hidden="true">
+                        {/* 蜜罐字段 1 - 对应后端中间件的 HONEYPOT_FIELD_NAME */}
+                        <input 
+                            type="text" 
+                            name={HONEYPOT_FIELD_NAME} 
+                            tabIndex="-1" 
+                            autoComplete="off" 
+                        />
+                        {/* 蜜罐字段 2 - 可选，增加复杂性 */}
+                         <input 
+                            type="email" 
+                            name={HONEYPOT_FIELD_NAME_2} 
+                            tabIndex="-1" 
+                            autoComplete="off" 
+                        />
+                    </div>
+                    {/* 🤖 蜜罐字段实现结束 🤖 */}
                     {error && <p style={{ color: 'red', fontSize: '12px' }}>{error}</p>}
                     <input type="submit" value={loading ? "注册中..." : t.signUpButton} disabled={loading} />
                     <p className={styles.signup}>
