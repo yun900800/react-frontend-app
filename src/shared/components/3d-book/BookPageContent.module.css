@@ -1,0 +1,37 @@
+.bk-content {
+	position: absolute;
+	top: 30px;
+	left: 20px;
+	bottom: 20px;
+	right: 20px;
+	padding: 30px;
+	overflow: hidden;
+	background: #fff;
+	opacity: 0;
+	pointer-events: none;
+	-webkit-backface-visibility: hidden;
+	backface-visibility: hidden;
+	-webkit-transition: opacity 0.3s ease-in-out;
+	transition: opacity 0.3s ease-in-out;
+	cursor: default;
+}
+
+.bk-content-current {
+	opacity: 1;
+	pointer-events: auto;
+}
+
+.bk-content p {
+	padding: 0 0 10px;
+	-webkit-font-smoothing: antialiased;
+	color: #000;
+	font-size: 13px;
+	line-height: 20px;
+	text-align: justify;
+	-webkit-touch-callout: none;
+	-webkit-user-select: none;
+	-khtml-user-select: none;
+	-moz-user-select: none;
+	-ms-user-select: none;
+	user-select: none;
+}

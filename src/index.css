@@ -254,6 +254,20 @@ input.error, textarea.error {
     overflow: hidden; /* 禁用垂直和水平滚动 */
 }
 
+.clearfix:before,
+.clearfix:after {
+    content: " ";
+    display: table;
+}
+
+.clearfix:after {
+    clear: both;
+}
+
+.clearfix {
+    *zoom: 1;
+}
+
 /* 字体图标 */
 @font-face {
 	font-family: 'arrows';

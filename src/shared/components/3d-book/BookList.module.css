@@ -1,0 +1,21 @@
+.bk-list {
+	list-style: none;
+	position: relative;
+	overflow-x: hidden;
+}
+
+.bk-list li {
+	position: relative;
+	width: 300px;
+	float: left;
+	z-index: 1;
+	margin: 0px 50px 40px 0;
+	-webkit-perspective: 1800px;
+	perspective: 1800px;
+}
+
+.bk-list li:last-child {
+	margin-right: 0;
+}
+
+
