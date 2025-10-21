@@ -129,10 +129,12 @@
   --color-border-input-focus: oklch(var(--db-blue)); /* 聚焦时使用绿色 */
 }
 
-* {
+*, *::before, *::after {
   margin: 0;
   padding: 0;
   box-sizing: border-box;
+  margin: 0;
+  padding: 0;
 }
 
 body {

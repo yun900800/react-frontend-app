@@ -42,7 +42,7 @@ const booksData = [
     id: 3,
     title: "The Catcher in the Rye",
     author: "J.C. Salinger",
-    backCoverImage: "images/3.png", // bk-back 可能有图片
+    backCoverImage: "../../../src/assets/resources/3d-book-images/3.png", // bk-back 可能有图片
     // ... 其他书籍数据
   },
 ];

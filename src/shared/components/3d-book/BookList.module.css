@@ -1,8 +1,14 @@
 .bk-list {
 	list-style: none;
 	position: relative;
-	overflow-x: hidden;
+	
+	display: flex;
+	flex-direction: column;
+	/* flex-wrap: wrap; */
+	align-items: center;
+	justify-content: center;
 }
+
 
 .bk-list li {
 	position: relative;
@@ -12,10 +18,29 @@
 	margin: 0px 50px 40px 0;
 	-webkit-perspective: 1800px;
 	perspective: 1800px;
+
+	display: flex;
+	justify-content: center;
+	margin-top: 4rem;
 }
 
 .bk-list li:last-child {
 	margin-right: 0;
+}
+
+@media (max-width: 768px) {
+	.bk-list {
+		overflow-x: hidden;
+		align-items: center;
+	}
+
+	.bk-list li {
+		margin: 0px 0 40px 0;
+	}
+
+	.bk-list li:first-child {
+		margin-top: 60px;
+	}
 }
 
 

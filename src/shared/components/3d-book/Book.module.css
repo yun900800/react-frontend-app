@@ -225,6 +225,7 @@
 	position: relative;
 	z-index: 100;
 	cursor: pointer;
+	line-height: 1.1;
 }
 
 .bk-page nav span {
