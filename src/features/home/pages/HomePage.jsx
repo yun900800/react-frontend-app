@@ -8,6 +8,7 @@ import image2 from '../../../assets/resources/2.jpg'
 import image3 from '../../../assets/resources/3.jpg'
 import image4 from '../../../assets/resources/4.jpg'
 import image5 from '../../../assets/resources/5.jpg'
+import imageBack from '../../../assets/resources/3d-book-images/3.png'
 const pages = [
   <a href="https://www.linkedin.com/in/kai-he-a52360a9/" name="红色大象"><img src={image1} alt="image01"/></a>,
   <a href="https://www.linkedin.com/in/kai-he-a52360a9/" name="灰色大象"><img src={image2} alt="image02"/></a>,
@@ -17,6 +18,7 @@ const pages = [
   <a href="https://www.linkedin.com/in/kai-he-a52360a9/" name="紫色独角兽"><img src={'https://res.cloudinary.com/dqmqakbd6/image/upload/v1755510388/user_uploads/azh2mwf4tcifcnihwpch.jpg'} alt="image06"/></a>
   // ...更多页
 ];
+
 
 const booksData = [
   {
@@ -42,7 +44,7 @@ const booksData = [
     id: 3,
     title: "The Catcher in the Rye",
     author: "J.C. Salinger",
-    backCoverImage: "../../../src/assets/resources/3d-book-images/3.png", // bk-back 可能有图片
+    backCoverImage: imageBack,
     // ... 其他书籍数据
   },
 ];
