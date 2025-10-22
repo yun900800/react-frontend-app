@@ -1,128 +1,93 @@
-import React, {useState} from "react";
-import { BookPageContent } from "./BookPageContent.jsx";
-import styles from './Book.module.css';
-export const Book = ({ data , isOpenedGlobally, isFlippedGlobally, onOpen, onFlip }) => {
-    const [currentPageIndex, setCurrentPageIndex] = useState(0);
-    // 2. 状态映射到 CSS 类名
-    // isOpenedGlobally 对应 $book.data('opened')，它由父组件 BookList 控制，以同步其他书的状态。
-    let bookClasses = `${styles['bk-book']} ${styles[`book-${data.id}`]} ${styles['bk-bookdefault']}`;
-    if (isFlippedGlobally) {
-        // 对应 JS 中的 .addClass('bk-viewback')
-        bookClasses = bookClasses.replace(` ${styles['bk-bookdefault']}`, '') + ` ${styles['bk-viewback']}`;
-    }
+// Book.jsx
+import React, { useState } from "react";
+// 引入新的抽象组件
+import { BookDetail } from "./BookDetail"; 
+import { BookInfo } from "./BookInfo";
 
-    if (isOpenedGlobally) {
-        // 对应 JS 中的 .addClass('bk-viewinside')
-        bookClasses = bookClasses.replace(` ${styles['bk-bookdefault']}`, '') + ` ${styles['bk-viewinside']}`;
-    }
-    // 处理 "Flip" (bk-bookback) 按钮点击
-    const handleFlipClick = () => {
-        // 调用父组件的回调，处理兄弟组件的关闭逻辑
-        onFlip(data.id); 
+export const Book = ({ 
+    data, 
+    index, // New Prop for z-index
+    booksCount, // New Prop for z-index
+    isOpenedGlobally, 
+    isFlippedGlobally, 
+    onOpen, onFlip, 
+    viewMode='grid',
+    
+    // Shelf 模式的新 Prop
+    isShelfOpened, 
+    isShelfOutside, // <-- 传入的 prop，现在同时包含了打开和外部状态
+    onShelfClick, 
+    onTransitionEnd
+}) => {
+    // 1. 状态管理：控制当前翻到的页码
+    const [currentPageIndex, setCurrentPageIndex] = useState(0);
+
+    // 2. 逻辑：处理翻页导航
+    const handlePageChange = (direction) => {
+        let newIndex = currentPageIndex + direction;
+        const totalPages = data.pages ? data.pages.length : 0;
+
+        if (newIndex >= 0 && newIndex < totalPages) {
+            setCurrentPageIndex(newIndex);
+        }
     };
     
-    // 处理 "View inside" (bk-bookview) 按钮点击
+    // 3. 逻辑：处理 "View inside" 按钮点击 (包含父组件的 onOpen 逻辑)
+    // 必须保留在这里，因为它需要重置当前组件的 state (currentPageIndex)
     const handleViewClick = () => {
-        // 调用父组件的回调，处理自身的开启和兄弟组件的关闭逻辑
+        // 调用父组件的回调，处理自身的开启/关闭和兄弟组件的关闭逻辑
         onOpen(data.id, isOpenedGlobally); 
         
-        // 如果是关闭操作，重置当前页
+        // 如果是执行关闭操作，重置当前页到第一页
         if (isOpenedGlobally) {
             setCurrentPageIndex(0);
         }
     };
-    // 处理翻页导航
-    const handlePageChange = (direction) => {
-        let newIndex = currentPageIndex + direction;
-        const totalPages = data.pages.length;
 
-        if (newIndex >= 0 && newIndex < totalPages) {
-        setCurrentPageIndex(newIndex);
+    // 2. Z-Index 计算 (来自 books2.js)
+    let stackVal = 0;
+    if (viewMode === 'shelf') {
+        if (index < booksCount / 2) {
+            stackVal = index;
+        } else {
+            stackVal = booksCount - 1 - index;
         }
-    };
-    // if (isInsideView) {
-    //     if (isFlipped) {
-    //         bookClasses = bookClasses.replace(` ${styles['bk-viewback']}`, '');
-    //     }
-    //     // 假设内部视图的类名是 bk-view-inside
-    //     bookClasses += ` ${styles['bk-viewinside']}`;
-    // }
-    const pages = data.pages || [];
-    const totalPages = pages.length;
-    return (
-        <li>
-            <div className={bookClasses}>
-                
-                {/* 封面 bk-front */}
-                <div className={styles['bk-front']}>
-                    <div className={styles['bk-cover-back']}>{data.coverBackText || '背面内容'}</div>
-                    <div className={styles['bk-cover']}>
-                        <h2>
-                        <span>{data.author}</span>
-                        <span>{data.title}</span>
-                        </h2>
-                    </div>
-                </div>
-                
-                {/* 书页 bk-page */}
-                <div className={styles['bk-page']}>
-                    {pages.map((page, index) => (
-                        <BookPageContent 
-                            key={page.id} 
-                            content={page.content} 
-                            isCurrent={index === currentPageIndex} // 默认第一个页面是 current
-                        />
-                    ))}
-                    {/* 翻页导航 (对应 JS 中的 $page.append(<nav>...)) */}
-                    {totalPages > 1 && isOpenedGlobally && (
-                        <nav>
-                            <span 
-                                className={styles['bk-page-prev']}
-                                onClick={() => handlePageChange(-1)}
-                                style={{ visibility: currentPageIndex > 0 ? 'visible' : 'hidden' }}
-                            >
-                                &lt;
-                            </span>
-                            <span 
-                                className={styles['bk-page-next']}
-                                onClick={() => handlePageChange(1)}
-                                style={{ visibility: currentPageIndex < totalPages - 1 ? 'visible' : 'hidden' }}
-                            >
-                                &gt;
-                            </span>
-                        </nav>
-                    )}
-                </div>
-                
-                {/* 书背 bk-back */}
-                <div className={styles['bk-back']}>
-                    {data.backCoverImage && <img src={data.backCoverImage} alt="cat"/>}
-                    <p>{data.backCoverSummary}</p>
-                </div>
+    }
+    // 最终 Z-Index：打开时最大 (booksCount)，否则是 stackVal
+    const finalZIndex = isShelfOpened ? booksCount : stackVal;
 
-                {/* 侧面 bk-right, bk-left, bk-top, bk-bottom (可进一步抽象或保留) */}
-                <div className={styles['bk-right']}></div>
-                <div className={styles['bk-left']}>
-                    <h2><span>{data.author}</span><span>{data.title}</span></h2>
-                </div>
-                <div className={styles['bk-top']}></div>
-                <div className={styles['bk-bottom']}></div>
-            </div>
+    // 3. Click Handler (Shelf 模式点击整个 <li>，Grid 模式点击按钮)
+    const clickHandler = viewMode === 'shelf' 
+    ? () => onShelfClick(data.id) 
+    : undefined;
+
+    return (
+        <li style={{ zIndex: finalZIndex }} onClick={clickHandler}>
+            {/* 负责 3D 渲染和书页内容 */}
+            <BookDetail 
+                data={data}
+                // 动态选择状态：Shelf 模式使用 isShelfOpened/isShelfOutside，Grid 模式使用 isOpenedGlobally
+                // 关键修改：传递 isOutside 和 isOpened
+                isOpened={isShelfOpened}        // 控制 bk-viewinside
+                isOutside={isShelfOutside}
+                
+                isFlipped={isFlippedGlobally}
+                currentPageIndex={currentPageIndex}
+                handlePageChange={handlePageChange}
+                viewMode={viewMode}
+                
+                // 传递动画事件回调 (仅 Shelf 模式需要)
+                onTransitionEnd={viewMode === 'shelf' ? onTransitionEnd : undefined}
+            />
             
-            {/* 按钮和信息区 bk-info */}
-            <div className={styles['bk-info']}>
-                <button className={styles['bk-bookback']} onClick={handleFlipClick}>
-                Flip
-                </button>
-                <button className={styles['bk-bookview']} onClick={handleViewClick}>
-                View inside
-                </button>
-                <h3>
-                <span>{data.author}</span>
-                <span>{data.title}</span>
-                </h3>
-                <p>{data.infoSummary}</p>
-            </div>
+            {/* 负责按钮和信息展示 */}
+            { viewMode === 'grid' && <BookInfo 
+                data={data}
+                onFlip={onFlip}         // 传入父组件的 onFlip 回调
+                onOpen={handleViewClick} // 传入包含重置逻辑的 handleViewClick
+                isOpenedGlobally={isOpenedGlobally}
+            /> }
+            
         </li>
     );
 };

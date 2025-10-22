@@ -6,7 +6,7 @@ import StickyHeaderLayout from './StickyHeaderLayout';
 import SpacerLayout, {AutoMarginClassName} from './SpacerLayout.tsx';
 import * as styles from './MainLayout.module.css'; // 引入样式文件
 import ThemeToggle from '../ThemeToggle.jsx';
-import { LogOut, Pyramid,House,Cable,Columns3Cog, Bot } from 'lucide-react';
+import { LogOut, Pyramid,House,Cable,Columns3Cog, Bot, Book } from 'lucide-react';
 
 function MainLayout() {
   // 引入 useNavigate Hook 用于编程导航
@@ -45,6 +45,9 @@ function MainLayout() {
       </Link>
       <Link to="/ai" style={{ textDecoration: 'none',  }}>
         <Bot  style={{ display: 'flex',width: 'var(--font-size-1)', height: 'auto' }} />
+      </Link>
+      <Link to="/shelf" style={{ textDecoration: 'none',  }}>
+        <Book  style={{ display: 'flex',width: 'var(--font-size-1)', height: 'auto' }} />
       </Link>
       <a 
         onClick={handleLogout}

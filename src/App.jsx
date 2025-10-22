@@ -12,6 +12,7 @@ import ClientList from './features/client/pages/ClientList';
 import ProtectedRoute from './features/auth/components/ProtectedRoute';
 import ResponsiveFlowApp from './features/home/pages/ResponsiveFlowApp';
 import FixedStructureApp from './features/home/pages/FixedStructureApp';
+import { FullPageApp } from './features/home/pages/FullPageApp';
 
 function App() {
   return (
@@ -41,6 +42,7 @@ function App() {
             </Route>
             <Route path="/responsive-layout" element={<ResponsiveFlowApp />} />
             <Route path="/fixed-app" element={<FixedStructureApp />} />
+            <Route path="/shelf" element={<FullPageApp />} />
           </Route>
           
           {/* 3. 可选：404 Not Found 路由 */}
