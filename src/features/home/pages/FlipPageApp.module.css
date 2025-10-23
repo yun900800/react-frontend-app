@@ -1,0 +1,100 @@
+.full-page {
+  width: 100%;
+  min-height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background: radial-gradient(circle at center, #e5e9f0, #cfd6e0);
+}
+
+.full-main {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.container {
+  text-align: center;
+  margin-top: 20px;
+  padding: 10px;
+  width: 100%;
+  max-width: 1200px;
+  overflow: hidden;
+}
+
+.demo-book {
+  margin: 0 auto;
+  box-shadow: 0 8px 25px rgba(0, 0, 0, 0.2);
+}
+
+.page {
+  position: relative;
+  background: #fff;
+  box-shadow: 0 0 6px rgba(0, 0, 0, 0.2);
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+}
+
+.page-cover {
+  background: linear-gradient(120deg, #ececec, #dcdcdc);
+  border: 1px solid #bbb;
+  font-weight: bold;
+}
+
+.page-content {
+  padding: 24px;
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+}
+
+.page-header {
+  font-size: 1.4em;
+  margin-bottom: 10px;
+  text-align: center;
+}
+
+.page-image {
+  flex: 1;
+  background: #eee;
+  border: 1px dashed #ccc;
+  margin: 12px 0;
+}
+
+.page-text {
+  flex: 2;
+  font-size: 1em;
+  line-height: 1.5em;
+  text-align: justify;
+}
+
+.page-footer {
+  text-align: right;
+  font-size: 0.9em;
+  color: #777;
+}
+
+.controls {
+  margin-top: 12px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 12px;
+}
+
+.controls button {
+  background: #5b6ee1;
+  border: none;
+  color: white;
+  padding: 6px 14px;
+  border-radius: 6px;
+  cursor: pointer;
+  font-size: 14px;
+  transition: background 0.2s;
+}
+
+.controls button:hover {
+  background: #4254d4;
+}

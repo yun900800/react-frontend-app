@@ -13,6 +13,7 @@ import ProtectedRoute from './features/auth/components/ProtectedRoute';
 import ResponsiveFlowApp from './features/home/pages/ResponsiveFlowApp';
 import FixedStructureApp from './features/home/pages/FixedStructureApp';
 import { FullPageApp } from './features/home/pages/FullPageApp';
+import { FlipPageApp } from './features/home/pages/FlipPageApp';
 
 function App() {
   return (
@@ -43,6 +44,7 @@ function App() {
             <Route path="/responsive-layout" element={<ResponsiveFlowApp />} />
             <Route path="/fixed-app" element={<FixedStructureApp />} />
             <Route path="/shelf" element={<FullPageApp />} />
+            <Route path="/flipbook" element={<FlipPageApp />} />
           </Route>
           
           {/* 3. 可选：404 Not Found 路由 */}
