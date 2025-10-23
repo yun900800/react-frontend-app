@@ -14,10 +14,13 @@ import ResponsiveFlowApp from './features/home/pages/ResponsiveFlowApp';
 import FixedStructureApp from './features/home/pages/FixedStructureApp';
 import { FullPageApp } from './features/home/pages/FullPageApp';
 import { FlipPageApp } from './features/home/pages/FlipPageApp';
+import GlobalBackButton from './shared/components/GlobalBackButton.jsx';
+import {RouteHistoryProvider} from './shared/components/context/RouteHistoryProvider.jsx';
 
 function App() {
   return (
     <Router>
+        <RouteHistoryProvider>
         <Routes>
           {/* 1. 独立的登录路由：它不会有导航栏 */}
           <Route path="/login" element={<LoginPage />} />
@@ -48,8 +51,10 @@ function App() {
           </Route>
           
           {/* 3. 可选：404 Not Found 路由 */}
-          <Route path="*" element={<h2>404 页面未找到</h2>} />
+          <Route path="*" element={<h2>404 页面未找到</h2>} />    
         </Routes>
+        <GlobalBackButton />
+        </RouteHistoryProvider>
     </Router>
   );
 }

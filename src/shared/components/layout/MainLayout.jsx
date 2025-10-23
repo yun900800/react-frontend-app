@@ -28,13 +28,13 @@ function MainLayout() {
   // 1. 定义头部内容组件 (Header Content)
   const headerContent = (
       <SpacerLayout 
-      gap="24px"
+      gap="12px"
       // 可以在这里传入其他 prop，如 onClick, id 等
     >
-      <Link to="/" style={{ marginRight: '15px', marginLeft: '2px', textDecoration: 'none'}}>
+      <Link to="/" style={{ marginLeft: '2px', textDecoration: 'none'}}>
         <House style={{  display: 'flex',width: 'var(--font-size-1)', height: 'auto' }}/>
       </Link>
-      <Link to="/clients" style={{ marginRight: '15px', textDecoration: 'none' }}>
+      <Link to="/clients" style={{ textDecoration: 'none' }}>
         <Pyramid style={{  display: 'flex',width: 'var(--font-size-1)', height: 'auto' }} />
       </Link>
       <Link to="/test" style={{ textDecoration: 'none',  }}>
