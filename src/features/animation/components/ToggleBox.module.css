@@ -1,0 +1,19 @@
+/* 基础样式 */
+.box {
+    width: 100px;
+    height: 100px;
+    background-color: steelblue;
+    margin-top: 20px;
+    
+    /* 动画的关键：指定要过渡的属性及其持续时间 */
+    transition: transform 0.5s ease-in-out, background-color 0.5s;
+    
+    /* 初始位置 */
+    transform: translateX(0);
+}
+
+/* 目标状态的样式 */
+.box.move {
+    background-color: tomato; /* 颜色也一起过渡 */
+    transform: translateX(200px); /* 移动到右边 200px */
+}

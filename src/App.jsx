@@ -16,6 +16,7 @@ import { FullPageApp } from './features/home/pages/FullPageApp';
 import { FlipPageApp } from './features/home/pages/FlipPageApp';
 import GlobalBackButton from './shared/components/GlobalBackButton.jsx';
 import {RouteHistoryProvider} from './shared/components/context/RouteHistoryProvider.jsx';
+import AnimationPage from './features/animation/pages/AnimationPage.jsx';
 
 function App() {
   return (
@@ -48,6 +49,7 @@ function App() {
             <Route path="/fixed-app" element={<FixedStructureApp />} />
             <Route path="/shelf" element={<FullPageApp />} />
             <Route path="/flipbook" element={<FlipPageApp />} />
+            <Route path="/animation" element={<AnimationPage />} />
           </Route>
           
           {/* 3. 可选：404 Not Found 路由 */}

@@ -1,0 +1,55 @@
+/* StaggeredList.module.css */
+
+/* --- 列表容器和基础样式 --- */
+
+.list-container {
+    padding: 20px;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    margin-top: 20px;
+    background-color: #f9f9f9;
+}
+
+.item {
+    padding: 10px 15px;
+    margin-bottom: 8px;
+    background-color: #fff;
+    border-radius: 4px;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
+    
+    /* 设置基础的过渡属性，动画由 RTG 类名触发 */
+    transition-property: opacity, transform;
+    transition-duration: 300ms;
+    transition-timing-function: cubic-bezier(0.25, 0.46, 0.45, 0.94); /* 优雅的缓动函数 */
+}
+
+
+/* --- 关键：RTG 动画类定义 --- */
+
+/* 1. 进入前的初始状态：隐藏且位于下方 */
+.fly-enter {
+    opacity: 0;
+    transform: translateY(20px); /* 位于底部 20px 处 */
+}
+
+/* 2. 进入过程中的目标状态：恢复可见并回到原位 */
+.fly-enter-active {
+    opacity: 1;
+    transform: translateY(0);
+    /* 注意：这里我们只定义基础过渡，级联延迟在 React 中动态添加 */
+}
+
+
+/* 3. 退出前的初始状态：正常可见，准备离开 */
+.fly-exit {
+    opacity: 1;
+    transform: translateY(0);
+}
+
+/* 4. 退出过程中的目标状态：完全透明并向底部滑出 */
+.fly-exit-active {
+    opacity: 0;
+    transform: translateY(20px);
+    /* 退出时我们通常希望列表快速消失，可以不加延迟 */
+    transition-duration: 200ms; 
+}

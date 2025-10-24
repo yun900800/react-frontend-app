@@ -1,0 +1,84 @@
+/* 容器基础样式 - 增加 position: relative 用于绝对定位 */
+.menu-button {
+    width: 60px;
+    height: 60px;
+    display: flex;
+    /* 移除 column 和 space-around，因为现在用绝对定位 */
+    /* flex-direction: column; */
+    /* justify-content: space-around; */
+    align-items: center;
+    justify-content: center; /* 用于水平和垂直居中（如果不用绝对定位）*/
+    cursor: pointer;
+    background-color: #eee;
+    padding: 0; /* 移除 padding，用线条位移来创建间距 */
+    border-radius: 5px;
+    position: relative; /* 关键：为子元素的绝对定位提供参考 */
+}
+
+/* 所有线条的默认样式 (初始状态) */
+.line {
+    position: absolute; /* 关键：让三条线堆叠在一起 */
+    width: 80%; /* 调整宽度，使其居中 */
+    height: 6px;
+    background-color: #333;
+    border-radius: 3px;
+    
+    /* 关键：定义所有可变属性的过渡效果 */
+    transition: 
+        transform 0.4s ease-in-out, 
+        opacity 0.4s ease-in-out,   
+        background-color 0.4s,
+        width 0.4s, height 0.4s; 
+}
+
+/* 初始状态：将线条从中心移到汉堡包的位置 */
+/* 假设我们希望线条间距是 10px，线条高 6px */
+/* line-1 向上移动 16px (10px 间距 + 6px 间距的中心点) */
+.line-1 {
+    transform: translateY(-13px); /* 向上移动 13px */
+}
+/* line-2 保持在中心 (translateY(0)) */
+.line-2 {
+    transform: translateY(0);
+}
+/* line-3 向下移动 13px */
+.line-3 {
+    transform: translateY(13px);
+}
+
+
+/* ================== 状态 1: 展开 (is-open) - 完美居中 X 形 ================== */
+
+.menu-button.is-open .line-1 {
+    /* 关键：先回到中心 (translateY(0))，然后旋转 */
+    transform: translateY(0) rotate(45deg); 
+}
+
+.menu-button.is-open .line-2 {
+    opacity: 0; /* 中间线条隐藏 */
+}
+
+.menu-button.is-open .line-3 {
+    /* 关键：先回到中心 (translateY(0))，然后旋转 */
+    transform: translateY(0) rotate(-45deg); 
+}
+
+/* ================== 状态 2: 警告 (is-warning) - 再次修正对齐 ================== */
+
+.menu-button.is-warning .line {
+    background-color: orange;
+}
+
+.menu-button.is-warning .line-1 {
+    /* 感叹号的顶部，向下微移一点，同时缩短宽度 (默认在中心) */
+    transform: translateY(-5px) scaleY(4) scaleX(0.1); 
+}
+
+.menu-button.is-warning .line-2 {
+    opacity: 0;
+}
+
+.menu-button.is-warning .line-3 {
+    /* 感叹号的底部点，向下移动到正确位置，并变成小点 */
+    transform: translateY(20px) scaleX(0.1);
+}

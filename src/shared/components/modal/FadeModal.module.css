@@ -1,0 +1,50 @@
+/* FadeModal.module.css */
+
+/* 1. 基础样式：用于 Modal 的定位和背景 */
+.modal {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    background: rgba(0, 0, 0, 0.5);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 1000;
+}
+
+.content {
+    background: white;
+    padding: 30px;
+    border-radius: 8px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+}
+
+
+/* 2. 进入/出现 动画的 CSS 定义 */
+
+/* 2A. 进入前的初始状态：完全透明 */
+.fade-enter {
+    opacity: 0;
+}
+
+/* 2B. 进入过程中的目标状态：平滑过渡到完全不透明 */
+.fade-enter-active {
+    opacity: 1;
+    transition: opacity 300ms ease-out; /* 定义动画属性和时长 */
+}
+
+
+/* 3. 退出/消失 动画的 CSS 定义 */
+
+/* 3A. 退出前的初始状态：完全不透明 (通常不定义，因为它是上一个状态的结束) */
+.fade-exit {
+    opacity: 1;
+}
+
+/* 3B. 退出过程中的目标状态：平滑过渡到完全透明 */
+.fade-exit-active {
+    opacity: 0;
+    transition: opacity 300ms ease-in; /* 定义动画属性和时长 */
+}
