@@ -64,7 +64,7 @@ export function NotificationTransition() {
     });
 
     return (
-        <div style={{ padding: '20px' }}>
+        <div style={{ padding: '20px' , overflowX: 'hidden' }}>
             <h2>UseTransition 示例：通知卡片列表增删 (纯 JS)</h2>
             <div style={{ marginBottom: '20px' }}>
                 <button onClick={() => addNotification('success', `新通知 ${notificationId + 1} 已成功添加!`)}>

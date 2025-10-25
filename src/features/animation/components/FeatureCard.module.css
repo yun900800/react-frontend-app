@@ -26,12 +26,26 @@
     box-shadow: 0 10px 30px rgba(0, 0, 0, 0.05);
     height: 250px;
     will-change: opacity, transform; /* 性能优化 */
+    
 }
 
 .card h3 {
     color: #007bff;
     margin-bottom: 10px;
+    
 }
 .card p {
     color: #666;
+}
+
+@media (max-width: 768px) {
+  .card h3 {
+    padding: 1px;
+    font-size: 12px;
+  }
+
+  .card p {
+    padding: 1px;
+    font-size: 10px;
+  }
 }

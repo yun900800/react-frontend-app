@@ -10,10 +10,12 @@ import { DraggableStack, SimpleUseSpringExample } from "../components/DraggableS
 import { NewsTickerInfinite } from "../components/NewsTicker";
 import { FeatureCardsTrail } from "../components/FeatureCardsTrail";
 import { NotificationTransition } from "../components/NotificationTransition";
+import { LoadingSequence } from "../components/use-chain/LoadingSequence";
 
 const AnimationPage = () => {
     return (
         <ResponsiveFlow>
+            <LoadingSequence />
             <FeatureCardsTrail />
             <NotificationTransition />
             <ToggleBox />
