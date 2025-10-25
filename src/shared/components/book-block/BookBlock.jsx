@@ -29,9 +29,9 @@ export function BookBlock({ pages, orientation='vertical', direction='ltr',
       if (Math.abs(delta) < threshold) return;
 
       if (delta < 0) {
-        _navigate('next');
+        navigate('next');
       } else {
-        _navigate('prev');
+        navigate('prev');
       }
     };
     const itemsCount = pages.length;
@@ -84,30 +84,74 @@ export function BookBlock({ pages, orientation='vertical', direction='ltr',
         }
     };
 
-    const _navigate = (dir,page) =>{
-        if (isAnimating) return;
-        // 1. 计算目标页码
-        let targetPage = calculateTargetPage(dir, itemsCount, current, direction);
-        if (page !== undefined) {
-            targetPage = page;
-        }
-        // 2. 检查是否需要翻页（目标页与当前页不同）
-        if (targetPage !== current) {
+    // const _navigate = (dir,page) =>{
+    //     if (isAnimating) return;
+    //     // 1. 计算目标页码
+    //     let targetPage = calculateTargetPage(dir, itemsCount, current, direction);
+    //     if (page !== undefined) {
+    //         targetPage = page;
+    //     }
+    //     // 2. 检查是否需要翻页（目标页与当前页不同）
+    //     if (targetPage !== current) {
             
-            // 3. 存储目标页码并启动动画
-            targetPageRef.current = targetPage; // 存储目标页码
-            setIsAnimating(true);
-            setFlipDirection(dir);  
-        } else {
-            // 如果目标页与当前页相同（即在边界处点击 Next/Prev）
-            // 仍然触发边界动画（较短的抖动效果）
-            const isBoundary = (dir === 'next' && current === itemsCount - 1) || (dir === 'prev' && current === 0);
-            if (isBoundary) {
-                targetPageRef.current = targetPage; // 即使没变，也存储当前页
-                setIsAnimating(true);
-                setFlipDirection(dir); 
+    //         // 3. 存储目标页码并启动动画
+    //         targetPageRef.current = targetPage; // 存储目标页码
+    //         setIsAnimating(true);
+    //         setFlipDirection(dir);  
+    //     } else {
+    //         // 如果目标页与当前页相同（即在边界处点击 Next/Prev）
+    //         // 仍然触发边界动画（较短的抖动效果）
+    //         const isBoundary = (dir === 'next' && current === itemsCount - 1) || (dir === 'prev' && current === 0);
+    //         if (isBoundary) {
+    //             targetPageRef.current = targetPage; // 即使没变，也存储当前页
+    //             setIsAnimating(true);
+    //             setFlipDirection(dir); 
+    //         }
+    //     } 
+    // }
+
+    const navigate = (dir, page) => {
+        if (isAnimating) return;
+
+        // 1. 计算目标页码 (已考虑 LTR/RTL 影响)
+        let targetPage = calculateTargetPage(dir, itemsCount, current, direction);
+
+        // 【指定页码跳转逻辑】: 允许 page 参数覆盖计算结果
+        const isDirectJump = page !== undefined;
+        if (isDirectJump) {
+            // 确保页码在合法范围内
+            targetPage = Math.min(itemsCount - 1, Math.max(0, page));
+            // 重置 dir，因为 direct jump 的动画方向需要重新计算
+            dir = 'jump'; 
+        }
+        
+        // 2. 确定翻页动画的方向 (flipDirection)
+        let effectiveFlipDirection;
+
+        if (isDirectJump || dir === 'first' || dir === 'last') {
+            // 对于 'first', 'last', 或 任意页跳转，根据页码差值决定动画方向
+            if (targetPage > current) {
+                effectiveFlipDirection = 'next'; // 目标在后，向后翻
+            } else if (targetPage < current) {
+                effectiveFlipDirection = 'prev'; // 目标在前，向前翻
+            } else {
+                // 目标页 == 当前页 (边界点击或停留在当前页)
+                effectiveFlipDirection = dir === 'last' || dir === 'next' ? 'next' : 'prev'; 
             }
-        } 
+        } else {
+            // 对于 'next' / 'prev'，动画方向与导航请求一致
+            effectiveFlipDirection = dir;
+        }
+
+        // 3. 执行动画
+        const isActuallyFlipping = targetPage !== current;
+        const isBoundaryClick = !isActuallyFlipping && (dir === 'next' || dir === 'prev' || dir === 'first' || dir === 'last');
+        
+        if (isActuallyFlipping || isBoundaryClick) {
+            targetPageRef.current = targetPage;
+            setIsAnimating(true);
+            setFlipDirection(effectiveFlipDirection);
+        }
     }
     return (
         <>
@@ -120,7 +164,7 @@ export function BookBlock({ pages, orientation='vertical', direction='ltr',
             '--bb-bookblock-width': width,
             '--bb-bookblock-height': height,
             '--bb-bookblock-max-width': maxWidth,
-            maxWidth: width + 'px',
+            maxWidth: maxWidth,
             aspectRatio: `${width / height}`,
           }}
           >
@@ -152,16 +196,16 @@ export function BookBlock({ pages, orientation='vertical', direction='ltr',
         
         <nav className={navStyles.nav}>
             <a id="bb-nav-first" href="#" className="bb-custom-icon bb-custom-icon-first" onClick={()=>{
-                _navigate('prev',0)
+                navigate('first')
             }}>First page</a>
             <a id="bb-nav-prev" href="#" className="bb-custom-icon bb-custom-icon-arrow-left" onClick={()=>{
-                _navigate('prev')
+                navigate('prev')
             }}>Previous</a>
             <a id="bb-nav-next" href="#" className="bb-custom-icon bb-custom-icon-arrow-right"onClick={()=>{
-                _navigate('next')
+                navigate('next')
             }}>Next</a>
             <a id="bb-nav-last" href="#" className="bb-custom-icon bb-custom-icon-last" onClick={()=>{
-                _navigate('next',itemsCount - 1)
+                navigate('last')
             }}>Last page</a>
         </nav>
         </>

@@ -1,0 +1,37 @@
+/* FeatureCard.module.css */
+
+.section {
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    background: #f0f7ff; /* 浅蓝色背景 */
+    padding: 50px 0;
+}
+
+.grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr); /* 三列布局 */
+    gap: 30px;
+    max-width: 1000px;
+    width: 90%;
+}
+
+.card {
+    /* 基础卡片样式 */
+    padding: 30px;
+    background: white;
+    border-radius: 12px;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.05);
+    height: 250px;
+    will-change: opacity, transform; /* 性能优化 */
+}
+
+.card h3 {
+    color: #007bff;
+    margin-bottom: 10px;
+}
+.card p {
+    color: #666;
+}

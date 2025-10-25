@@ -1,0 +1,42 @@
+/* NotificationList.module.css */
+
+.container {
+    padding: 20px;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end; /* 通知堆叠在右侧 */
+    position: relative;
+    width: 400px;
+    min-height: 400px; 
+    margin-left: auto; /* 将容器推到右侧 */
+    background: #f8f8f8;
+    border-radius: 8px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.05);
+}
+
+.notification {
+    width: 300px;
+    padding: 15px;
+    background: white;
+    border-radius: 8px;
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+    margin-bottom: 10px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    position: relative; /* 关键：确保 animated.div 的 transform 正确工作 */
+    /* 由于 useTransition 决定了定位，这里的 position: relative 是为了内容布局 */
+}
+
+.closeButton {
+    background: none;
+    border: none;
+    color: #999;
+    font-size: 1.2em;
+    cursor: pointer;
+    transition: color 0.1s;
+}
+
+.closeButton:hover {
+    color: #333;
+}

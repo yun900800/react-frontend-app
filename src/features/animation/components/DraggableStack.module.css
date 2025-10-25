@@ -1,0 +1,33 @@
+/* DraggableStack.module.css */
+
+.container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 80vh; /* 确保有足够空间 */
+    background: linear-gradient(135deg, #f0f8ff, #e6f3ff);
+    overflow: hidden; /* 防止拖拽出界时的滚动条 */
+    position: relative;
+    width: 100%;
+}
+
+.item-wrapper {
+    position: absolute; /* 绝对定位，方便叠加和拖拽 */
+    will-change: transform, opacity;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border-radius: 10px;
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1), 0 15px 35px rgba(0, 0, 0, 0.05);
+    background: white;
+    cursor: grab; /* 拖拽手势 */
+    user-select: none;
+    touch-action: none; /* 禁用移动端默认滚动行为 */
+}
+
+.item-wrapper h2 {
+    font-family: 'Arial', sans-serif;
+    color: #333;
+    font-size: 2em;
+    font-weight: bold;
+}

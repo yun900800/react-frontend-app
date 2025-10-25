@@ -51,7 +51,7 @@ const booksData = [
 function HomePage() {
   return (
     <div style={{ padding: '20px', border: '1px solid #ddd', borderRadius: '5px' }}>
-      <BookBlock pages={pages} width={'100%'} height={'240px'} maxWidth='320px'/> 
+      <BookBlock pages={pages} width={'90%'} height={'200px'} maxWidth={'320px'}/>  
       <BookList books={booksData} />
     </div>
   );

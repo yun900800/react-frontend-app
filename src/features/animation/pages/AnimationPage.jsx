@@ -6,9 +6,16 @@ import SequentialButton, { SequentialButtonEvent, SequentialButtonKeyframes} fro
 import { ModalController } from "../components/ModalController";
 import { StaggeredList } from "../components/StaggeredList";
 import { ExpandedList } from "../components/ExpandedList";
+import { DraggableStack, SimpleUseSpringExample } from "../components/DraggableStack";
+import { NewsTickerInfinite } from "../components/NewsTicker";
+import { FeatureCardsTrail } from "../components/FeatureCardsTrail";
+import { NotificationTransition } from "../components/NotificationTransition";
+
 const AnimationPage = () => {
     return (
         <ResponsiveFlow>
+            <FeatureCardsTrail />
+            <NotificationTransition />
             <ToggleBox />
             <MultiStateButton />
             <SequentialButton />
@@ -17,6 +24,10 @@ const AnimationPage = () => {
             <ModalController />
             <StaggeredList />
             <ExpandedList />
+            <DraggableStack />
+            <SimpleUseSpringExample />
+            <NewsTickerInfinite />
+            
         </ResponsiveFlow>
     );
 };

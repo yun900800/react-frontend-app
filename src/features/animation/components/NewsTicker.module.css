@@ -1,0 +1,36 @@
+/* NewsTicker.module.css */
+
+.tickerContainer {
+    width: 300px;
+    height: 60px; /* 窗口高度，只显示一条新闻 */
+    overflow: hidden; /* 关键：隐藏超出窗口的内容 */
+    border: 1px solid #ddd;
+    border-radius: 6px;
+    background-color: #f9f9f9;
+    position: relative;
+    padding: 0 10px; 
+}
+
+.contentWrapper {
+    /* 所有的动画都施加在这个 wrapper 上，实现垂直位移 */
+    position: absolute;
+    width: 100%;
+    /* 不需要高度，让内容自然撑开 */
+}
+
+.newsItem {
+    height: 60px; /* 每条新闻的高度与窗口高度一致 */
+    display: flex;
+    align-items: center;
+    font-size: 14px;
+    color: #333;
+    cursor: pointer;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    padding-left: 10px;
+}
+
+.newsItem:hover {
+    background-color: #e8e8e8;
+}

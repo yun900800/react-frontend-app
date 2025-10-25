@@ -17,6 +17,7 @@ import { FlipPageApp } from './features/home/pages/FlipPageApp';
 import GlobalBackButton from './shared/components/GlobalBackButton.jsx';
 import {RouteHistoryProvider} from './shared/components/context/RouteHistoryProvider.jsx';
 import AnimationPage from './features/animation/pages/AnimationPage.jsx';
+import CalendarPage from './features/home/pages/CalendarPage.jsx';
 
 function App() {
   return (
@@ -32,7 +33,7 @@ function App() {
               {/* 默认首页，使用 index 属性 */}
               <Route index element={<HomePage />} />
               <Route path="ai" element={<AiPages />} /> 
-              
+              <Route path="calendar" element={<CalendarPage />} />
               {/* 其他需要布局的页面 */}
               <Route path="test" element={<TestComponent />} />
               <Route path="clients" element={<ClientPages />}>
