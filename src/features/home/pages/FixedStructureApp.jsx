@@ -32,6 +32,7 @@ const breadcrumbLinks = [
     { path: '/responsive-layout', label: 'layout' },
     { path: '/clients', label: 'clients' },
     { path: '/flipbook', label: 'flipbook' },
+    { path: '/page-book', label: 'pagebook' },
   ];
 const FixedStructureApp = () => {
     return (

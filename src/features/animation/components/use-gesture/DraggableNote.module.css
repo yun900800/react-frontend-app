@@ -1,0 +1,50 @@
+.container {
+  width: 100vw;
+  height: 100vh;
+  background: repeating-linear-gradient(
+    45deg,
+    #f5f7fa,
+    #f5f7fa 10px,
+    #e4ebf0 10px,
+    #e4ebf0 20px
+  );
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  overflow: hidden;
+  touch-action: none;
+}
+
+.note {
+  width: 240px;
+  height: 240px;
+  background: #fffbe7;
+  border: 1px solid #f0e6b6;
+  border-radius: 12px;
+  box-shadow: 0 12px 20px rgba(0, 0, 0, 0.2);
+  padding: 20px;
+  cursor: grab;
+  user-select: none;
+  will-change: transform;
+  transform-style: preserve-3d;
+  font-family: "Poppins", sans-serif;
+  text-align: center;
+  transition: box-shadow 0.25s ease;
+}
+
+.note:active {
+  cursor: grabbing;
+  box-shadow: 0 16px 30px rgba(0, 0, 0, 0.3);
+}
+
+.title {
+  margin-bottom: 10px;
+  color: #444;
+  font-size: 1.2rem;
+}
+
+.text {
+  color: #666;
+  font-size: 1rem;
+  line-height: 1.5;
+}

@@ -1,17 +1,23 @@
 import React, {useState,useEffect} from "react";
 import styles from './FlipPage.module.css';
 export const FlipPage = ({dir='next', currentPage, nextPage,
+   readingDirection='ltr',
    direction='vertical', current, itemsCount, onEndFlip = () => {}})=>{
     const [pageClass, setPageClass] = useState('');
     const [overlayClass, setOverlayClass] = useState({left:'', middleFront:'', middleBack:'', right:''});
     let transitionDuration = 1000; // 动画持续时间，单位为毫秒
-    if (current === itemsCount-1 && dir === 'next' || current === 0 && dir === 'prev') {
+    if ( readingDirection === 'ltr' && (current === itemsCount-1 && dir === 'next' || current === 0 && dir === 'prev') ) {
+      transitionDuration = 400;
+    }
+    if ( readingDirection === 'rtl' && (current === itemsCount-1 && dir === 'prev' || current === 0 && dir === 'next') ) {
       transitionDuration = 400;
     }
     const overlayDuration = transitionDuration / 2; // ms
     const shadowSides = 0.2;
     const shadowSlip = 0.1;
-    const isBoundaryFlip = (current === itemsCount-1 && dir === 'next') || (current === 0 && dir === 'prev');
+    const isBoundaryFlip =
+  (readingDirection === 'ltr' && ((current === itemsCount-1 && dir === 'next') || (current === 0 && dir === 'prev'))) ||
+  (readingDirection === 'rtl' && ((current === 0 && dir === 'next') || (current === itemsCount-1 && dir === 'prev')));
 
     useEffect(() => {
         const rAF = requestAnimationFrame(() => {

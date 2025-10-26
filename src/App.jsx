@@ -18,6 +18,7 @@ import GlobalBackButton from './shared/components/GlobalBackButton.jsx';
 import {RouteHistoryProvider} from './shared/components/context/RouteHistoryProvider.jsx';
 import AnimationPage from './features/animation/pages/AnimationPage.jsx';
 import CalendarPage from './features/home/pages/CalendarPage.jsx';
+import FullPageBookApp from './features/home/pages/FullPageBookApp.jsx';
 
 function App() {
   return (
@@ -49,6 +50,7 @@ function App() {
             <Route path="/responsive-layout" element={<ResponsiveFlowApp />} />
             <Route path="/fixed-app" element={<FixedStructureApp />} />
             <Route path="/shelf" element={<FullPageApp />} />
+            <Route path="page-book" element={<FullPageBookApp />} />
             <Route path="/flipbook" element={<FlipPageApp />} />
             <Route path="/animation" element={<AnimationPage />} />
           </Route>

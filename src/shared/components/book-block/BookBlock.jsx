@@ -47,12 +47,20 @@ export function BookBlock({ pages, orientation='vertical', direction='ltr',
     const calculateTargetPage = (dir, itemsCount, currentPage, readingDirection) => {
         let target = currentPage;
 
-        if (dir === 'first') {
+        if (dir === 'first' && readingDirection === 'ltr') {
             return 0;
         }
-        if (dir === 'last') {
+        if (dir === 'last' && readingDirection === 'ltr') {
             return itemsCount - 1;
         }
+
+        if (dir === 'first' && readingDirection === 'rtl') {
+            return itemsCount - 1;
+        }
+        if (dir === 'last' && readingDirection === 'rtl') {
+            return 0;
+        }
+    
 
         // 确定翻页的有效增量，考虑到阅读方向
         let delta = 0;
@@ -115,6 +123,7 @@ export function BookBlock({ pages, orientation='vertical', direction='ltr',
 
         // 1. 计算目标页码 (已考虑 LTR/RTL 影响)
         let targetPage = calculateTargetPage(dir, itemsCount, current, direction);
+        console.log('Calculated Target Page:', targetPage, 'current:', current);
 
         // 【指定页码跳转逻辑】: 允许 page 参数覆盖计算结果
         const isDirectJump = page !== undefined;
@@ -130,10 +139,14 @@ export function BookBlock({ pages, orientation='vertical', direction='ltr',
 
         if (isDirectJump || dir === 'first' || dir === 'last') {
             // 对于 'first', 'last', 或 任意页跳转，根据页码差值决定动画方向
-            if (targetPage > current) {
+            if (targetPage > current && direction === 'ltr') {
                 effectiveFlipDirection = 'next'; // 目标在后，向后翻
-            } else if (targetPage < current) {
+            } else if (targetPage < current && direction === 'ltr') {
                 effectiveFlipDirection = 'prev'; // 目标在前，向前翻
+            } else if (targetPage > current && direction === 'rtl') {
+                effectiveFlipDirection = 'prev'; // 目标在前，向前翻
+            } else if (targetPage < current && direction === 'rtl') {
+                effectiveFlipDirection = 'next'; // 目标在后，向后翻
             } else {
                 // 目标页 == 当前页 (边界点击或停留在当前页)
                 effectiveFlipDirection = dir === 'last' || dir === 'next' ? 'next' : 'prev'; 
@@ -190,6 +203,7 @@ export function BookBlock({ pages, orientation='vertical', direction='ltr',
                   }} 
                   current={current}
                   itemsCount={itemsCount}
+                  readingDirection={direction}
                 />
             }
         </div>

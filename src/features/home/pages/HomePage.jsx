@@ -62,7 +62,8 @@ function HomePage() {
         borderRadius: '5px',
       }}
     >
-      <BookBlock pages={pages} width={'90%'} height={'200px'} maxWidth={'320px'}/>  
+      <BookBlock pages={pages} width={'90%'} height={'200px'} maxWidth={'320px'}/>
+      <BookBlock pages={pages} width={'90%'} height={'200px'} maxWidth={'320px'} direction="rtl"/>    
       <BookList books={booksData} />
     </ContentWrapper>
   );
