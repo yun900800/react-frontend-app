@@ -34,3 +34,13 @@
 	position: relative;
     z-index: 0;
 }
+
+@media (max-width: 768px) {
+	.bk-list {
+		width: 100%;
+		display: flex;
+		flex-wrap: wrap;
+		gap: 50px;
+		overflow-y: auto;
+	}
+}

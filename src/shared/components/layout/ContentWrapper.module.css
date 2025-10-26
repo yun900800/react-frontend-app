@@ -1,0 +1,11 @@
+.wrapper {
+    max-width: var(--content-max-width, 800px); /* 定义最大宽度 */
+    margin: 0 auto; /* 水平居中 */
+    padding: 0 var(--content-padding-horizontal, 20px); /* 可配置的水平内边距 */
+}
+
+@media (max-width: 768px) {
+    .wrapper {
+        padding: 0 var(--content-padding-horizontal, 0px);
+    }
+}

@@ -3,6 +3,7 @@
 import React from 'react';
 import { BookBlock } from '../../../shared/components/book-block/BookBlock';
 import { BookList } from '../../../shared/components/3d-book/BookList';
+import ContentWrapper from '../../../shared/components/layout/ContentWrapper';
 import image1 from '../../../assets/resources/1.jpg'
 import image2 from '../../../assets/resources/2.jpg'
 import image3 from '../../../assets/resources/3.jpg'
@@ -50,10 +51,20 @@ const booksData = [
 ];
 function HomePage() {
   return (
-    <div style={{ padding: '20px', border: '1px solid #ddd', borderRadius: '5px' }}>
+    // <div style={{ padding: '20px', border: '1px solid #ddd', borderRadius: '5px' }}>
+    //   <BookBlock pages={pages} width={'90%'} height={'200px'} maxWidth={'320px'}/>  
+    //   <BookList books={booksData} />
+    // </div>
+    <ContentWrapper 
+      style={{ 
+        padding: '20px', 
+        border: '1px solid #ddd', 
+        borderRadius: '5px',
+      }}
+    >
       <BookBlock pages={pages} width={'90%'} height={'200px'} maxWidth={'320px'}/>  
       <BookList books={booksData} />
-    </div>
+    </ContentWrapper>
   );
 }
 

@@ -7,6 +7,7 @@ import SpacerLayout, {AutoMarginClassName} from './SpacerLayout.tsx';
 import * as styles from './MainLayout.module.css'; // 引入样式文件
 import ThemeToggle from '../ThemeToggle.jsx';
 import { LogOut, Pyramid,House,Cable,Columns3Cog, Bot, Book,Aperture, CalendarDays } from 'lucide-react';
+import ContentWrapper from './ContentWrapper.jsx';
 
 function MainLayout() {
   // 引入 useNavigate Hook 用于编程导航
@@ -67,7 +68,9 @@ function MainLayout() {
   );
   
   return (
-    <div className={styles['main_content_wrapper']}>
+    <ContentWrapper style={{
+      '--content-padding-horizontal': '0px', // 设置内容水平内边距为 16px
+    }}>
       <StickyHeaderLayout 
         header={headerContent} // 将头部内容传入 header 属性
         // 可以添加额外的类名来定制样式，例如给内容区域添加最大宽度
@@ -78,7 +81,7 @@ function MainLayout() {
         {/* Outlet 将渲染匹配的子路由内容 */}
         <Outlet /> 
       </StickyHeaderLayout>
-    </div>
+    </ContentWrapper>
   );
 }
 
