@@ -19,6 +19,7 @@ import {RouteHistoryProvider} from './shared/components/context/RouteHistoryProv
 import AnimationPage from './features/animation/pages/AnimationPage.jsx';
 import CalendarPage from './features/home/pages/CalendarPage.jsx';
 import FullPageBookApp from './features/home/pages/FullPageBookApp.jsx';
+import SmartMenuPage from './features/animation/pages/SmartMenuPage.jsx';
 
 function App() {
   return (
@@ -53,6 +54,7 @@ function App() {
             <Route path="page-book" element={<FullPageBookApp />} />
             <Route path="/flipbook" element={<FlipPageApp />} />
             <Route path="/animation" element={<AnimationPage />} />
+            <Route path="/smart-menu" element={<SmartMenuPage />} />
           </Route>
           
           {/* 3. 可选：404 Not Found 路由 */}

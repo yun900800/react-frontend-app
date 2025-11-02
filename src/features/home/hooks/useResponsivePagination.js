@@ -1,4 +1,4 @@
-import { useEffect, useState, useRef, useCallback } from "react";
+import { useLayoutEffect, useState, useRef, useCallback } from "react";
 
 /**
  * 响应式分页 Hook
@@ -33,10 +33,22 @@ export function useResponsivePagination(paragraphs, options = {}) {
     }
 
     const width = containerRef.current?.clientWidth || window.innerWidth * 0.9;
-    const isMobile = window.innerWidth < 768;
-    const height = isMobile
-      ? Math.max(window.innerHeight * 0.7, minHeight)
-      : baseHeight;
+    // const isMobile = window.innerWidth < 768;
+    // const height = isMobile
+    //   ? Math.max(window.innerHeight * 0.7, minHeight)
+    //   : baseHeight;
+    let height;
+    const pageContentEl = document.getElementById("measure-page-content");
+
+    if (pageContentEl) {
+      const rect = pageContentEl.getBoundingClientRect();
+      height = rect.height;
+    } else {
+      const isMobile = window.innerWidth < 768;
+      height = isMobile
+        ? Math.max(window.innerHeight * 0.7, minHeight)
+        : baseHeight;
+    }
 
     const scaleW = width / baseWidth;
     const scaleH = height / baseHeight;
@@ -44,6 +56,7 @@ export function useResponsivePagination(paragraphs, options = {}) {
 
     const dynamicFontSize = Math.max(14, Math.min(18, fontSize * scale));
     const maxHeight = height - padding * 4;
+    console.log("maxHeight:", maxHeight);
 
     const temp = document.createElement("div");
     tempRef.current = temp;
@@ -65,7 +78,7 @@ export function useResponsivePagination(paragraphs, options = {}) {
       const el = document.createElement("p");
       el.innerText = para;
       temp.appendChild(el);
-
+      
       if (temp.scrollHeight > maxHeight) {
         temp.removeChild(el);
         if (currentPage.length) result.push([...currentPage]);
@@ -87,18 +100,23 @@ export function useResponsivePagination(paragraphs, options = {}) {
     setPages(result);
   }, [paragraphs, baseWidth, baseHeight, fontSize, lineHeight, padding, minHeight]);
 
-  useEffect(() => {
-    computePages();
+  useLayoutEffect(() => {
+    let rafId = requestAnimationFrame(() => computePages());
 
     const handleResize = () => {
       clearTimeout(resizeTimer.current);
-      resizeTimer.current = setTimeout(computePages, debounceMs);
+      resizeTimer.current = setTimeout(() => {
+        computePages();
+      }, debounceMs);
     };
 
     window.addEventListener("resize", handleResize);
+
     return () => {
+      cancelAnimationFrame(rafId);
       clearTimeout(resizeTimer.current);
       window.removeEventListener("resize", handleResize);
+
       if (tempRef.current && tempRef.current.parentNode) {
         document.body.removeChild(tempRef.current);
         tempRef.current = null;

@@ -2,8 +2,29 @@
 import React, { useRef, useState, useEffect, useMemo } from "react";
 import HTMLFlipBook from "react-pageflip";
 import { useDynamicPagination } from "../hooks/useDynamicPagination";
-import { useResponsivePagination } from "../hooks/useResponsivePagination";
+import { useResponsivePagination } from "../hooks/useResponsivePagination"; 
+import { useMediaQuery } from "../../../shared/hooks/useMediaQuery";
 import styles from "../pages/FlipPageApp.module.css";
+
+function useResponsiveOrDynamicPagination(isMobile, paragraphs) {
+  const responsive = useResponsivePagination(paragraphs, {
+    baseWidth: 550,
+    baseHeight: 733,
+    fontSize: 16,
+    lineHeight: 1.6,
+    padding: 20,
+  });
+
+  const dynamic = useDynamicPagination(paragraphs, 700);
+
+  // ❗ 始终调用一次 useRef
+  const fallbackRef = useRef(null);
+
+  // 根据条件选择结果
+  return isMobile
+    ? responsive
+    : { pages: dynamic, containerRef: fallbackRef };
+}
 
 const PageCover = React.forwardRef(({ children }, ref) => (
   <div className={`${styles.page} ${styles["page-cover"]}`} ref={ref} data-density="hard">
@@ -15,7 +36,7 @@ const PageCover = React.forwardRef(({ children }, ref) => (
 
 const Page = React.forwardRef(({ number, children }, ref) => (
   <div className={styles.page} ref={ref}>
-    <div className={styles["page-content"]}>
+    <div className={styles["page-content"]} id="measure-page-content">
       <h2 className={styles["page-header"]}>Page {number}</h2>
       <div className={styles["page-text"]}>{children}</div>
       <div className={styles["page-footer"]}>Page {number}</div>
@@ -27,22 +48,14 @@ export function FlipBook({ content, bookTitle = "BOOK TITLE", endTitle = "THE EN
   const flipBook = useRef();
   const [pageIndex, setPageIndex] = useState(0);
   const [totalPage, setTotalPage] = useState(0);
+  const isMobile = useMediaQuery("(max-width: 767px)");
 
   // 将文本拆成段落（你也可以直接传 blocks 数组）
   const paragraphs = useMemo(
     () => (typeof content === "string" ? content.split(/\n+/).map(p => p.trim()).filter(Boolean) : (content || [])),
     [content]
   );
-
-  // 动态分页（返回数组，每项是一个段落数组，对应一页）
-//   const pages = useDynamicPagination(paragraphs, /* maxHeight */ 700);
-  const { containerRef, pages } = useResponsivePagination(paragraphs, {
-    baseWidth: 550,
-    baseHeight: 733,
-    fontSize: 16,
-    lineHeight: 1.6,
-    padding: 20,
-    });
+  const { pages, containerRef } = useResponsiveOrDynamicPagination(isMobile, paragraphs);
   
   // 构造要传给 HTMLFlipBook 的“页”组件数组：
   // 1. 单独的封面页
@@ -92,7 +105,9 @@ export function FlipBook({ content, bookTitle = "BOOK TITLE", endTitle = "THE EN
   if (!pagesForFlip.length) return <div>Loading book...</div>;
 
   return (
-    <div className={styles.container} ref={containerRef}>
+    <div className={styles.container} 
+    ref={containerRef}
+    >
       <HTMLFlipBook
         width={550}
         height={733}
@@ -137,3 +152,6 @@ export function FlipBook({ content, bookTitle = "BOOK TITLE", endTitle = "THE EN
     </div>
   );
 }
+
+
+

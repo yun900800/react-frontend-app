@@ -6,7 +6,7 @@ import StickyHeaderLayout from './StickyHeaderLayout';
 import SpacerLayout, {AutoMarginClassName} from './SpacerLayout.tsx';
 import * as styles from './MainLayout.module.css'; // 引入样式文件
 import ThemeToggle from '../ThemeToggle.jsx';
-import { LogOut, Pyramid,House,Cable,Columns3Cog, Bot, Book,Aperture, CalendarDays } from 'lucide-react';
+import { LogOut, Pyramid,House,Cable,Columns3Cog, Bot, Book,Aperture, CalendarDays, Play } from 'lucide-react';
 import ContentWrapper from './ContentWrapper.jsx';
 
 function MainLayout() {
@@ -55,6 +55,9 @@ function MainLayout() {
       </Link>
       <Link to="/calendar" style={{ textDecoration: 'none',  }}>
         <CalendarDays  style={{ display: 'flex',width: 'var(--font-size-1)', height: 'auto' }} />
+      </Link>
+      <Link to="/animation" style={{ textDecoration: 'none',  }}>
+        <Play  style={{ display: 'flex',width: 'var(--font-size-1)', height: 'auto' }} />
       </Link>
       <a 
         onClick={handleLogout}

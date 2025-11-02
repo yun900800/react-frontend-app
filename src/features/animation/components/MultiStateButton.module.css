@@ -1,4 +1,13 @@
-/* 容器基础样式 - 增加 position: relative 用于绝对定位 */
+/* 动画属性transform的切换都是从一个状态到另一个状态，如果没有值，默认位置为0 , 浏览器会自动在两个状态之间插值*/
+/* 这里有一个关键点就是将容器元素的中心作为参考点，后续的很多计算都很方便，类似于坐标的原点作为参考点一样 */
+
+/* 使用绝对定位 + 容器中心作为参考点 */
+/* 分离初始位置与状态变化 */
+/* transform 属性是整体替换、自动补间 */
+/* transition 定义可变属性 */
+/* 状态设计原则：闭环、平滑过渡 */
+/* 利用 scale + translate 形成复杂形态 */
+/* 颜色与可视属性独立控制 */
 .menu-button {
     width: 60px;
     height: 60px;
@@ -72,6 +81,7 @@
 .menu-button.is-warning .line-1 {
     /* 感叹号的顶部，向下微移一点，同时缩短宽度 (默认在中心) */
     transform: translateY(-5px) scaleY(4) scaleX(0.1); 
+    background-color: red;
 }
 
 .menu-button.is-warning .line-2 {

@@ -104,15 +104,15 @@
 
 /* 1. 为每个 line 元素应用不同的动画 */
 .is-closing .line-1 {
-    transition: none;
+    /* transition: none; */
     animation: line-1-sequence 1.2s forwards; 
 }
 .is-closing .line-2 {
-    transition: none;
+    /* transition: none; */
     animation: line-2-sequence 1.2s forwards; 
 }
 .is-closing .line-3 {
-    transition: none;
+    /* transition: none; */
     animation: line-3-sequence 1.2s forwards; 
 }
 
@@ -124,7 +124,7 @@
     /* WARNING 状态：变为感叹号的顶部 */
     20%, 40% { 
         background-color: orange;
-        transform: translateY(15px) rotate(0);
+        transform: translateY(-5px) rotate(0);
         height: 40px;
         width: 6px;
     }
@@ -132,7 +132,7 @@
     /* SMILE 状态：变为微笑的上半弧（左上） */
     60%, 80% { 
         background-color: green;
-        transform: translateY(10px) rotate(-45deg); 
+        transform: rotate(-45deg); 
         width: 40px;
         height: 6px;
     }
@@ -183,7 +183,7 @@
     /* SMILE 状态：变为微笑的下半弧（右上） */
     60%, 80% { 
         background-color: green;
-        transform: translateY(10px) rotate(45deg); 
+        transform: rotate(45deg); 
         width: 40px;
         height: 6px;
     }
