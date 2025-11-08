@@ -3,6 +3,7 @@ import React from 'react';
 import { BookPageContent } from "./BookPageContent.jsx"; // 假设 BookPageContent 存在
 import gridStyles from './Book.module.css';
 import shelfStyles from './Book-Shelf.module.css';
+import imageDefault from '../../../assets/resources/3d-book-images/1.png';
 
 export const BookDetail = ({ 
     data, 
@@ -16,8 +17,14 @@ export const BookDetail = ({
 }) => {
     let styles = viewMode === 'grid' ? gridStyles : shelfStyles; 
 
+    let id = 0;
+    if (data.id > 3 ) {
+        id = 'default';
+    } else {
+        id = data.id;
+    }
     // 核心逻辑：结合所有状态来生成最终的 CSS 类
-    let bookClasses = `${styles['bk-book']} ${styles[`book-${data.id}`]}`;
+    let bookClasses = `${styles['bk-book']} ${styles[`book-${id}`]}`;
     
     // Grid Mode Default:
     if (viewMode === 'grid' && !isOpened && !isFlipped) {
@@ -50,7 +57,10 @@ export const BookDetail = ({
     return (
         <div className={bookClasses}
             onTransitionEnd={viewMode === 'shelf' ? handleBookTransitionEnd : undefined}
-            style={data.coverColor ? { '--bk-cover-color': data.coverColor } : {}}
+            style={{
+                ...(data.coverColor ? { '--bk-cover-color': data.coverColor } : {}),
+                '--cover-image': `url(${data.cover_url || imageDefault})`
+                }}
             >
             
             {/* 封面 bk-front */}

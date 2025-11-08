@@ -506,3 +506,73 @@
 	text-align: center;
 	text-shadow: 0 -1px 0 rgba(0,0,0,0.1);
 }
+
+
+/* Default Book Style */
+.book-default .bk-front > div,
+.book-default .bk-back,
+.book-default .bk-left,
+.book-default .bk-front:after {
+  background-color: #f3c5c5; /* 默认封面底色 */
+}
+
+.book-default .bk-cover {
+  background-image: var(--cover-image);
+  background-repeat: no-repeat;
+  background-position: 100% 50%;
+  background-size: contain;
+}
+
+.book-default .bk-cover h2 {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  padding: 20px;
+  background: rgba(255, 255, 255, 0.3);
+  color: #222;
+  text-shadow: 0 1px 0 rgba(255, 255, 255, 0.5);
+  font-family: "Big Caslon", "Book Antiqua", "Palatino Linotype", Georgia, serif;
+}
+
+.book-default .bk-cover h2 span:first-child,
+.book-default .bk-left h2 span:first-child {
+  text-transform: uppercase;
+  font-weight: 400;
+  font-size: 12px;
+  /* display: block; */
+}
+
+.book-default .bk-cover h2 span:last-child,
+.book-default .bk-left h2 span:last-child {
+  font-size: 18px;
+  font-weight: 600;
+}
+
+.book-default .bk-content p {
+  font-family: Georgia, Times, "Times New Roman", serif;
+  color: #333;
+  line-height: 1.6;
+  padding: 20px;
+}
+
+.book-default .bk-left h2 {
+  color: #222;
+  font-size: 14px;
+  line-height: 40px;
+  text-align: center;
+}
+
+.book-default .bk-back p {
+  color: #444;
+  font-size: 13px;
+  padding: 30px;
+  text-align: center;
+  font-style: italic;
+}
+
+.book-default .bk-back img {
+	width: 200px;
+	display: block;
+	margin: 30px auto 0;
+}
