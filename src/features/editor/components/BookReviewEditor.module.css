@@ -1,0 +1,80 @@
+.editorContainer {
+  max-width: 800px;
+  margin: 40px auto;
+  background: #fafafa;
+  padding: 20px;
+  border-radius: 16px;
+  box-shadow: 0 4px 16px rgba(0,0,0,0.1);
+}
+
+.title {
+  text-align: center;
+  font-size: 1.8rem;
+  margin-bottom: 20px;
+}
+
+.metaFields {
+  display: flex;
+  gap: 10px;
+  margin-bottom: 10px;
+}
+
+.metaFields input {
+  flex: 1;
+  padding: 8px 10px;
+  border: 1px solid #ccc;
+  border-radius: 8px;
+}
+
+.quillEditor {
+  height: 200px;
+  margin-bottom: 20px;
+}
+
+.actions {
+  text-align: right;
+  margin-top: 60px;
+}
+
+.actions button {
+  padding: 10px 20px;
+  background: #0078ff;
+  color: white;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+}
+
+.actions button:hover {
+  background: #005ad9;
+}
+
+.previewSection {
+  margin-top: 30px;
+  max-height: 40vh;
+  overflow-y: auto;
+}
+
+.reviewCard {
+  background: white;
+  border-radius: 12px;
+  padding: 15px;
+  margin-bottom: 20px;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.08);
+}
+
+.reviewCard h3 {
+  margin: 0;
+  color: #333;
+}
+
+.reviewContent {
+  margin-top: 10px;
+  line-height: 1.6;
+}
+
+.time {
+  font-size: 0.8rem;
+  color: gray;
+  margin-top: 8px;
+}

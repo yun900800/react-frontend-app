@@ -5,8 +5,10 @@ import ConnectedSidebarLayoutSlot from '../../../shared/components/layout/Connec
 import SpacerLayout, {AutoMarginClassName} from '../../../shared/components/layout/SpacerLayout';
 import Breadcrumb from '../../../shared/components/sidebar/Breadcrumb';
 import {SquareMenu,X,Code} from 'lucide-react'
+import { useMediaQuery } from '../../../shared/hooks/useMediaQuery';
 const Header = () => { 
     const { openSidebar, isSidebarOpen } = useSidebar();
+    const isMobile = useMediaQuery('(max-width: 768px)');
     // 假设这是你的汉堡包按钮，它只在移动端显示
     return (
         <SpacerLayout gap='24px' >
@@ -14,15 +16,15 @@ const Header = () => {
                 style={{ display: 'flex', width:'36px', height:'36px', marginLeft: '16px' }}>
                     <Code style={{ width: 'var(--font-size-1)', height: 'auto' }}/>
             </a>
-            <a 
+            {isMobile ? <a 
                 onClick={openSidebar} // **这是关键**
                 className={`button-primary ${AutoMarginClassName}`}
                 style={{ display: 'flex', width:'36px', height:'36px' }}
             > { isSidebarOpen ? <X style={{ width: 'var(--font-size-1)', height: 'auto' }}/> 
                 : <SquareMenu style={{ width: 'var(--font-size-1)', height: 'auto' }}/>
-            }
-                
-            </a>
+            } 
+            </a> : null}
+            
         </SpacerLayout>
     );
 };

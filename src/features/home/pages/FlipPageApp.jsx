@@ -3,168 +3,226 @@ import { FlipBook } from "../components/FlipBook";
 import styles from "./FlipPageApp.module.css";
 
 export const FlipPageApp = () => {
-  const sampleText = `
-    Chapter 1. The Beginning.
-    Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vivamus posuere felis at nisi imperdiet, eget ullamcorper massa cursus.
-    Nulla facilisi. Suspendisse potenti. Vestibulum ante ipsum primis in faucibus orci luctus et ultrices posuere cubilia curae;
-    Curabitur ut nisi quis sapien cursus tincidunt eget sit amet lorem. 
-    Pellentesque habitant morbi tristique senectus et netus et malesuada fames ac turpis egestas.
-    Donec tincidunt, nunc sed laoreet sodales, nisl lectus luctus purus, id pulvinar metus leo sed odio.
+  // const sampleText = `
+  //   Chapter 1. The Beginning.
+  //   Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vivamus posuere felis at nisi imperdiet, eget ullamcorper massa cursus.
+  //   Nulla facilisi. Suspendisse potenti. Vestibulum ante ipsum primis in faucibus orci luctus et ultrices posuere cubilia curae;
+  //   Curabitur ut nisi quis sapien cursus tincidunt eget sit amet lorem. 
+  //   Pellentesque habitant morbi tristique senectus et netus et malesuada fames ac turpis egestas.
+  //   Donec tincidunt, nunc sed laoreet sodales, nisl lectus luctus purus, id pulvinar metus leo sed odio.
     
-    Chapter 2. The Journey.
-    Aenean mattis diam eget velit consequat, in luctus velit rhoncus.
-    Donec in est vitae sem pretium fermentum.
-    Suspendisse potenti. Mauris varius tincidunt sapien, eget dapibus justo gravida non.
+  //   Chapter 2. The Journey.
+  //   Aenean mattis diam eget velit consequat, in luctus velit rhoncus.
+  //   Donec in est vitae sem pretium fermentum.
+  //   Suspendisse potenti. Mauris varius tincidunt sapien, eget dapibus justo gravida non.
     
-    Chapter 3. The End.
-    Sed dignissim sapien in enim pretium cursus. Phasellus pretium tincidunt lorem at tincidunt.
+  //   Chapter 3. The End.
+  //   Sed dignissim sapien in enim pretium cursus. Phasellus pretium tincidunt lorem at tincidunt.
 
-    Chapter 4. The Beginning.
-    Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vivamus posuere felis at nisi imperdiet, eget ullamcorper massa cursus.
-    Nulla facilisi. Suspendisse potenti. Vestibulum ante ipsum primis in faucibus orci luctus et ultrices posuere cubilia curae;
-    Curabitur ut nisi quis sapien cursus tincidunt eget sit amet lorem. 
-    Pellentesque habitant morbi tristique senectus et netus et malesuada fames ac turpis egestas.
-    Donec tincidunt, nunc sed laoreet sodales, nisl lectus luctus purus, id pulvinar metus leo sed odio.
+  //   Chapter 4. The Beginning.
+  //   Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vivamus posuere felis at nisi imperdiet, eget ullamcorper massa cursus.
+  //   Nulla facilisi. Suspendisse potenti. Vestibulum ante ipsum primis in faucibus orci luctus et ultrices posuere cubilia curae;
+  //   Curabitur ut nisi quis sapien cursus tincidunt eget sit amet lorem. 
+  //   Pellentesque habitant morbi tristique senectus et netus et malesuada fames ac turpis egestas.
+  //   Donec tincidunt, nunc sed laoreet sodales, nisl lectus luctus purus, id pulvinar metus leo sed odio.
     
-    Chapter 5. The Journey.
-    Aenean mattis diam eget velit consequat, in luctus velit rhoncus.
-    Donec in est vitae sem pretium fermentum.
-    Suspendisse potenti. Mauris varius tincidunt sapien, eget dapibus justo gravida non.
+  //   Chapter 5. The Journey.
+  //   Aenean mattis diam eget velit consequat, in luctus velit rhoncus.
+  //   Donec in est vitae sem pretium fermentum.
+  //   Suspendisse potenti. Mauris varius tincidunt sapien, eget dapibus justo gravida non.
     
-    Chapter 6. The End.
-    Sed dignissim sapien in enim pretium cursus. Phasellus pretium tincidunt lorem at tincidunt.
+  //   Chapter 6. The End.
+  //   Sed dignissim sapien in enim pretium cursus. Phasellus pretium tincidunt lorem at tincidunt.
 
-    Chapter 7. The End.
-    Sed dignissim sapien in enim pretium cursus. Phasellus pretium tincidunt lorem at tincidunt.
+  //   Chapter 7. The End.
+  //   Sed dignissim sapien in enim pretium cursus. Phasellus pretium tincidunt lorem at tincidunt.
 
-    Chapter 8. The Beginning.
-    Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vivamus posuere felis at nisi imperdiet, eget ullamcorper massa cursus.
-    Nulla facilisi. Suspendisse potenti. Vestibulum ante ipsum primis in faucibus orci luctus et ultrices posuere cubilia curae;
-    Curabitur ut nisi quis sapien cursus tincidunt eget sit amet lorem. 
-    Pellentesque habitant morbi tristique senectus et netus et malesuada fames ac turpis egestas.
-    Donec tincidunt, nunc sed laoreet sodales, nisl lectus luctus purus, id pulvinar metus leo sed odio.
+  //   Chapter 8. The Beginning.
+  //   Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vivamus posuere felis at nisi imperdiet, eget ullamcorper massa cursus.
+  //   Nulla facilisi. Suspendisse potenti. Vestibulum ante ipsum primis in faucibus orci luctus et ultrices posuere cubilia curae;
+  //   Curabitur ut nisi quis sapien cursus tincidunt eget sit amet lorem. 
+  //   Pellentesque habitant morbi tristique senectus et netus et malesuada fames ac turpis egestas.
+  //   Donec tincidunt, nunc sed laoreet sodales, nisl lectus luctus purus, id pulvinar metus leo sed odio.
 
-    Chapter 9. The Journey.
-    Aenean mattis diam eget velit consequat, in luctus velit rhoncus.
-    Donec in est vitae sem pretium fermentum.
-    Suspendisse potenti. Mauris varius tincidunt sapien, eget dapibus justo gravida non.
+  //   Chapter 9. The Journey.
+  //   Aenean mattis diam eget velit consequat, in luctus velit rhoncus.
+  //   Donec in est vitae sem pretium fermentum.
+  //   Suspendisse potenti. Mauris varius tincidunt sapien, eget dapibus justo gravida non.
 
-    Chapter 10. The End.
-    Sed dignissim sapien in enim pretium cursus. Phasellus pretium tincidunt lorem at tincidunt.
+  //   Chapter 10. The End.
+  //   Sed dignissim sapien in enim pretium cursus. Phasellus pretium tincidunt lorem at tincidunt.
 
-    Chapter 1. The Beginning.
-    Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vivamus posuere felis at nisi imperdiet, eget ullamcorper massa cursus.
-    Nulla facilisi. Suspendisse potenti. Vestibulum ante ipsum primis in faucibus orci luctus et ultrices posuere cubilia curae;
-    Curabitur ut nisi quis sapien cursus tincidunt eget sit amet lorem. 
-    Pellentesque habitant morbi tristique senectus et netus et malesuada fames ac turpis egestas.
-    Donec tincidunt, nunc sed laoreet sodales, nisl lectus luctus purus, id pulvinar metus leo sed odio.
+  //   Chapter 1. The Beginning.
+  //   Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vivamus posuere felis at nisi imperdiet, eget ullamcorper massa cursus.
+  //   Nulla facilisi. Suspendisse potenti. Vestibulum ante ipsum primis in faucibus orci luctus et ultrices posuere cubilia curae;
+  //   Curabitur ut nisi quis sapien cursus tincidunt eget sit amet lorem. 
+  //   Pellentesque habitant morbi tristique senectus et netus et malesuada fames ac turpis egestas.
+  //   Donec tincidunt, nunc sed laoreet sodales, nisl lectus luctus purus, id pulvinar metus leo sed odio.
     
-    Chapter 2. The Journey.
-    Aenean mattis diam eget velit consequat, in luctus velit rhoncus.
-    Donec in est vitae sem pretium fermentum.
-    Suspendisse potenti. Mauris varius tincidunt sapien, eget dapibus justo gravida non.
+  //   Chapter 2. The Journey.
+  //   Aenean mattis diam eget velit consequat, in luctus velit rhoncus.
+  //   Donec in est vitae sem pretium fermentum.
+  //   Suspendisse potenti. Mauris varius tincidunt sapien, eget dapibus justo gravida non.
     
-    Chapter 3. The End.
-    Sed dignissim sapien in enim pretium cursus. Phasellus pretium tincidunt lorem at tincidunt.
+  //   Chapter 3. The End.
+  //   Sed dignissim sapien in enim pretium cursus. Phasellus pretium tincidunt lorem at tincidunt.
 
-    Chapter 4. The Beginning.
-    Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vivamus posuere felis at nisi imperdiet, eget ullamcorper massa cursus.
-    Nulla facilisi. Suspendisse potenti. Vestibulum ante ipsum primis in faucibus orci luctus et ultrices posuere cubilia curae;
-    Curabitur ut nisi quis sapien cursus tincidunt eget sit amet lorem. 
-    Pellentesque habitant morbi tristique senectus et netus et malesuada fames ac turpis egestas.
-    Donec tincidunt, nunc sed laoreet sodales, nisl lectus luctus purus, id pulvinar metus leo sed odio.
+  //   Chapter 4. The Beginning.
+  //   Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vivamus posuere felis at nisi imperdiet, eget ullamcorper massa cursus.
+  //   Nulla facilisi. Suspendisse potenti. Vestibulum ante ipsum primis in faucibus orci luctus et ultrices posuere cubilia curae;
+  //   Curabitur ut nisi quis sapien cursus tincidunt eget sit amet lorem. 
+  //   Pellentesque habitant morbi tristique senectus et netus et malesuada fames ac turpis egestas.
+  //   Donec tincidunt, nunc sed laoreet sodales, nisl lectus luctus purus, id pulvinar metus leo sed odio.
     
-    Chapter 5. The Journey.
-    Aenean mattis diam eget velit consequat, in luctus velit rhoncus.
-    Donec in est vitae sem pretium fermentum.
-    Suspendisse potenti. Mauris varius tincidunt sapien, eget dapibus justo gravida non.
+  //   Chapter 5. The Journey.
+  //   Aenean mattis diam eget velit consequat, in luctus velit rhoncus.
+  //   Donec in est vitae sem pretium fermentum.
+  //   Suspendisse potenti. Mauris varius tincidunt sapien, eget dapibus justo gravida non.
     
-    Chapter 6. The End.
-    Sed dignissim sapien in enim pretium cursus. Phasellus pretium tincidunt lorem at tincidunt.
+  //   Chapter 6. The End.
+  //   Sed dignissim sapien in enim pretium cursus. Phasellus pretium tincidunt lorem at tincidunt.
 
-    Chapter 7. The End.
-    Sed dignissim sapien in enim pretium cursus. Phasellus pretium tincidunt lorem at tincidunt.
+  //   Chapter 7. The End.
+  //   Sed dignissim sapien in enim pretium cursus. Phasellus pretium tincidunt lorem at tincidunt.
 
-    Chapter 8. The Beginning.
-    Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vivamus posuere felis at nisi imperdiet, eget ullamcorper massa cursus.
-    Nulla facilisi. Suspendisse potenti. Vestibulum ante ipsum primis in faucibus orci luctus et ultrices posuere cubilia curae;
-    Curabitur ut nisi quis sapien cursus tincidunt eget sit amet lorem. 
-    Pellentesque habitant morbi tristique senectus et netus et malesuada fames ac turpis egestas.
-    Donec tincidunt, nunc sed laoreet sodales, nisl lectus luctus purus, id pulvinar metus leo sed odio.
+  //   Chapter 8. The Beginning.
+  //   Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vivamus posuere felis at nisi imperdiet, eget ullamcorper massa cursus.
+  //   Nulla facilisi. Suspendisse potenti. Vestibulum ante ipsum primis in faucibus orci luctus et ultrices posuere cubilia curae;
+  //   Curabitur ut nisi quis sapien cursus tincidunt eget sit amet lorem. 
+  //   Pellentesque habitant morbi tristique senectus et netus et malesuada fames ac turpis egestas.
+  //   Donec tincidunt, nunc sed laoreet sodales, nisl lectus luctus purus, id pulvinar metus leo sed odio.
 
-    Chapter 9. The Journey.
-    Aenean mattis diam eget velit consequat, in luctus velit rhoncus.
-    Donec in est vitae sem pretium fermentum.
-    Suspendisse potenti. Mauris varius tincidunt sapien, eget dapibus justo gravida non.
+  //   Chapter 9. The Journey.
+  //   Aenean mattis diam eget velit consequat, in luctus velit rhoncus.
+  //   Donec in est vitae sem pretium fermentum.
+  //   Suspendisse potenti. Mauris varius tincidunt sapien, eget dapibus justo gravida non.
 
-    Chapter 10. The End.
-    Sed dignissim sapien in enim pretium cursus. Phasellus pretium tincidunt lorem at tincidunt.
-  `;
-//   const sampleText = `
-// 第1章 开始  
-// 很久很久以前，在一座安静的小镇上，阳光透过树叶洒在青石路上，空气中弥漫着面包的香气。  
-// 艾琳每天清晨都会走过那条街，她的心中总有一股难以名状的悸动。  
-// 那一天，她在书店门口停下了脚步，翻开了一本泛黄的旧书——故事，从这里开始。
+  //   Chapter 10. The End.
+  //   Sed dignissim sapien in enim pretium cursus. Phasellus pretium tincidunt lorem at tincidunt.
+  // `;
+//   const flipBookCommentData = `
+// 第1章 终极孤独的宿命
+// 布恩迪亚家族的人不断失败的原因之一正好是孤独。
+// 加西亚·马尔克斯本人曾言，这是他作品的核心主题。
+// 整个家族沉浸在自我隔绝的状态，最终导致了马孔多的衰亡。
 
-// 第2章 旅程  
-// 一场突如其来的雨打乱了她的计划。  
-// 她撑着伞，走在模糊的街道上，思绪被带往远方。  
-// “也许，这就是命运吧。”她轻声说道。  
-// 于是，她决定启程，去寻找那份藏在记忆深处的答案。
+// 第2章 时间的循环与回归
+// 书中的宿命论暗喻了古往今来导致历史不断重复的意识形态。
+// 拉丁美洲的历史被解读成一个永恒的循环。
+// 每一次新的开始，都不过是上一次悲剧的重新上演。
 
-// 第3章 终章  
-// 旅途漫长，风雨交加。  
-// 她看过无数的日出，也失去了无数的方向。  
-// 但在山谷的尽头，她终于看到了光。  
-// 那光不是太阳，而是自己内心的宁静。
+// 第3章 魔幻现实主义的艺术
+// 被认为是魔幻现实主义小说的经典杰作。
+// 它完美地运用艺术手法，把真实的人物放置于荒诞离奇的魔幻之境。
+// 魔法不是超自然现象，而是一种平静的、日常的生活方式。
 
-// 第4章 开始  
-// 新的城市，新的街道。  
-// 人群中，她再一次看到了那本书的封面。  
-// “似曾相识的感觉……”她喃喃自语。  
-// 她翻开第一页，文字依然温暖如初。
+// 第4章 宏大的家族史诗
+// 七代人的兴衰历程，是人类欲望与命运抗争的缩影。
+// 家族的谱系图成为理解小说结构的关键。
+// 每一个重复的名字，都承载着前人的失败和希望。
 
-// 第5章 旅程  
-// 这一次，她不再害怕孤独。  
-// 她学会了与自己对话，学会了倾听风的声音。  
-// 世界很大，但她的脚步更加坚定。  
-// 每一次停留，都是下一段故事的伏笔。
+// 第5章 爱情与苦恼的解药
+// “爱情的苦恼只有在床上才能解除。” 
+// 小说中的爱情往往是炽热、短暂而又充满毁灭性的。
+// 它既是生命的火花，也是孤独的诱因。
 
-// 第6章 终章  
-// 月光洒在窗台上，纸页轻轻翻动。  
-// 她合上书，微微一笑。  
-// “原来我一直在寻找的，就是现在。”  
-// 故事似乎结束了，又似乎刚刚开始。
+// 第6章 对极权与暴力的批判
+// 香蕉园大屠杀是小说中极权统治与暴力压迫的象征。
+// 被遗忘的历史，是统治者对记忆的清除。
+// 马尔克斯以此揭露了拉丁美洲的政治创伤。
 
-// 第7章 尾声  
-// 岁月流转，故事在她心中留下了温柔的痕迹。  
-// 那本旧书已泛黄，但其中的文字依然鲜活。  
-// 有些结局，不需要言语，就能被时间温柔地理解。
+// 第7章 记忆与遗忘的战争
+// “他把所有回忆都装进了盒子，他担心它们跑掉。”
+// 马孔多的失眠症，象征着集体记忆的丧失。
+// 记忆的不可靠性，使得真实与虚构的界限模糊。
 
-// 第8章 开始  
-// 晨光穿过窗帘，新的日子又到来了。  
-// 她拿起笔，写下新的篇章。  
-// 这一次，她决定为自己而活，  
-// 不再害怕风雨，不再逃避明天。
+// 第8章 预言与梅尔基亚德斯的手稿
+// 吉卜赛人梅尔基亚德斯的手稿，是贯穿始终的预言。
+// 整部小说的结局早已被预言所规定。
+// 手稿的最终解码，揭示了布恩迪亚家族的必然结局。
 
-// 第9章 旅程  
-// 她走遍山川湖海，遇见不同的面孔。  
-// 每一张笑脸，都是生命送来的礼物。  
-// 她开始相信，人生的意义从不在终点，  
-// 而在每一次勇敢的迈步之间。
+// 第9章 伟大的开篇与震撼的结尾
+// “多年以后，面对行刑队，奥雷里亚诺·布恩迪亚上校将会想起他父亲带他去见识冰块的那个遥远的下午。”
+// 这句开篇是文学史上最伟大的开头之一。
+// 结尾则暗示了人类在永恒的时间面前的微不足道。
 
-// 第10章 终章  
-// 当夜幕再次降临，她坐在书桌前，  
-// 轻轻翻开那本写满回忆的笔记。  
-// “结束并不可怕，”她想，  
-// “因为每一个结尾，都是另一个开始。”  
+// 第10章 文学史上的地位与影响
+// 《百年孤独》是 20 世纪最伟大的西班牙语文学作品之一。
+// 它为拉丁美洲文学赢得了世界性的声誉。
+// 它不仅是一部小说，更是对整个拉美大陆历史与精神的深刻反思。
 // `;
 
+const flipBookCommentData = [
+  `第1章 终极孤独的宿命
+布恩迪亚家族的人不断失败的原因之一正好是孤独。
+加西亚·马尔克斯本人曾言，这是他作品的核心主题。
+整个家族沉浸在自我隔绝的状态，最终导致了马孔多的衰亡。`,
 
+  `第2章 时间的循环与回归
+书中的宿命论暗喻了古往今来导致历史不断重复的意识形态。
+拉丁美洲的历史被解读成一个永恒的循环。
+每一次新的开始，都不过是上一次悲剧的重新上演。`,
+
+  `第3章 魔幻现实主义的艺术
+被认为是魔幻现实主义小说的经典杰作。
+它完美地运用艺术手法，把真实的人物放置于荒诞离奇的魔幻之境。
+魔法不是超自然现象，而是一种平静的、日常的生活方式。`,
+
+  `第4章 宏大的家族史诗
+七代人的兴衰历程，是人类欲望与命运抗争的缩影。
+家族的谱系图成为理解小说结构的关键。
+每一个重复的名字，都承载着前人的失败和希望。`,
+
+  `第5章 爱情与苦恼的解药
+“爱情的苦恼只有在床上才能解除。”
+小说中的爱情往往是炽热、短暂而又充满毁灭性的。
+它既是生命的火花，也是孤独的诱因。`,
+
+  `第6章 对极权与暴力的批判
+香蕉园大屠杀是小说中极权统治与暴力压迫的象征。
+被遗忘的历史，是统治者对记忆的清除。
+马尔克斯以此揭露了拉丁美洲的政治创伤。`,
+
+  `第7章 记忆与遗忘的战争
+“他把所有回忆都装进了盒子，他担心它们跑掉。”
+马孔多的失眠症，象征着集体记忆的丧失。
+记忆的不可靠性，使得真实与虚构的界限模糊。`,
+
+  `第8章 预言与梅尔基亚德斯的手稿
+吉卜赛人梅尔基亚德斯的手稿，是贯穿始终的预言。
+整部小说的结局早已被预言所规定。
+手稿的最终解码，揭示了布恩迪亚家族的必然结局。`,
+
+  `第9章 伟大的开篇与震撼的结尾
+“多年以后，面对行刑队，奥雷里亚诺·布恩迪亚上校将会想起他父亲带他去见识冰块的那个遥远的下午。”
+这句开篇是文学史上最伟大的开头之一。
+结尾则暗示了人类在永恒的时间面前的微不足道。`,
+
+  `第10章 文学史上的地位与影响
+《百年孤独》是 20 世纪最伟大的西班牙语文学作品之一。
+它为拉丁美洲文学赢得了世界性的声誉。
+它不仅是一部小说，更是对整个拉美大陆历史与精神的深刻反思。`,
+];
+
+const reviews = JSON.parse(localStorage.getItem("bookReviews"));
+const content = reviews.map(r => r.content);
+  const bookTitle = <>
+    <h2>百年孤独</h2>
+    <a 
+      className={styles['image-container']}>
+        <img className={styles['image-content']} src="https://img2.baidu.com/it/u=383746392,1596704272&fm=253&fmt=auto&app=138&f=JPEG?w=800&h=1153">
+        </img>
+    </a>
+  </>
   return (
     <div className={styles["full-page"]}>
       <div className={styles["full-main"]}>
-        <FlipBook content={sampleText} />
+        <FlipBook 
+        content={content || flipBookCommentData} 
+        bookTitle={bookTitle}
+        endTitle="孤独是人生的常态" 
+        mode="comment"
+        />
       </div>
     </div>
   );

@@ -20,6 +20,8 @@ import AnimationPage from './features/animation/pages/AnimationPage.jsx';
 import CalendarPage from './features/home/pages/CalendarPage.jsx';
 import FullPageBookApp from './features/home/pages/FullPageBookApp.jsx';
 import SmartMenuPage from './features/animation/pages/SmartMenuPage.jsx';
+import BookEditorPages from './features/editor/pages/BookEditorPages.jsx';
+import BooksPage from './features/books/pages/BooksPage.jsx';
 
 function App() {
   return (
@@ -55,6 +57,8 @@ function App() {
             <Route path="/flipbook" element={<FlipPageApp />} />
             <Route path="/animation" element={<AnimationPage />} />
             <Route path="/smart-menu" element={<SmartMenuPage />} />
+            <Route path="/editor" element={ <BookEditorPages />}/> 
+            <Route path="/books" element={ <BooksPage />}/> 
           </Route>
           
           {/* 3. 可选：404 Not Found 路由 */}

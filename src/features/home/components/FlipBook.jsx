@@ -2,10 +2,13 @@
 import React, { useRef, useState, useEffect, useMemo } from "react";
 import HTMLFlipBook from "react-pageflip";
 import { useDynamicPagination } from "../hooks/useDynamicPagination";
-import { useResponsivePagination } from "../hooks/useResponsivePagination"; 
+import { useResponsivePagination } from "../hooks/useResponsivePagination";
 import { useMediaQuery } from "../../../shared/hooks/useMediaQuery";
 import styles from "../pages/FlipPageApp.module.css";
 
+/**
+ * 根据设备类型选择分页策略（响应式 or 动态）
+ */
 function useResponsiveOrDynamicPagination(isMobile, paragraphs) {
   const responsive = useResponsivePagination(paragraphs, {
     baseWidth: 550,
@@ -16,27 +19,32 @@ function useResponsiveOrDynamicPagination(isMobile, paragraphs) {
   });
 
   const dynamic = useDynamicPagination(paragraphs, 700);
-
-  // ❗ 始终调用一次 useRef
   const fallbackRef = useRef(null);
 
-  // 根据条件选择结果
-  return isMobile
-    ? responsive
-    : { pages: dynamic, containerRef: fallbackRef };
+  return isMobile ? responsive : { pages: dynamic, containerRef: fallbackRef };
 }
 
+/**
+ * 封面页组件
+ */
 const PageCover = React.forwardRef(({ children }, ref) => (
-  <div className={`${styles.page} ${styles["page-cover"]}`} ref={ref} data-density="hard">
-    <div className={styles["page-content"]}>
-      <h2>{children}</h2>
+  <div
+    className={`${styles.page} ${styles["page-cover"]}`}
+    ref={ref}
+    data-density="hard"
+  >
+    <div className={`${styles["page-content"]} ${styles["page-full"]}`}>
+      {children}
     </div>
   </div>
 ));
 
+/**
+ * 普通内容页组件
+ */
 const Page = React.forwardRef(({ number, children }, ref) => (
   <div className={styles.page} ref={ref}>
-    <div className={styles["page-content"]} id="measure-page-content">
+    <div className={styles["page-content"]}>
       <h2 className={styles["page-header"]}>Page {number}</h2>
       <div className={styles["page-text"]}>{children}</div>
       <div className={styles["page-footer"]}>Page {number}</div>
@@ -44,57 +52,68 @@ const Page = React.forwardRef(({ number, children }, ref) => (
   </div>
 ));
 
-export function FlipBook({ content, bookTitle = "BOOK TITLE", endTitle = "THE END" }) {
+/**
+ * 主翻页书组件
+ */
+export function FlipBook({
+  content,
+  bookTitle = "BOOK TITLE",
+  endTitle = "THE END",
+  mode = "auto", // "auto" 或 "comment"
+}) {
   const flipBook = useRef();
   const [pageIndex, setPageIndex] = useState(0);
   const [totalPage, setTotalPage] = useState(0);
   const isMobile = useMediaQuery("(max-width: 767px)");
 
-  // 将文本拆成段落（你也可以直接传 blocks 数组）
-  const paragraphs = useMemo(
-    () => (typeof content === "string" ? content.split(/\n+/).map(p => p.trim()).filter(Boolean) : (content || [])),
-    [content]
-  );
-  const { pages, containerRef } = useResponsiveOrDynamicPagination(isMobile, paragraphs);
-  
-  // 构造要传给 HTMLFlipBook 的“页”组件数组：
-  // 1. 单独的封面页
-  // 2. 正文页（由 pagination 生成）
-  // 3. 单独的封底页
+  // 拆分为段落或评论数组
+  const paragraphs = useMemo(() => {
+    if (Array.isArray(content)) return content; // 每条评论模式
+    if (typeof content === "string") {
+      return content
+        .split(/\n+/)
+        .map((p) => p.trim())
+        .filter(Boolean);
+    }
+    return [];
+  }, [content]);
+
+  // 自动分页（仅 auto 模式生效）
+  const { pages: autoPages, containerRef } =
+    useResponsiveOrDynamicPagination(isMobile, paragraphs);
+
+  // 根据 mode 选择最终页数组
+  const finalPages = useMemo(() => {
+    if (mode === "comment") {
+      // 每条评论独立一页
+      return paragraphs.map((comment) => [comment]);
+    }
+    // 自动分页
+    return autoPages;
+  }, [mode, paragraphs, autoPages]);
+
+  // 构造最终渲染数据：封面 + 内容 + 封底
   const pagesForFlip = useMemo(() => {
     const arr = [];
-
-    // first cover (single page)
     arr.push({ type: "cover", content: bookTitle });
-
-    // content pages
-    pages.forEach((paras, i) => {
-      arr.push({ type: "content", content: paras, pageNumber: i + 1 }); // pageNumber 表示正文顺序（不包含封面）
+    finalPages.forEach((paras, i) => {
+      arr.push({ type: "content", content: paras, pageNumber: i + 1 });
     });
-
-    // end cover (single page)
     arr.push({ type: "cover", content: endTitle });
-
     return arr;
-  }, [pages, bookTitle, endTitle]);
+  }, [finalPages, bookTitle, endTitle]);
 
-  const onPage = (e) => {
-    // flip 回传的是当前左/右 page 索引（0-based）
-    setPageIndex(e.data);
-  };
+  const onPage = (e) => setPageIndex(e.data);
 
-  // 每当 pagesForFlip 改变，等待 flip 实例就绪后读取总页数
+  // 计算总页数
   useEffect(() => {
-    // small delay to ensure HTMLFlipBook has (re)rendered internal pages
     const id = window.requestAnimationFrame(() => {
       try {
         const flip = flipBook.current?.pageFlip?.();
         if (flip && typeof flip.getPageCount === "function") {
           setTotalPage(flip.getPageCount());
         }
-      } catch (err) {
-        // ignore
-      }
+      } catch {}
     });
     return () => window.cancelAnimationFrame(id);
   }, [pagesForFlip]);
@@ -105,9 +124,7 @@ export function FlipBook({ content, bookTitle = "BOOK TITLE", endTitle = "THE EN
   if (!pagesForFlip.length) return <div>Loading book...</div>;
 
   return (
-    <div className={styles.container} 
-    ref={containerRef}
-    >
+    <div className={styles.container} ref={containerRef}>
       <HTMLFlipBook
         width={550}
         height={733}
@@ -120,26 +137,17 @@ export function FlipBook({ content, bookTitle = "BOOK TITLE", endTitle = "THE EN
         ref={flipBook}
         onFlip={onPage}
       >
-        {pagesForFlip.map((p, idx) => {
-          if (p.type === "cover") {
-            // 封面单独一页
-            return (
-              <PageCover key={`cover-${idx}`}>
-                {p.content}
-              </PageCover>
-            );
-          } else {
-            // 正文页，p.content 是该页的段落数组
-            // pageNumber 用于页面内部显示（如果你想从 1 开始计正文页）
-            return (
-              <Page key={`page-${idx}`} number={p.pageNumber}>
-                {p.content.map((para, j) => (
-                  <p key={j}>{para}</p>
-                ))}
-              </Page>
-            );
-          }
-        })}
+        {pagesForFlip.map((p, idx) =>
+          p.type === "cover" ? (
+            <PageCover key={`cover-${idx}`}>{p.content}</PageCover>
+          ) : (
+            <Page key={`page-${idx}`} number={p.pageNumber}>
+              {p.content.map((para, j) => (
+                <div key={j} dangerouslySetInnerHTML={{ __html: para }} />
+              ))}
+            </Page>
+          )
+        )}
       </HTMLFlipBook>
 
       <div className={styles.controls}>
@@ -152,6 +160,3 @@ export function FlipBook({ content, bookTitle = "BOOK TITLE", endTitle = "THE EN
     </div>
   );
 }
-
-
-

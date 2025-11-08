@@ -1,0 +1,15 @@
+.full-page {
+    width: 100%;
+    height: 100vh;
+    min-height: 100vh;
+    background: url(../../../assets/resources/3d-book-images/wood.jpg);
+}
+
+.full-main {
+    width: 100%;
+    height: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+}
