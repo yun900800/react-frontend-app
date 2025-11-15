@@ -71,7 +71,9 @@ function HomePage() {
         // { data: [ { id, title, author, coverImage, backCoverImage, pages: [...], ... } ] }
         const fetchedBooks = res.data?.data || res.data || [];
         fetchedBooks.map(book=>{
-          book.backCoverImage = imageBack;
+          console.log('book',book)
+          book.backCoverImage = book.back_cover_url || imageBack;
+          book.infoSummary = book.preface;
           book.pages = [
             { id: 1, content: "他比我本人还更像我。无论我们的灵魂是什么做的，他和我的都是一样的。" },
             { id: 2, content: "我就是希斯克利夫！他永远在我心里，永远在我心里：不是作为一种快乐，正如我也不是我自己的快乐，而是作为我的存在本身。" },

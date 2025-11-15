@@ -18,7 +18,7 @@ export const BookDetail = ({
     let styles = viewMode === 'grid' ? gridStyles : shelfStyles; 
 
     let id = 0;
-    if (data.id > 3 ) {
+    if (data.id > 2 ) {
         id = 'default';
     } else {
         id = data.id;
@@ -59,13 +59,14 @@ export const BookDetail = ({
             onTransitionEnd={viewMode === 'shelf' ? handleBookTransitionEnd : undefined}
             style={{
                 ...(data.coverColor ? { '--bk-cover-color': data.coverColor } : {}),
-                '--cover-image': `url(${data.cover_url || imageDefault})`
+                '--cover-image': `url(${data.cover_url || imageDefault})`,
+                '--book-color' : `${data.font_color}`
                 }}
             >
             
             {/* 封面 bk-front */}
             <div className={styles['bk-front']}>
-                <div className={styles['bk-cover-back']}>{data.coverBackText || '背面内容'}</div>
+                <div className={styles['bk-cover-back']}>{data.front_cover_back_text || '背面内容'}</div>
                 <div className={styles['bk-cover']}>
                     <h2>
                     <span>{data.author}</span>

@@ -1,71 +1,55 @@
-// src/components/BookReviewEditor.jsx
 import React, { useState, useEffect } from "react";
 import ReactQuill from "react-quill-new";
 import "react-quill-new/dist/quill.snow.css";
 import styles from "./BookReviewEditor.module.css";
+import { BookSelector } from "./BookSelector";
+import { useBookReview  } from "../hooks/useBookReview.js";
 
 export const BookReviewEditor = () => {
-  const [bookTitle, setBookTitle] = useState("");
-  const [author, setAuthor] = useState("");
+  const { reviews, addReview, loadReviews } = useBookReview();
+
+  const [book, setBook] = useState(null);
   const [chapterTitle, setChapterTitle] = useState("");
   const [content, setContent] = useState("");
-  const [savedReviews, setSavedReviews] = useState([]);
 
-  // 从 localStorage 加载数据
+  // ⭐ 当用户选择书籍时，自动加载该书籍的评论
   useEffect(() => {
-    const data = localStorage.getItem("bookReviews");
-    if (data) setSavedReviews(JSON.parse(data));
-  }, []);
-
-  const handleSave = () => {
-    console.log('handleSave');
-    if (!bookTitle || !chapterTitle || !content) {
-      alert("请填写完整内容！");
-      return;
+    if (book?.id) {
+      loadReviews(book.id);
     }
+  }, [book]);
 
-    const newReview = {
-      id: Date.now(),
-      bookTitle,
-      author,
-      chapterTitle,
-      content,
-      createdAt: new Date().toLocaleString(),
-    };
-    console.log('newReview',newReview);
+  const handleSave = async () => {
+    if (!book) return alert("请选择书籍！");
 
-    const updatedReviews = [...savedReviews, newReview];
-    setSavedReviews(updatedReviews);
-    localStorage.setItem("bookReviews", JSON.stringify(updatedReviews));
+    await addReview({
+      book_id: book.id,
+      reviewer: "jim",
+      chapter_title: chapterTitle,
+      content
+    });
 
     setChapterTitle("");
     setContent("");
-    alert("保存成功！");
+    alert("提交成功！");
   };
 
   return (
     <div className={styles.editorContainer}>
       <h1 className={styles.title}>📚 经典书籍评论编辑器</h1>
-
       <div className={styles.metaFields}>
-        <input
-          type="text"
-          placeholder="书名"
-          value={bookTitle}
-          onChange={(e) => setBookTitle(e.target.value)}
-        />
-        <input
-          type="text"
-          placeholder="作者"
-          value={author}
-          onChange={(e) => setAuthor(e.target.value)}
-        />
-        <input
-          type="text"
-          placeholder="章节标题"
-          value={chapterTitle}
-          onChange={(e) => setChapterTitle(e.target.value)}
-        />
+      {/* 选择书籍 */}
+      <BookSelector
+        value={book?.title || ""}
+        onSelect={(b) => setBook(b)}
+      />
+
+      <input
+        type="text"
+        placeholder="章节标题"
+        value={chapterTitle}
+        onChange={(e) => setChapterTitle(e.target.value)}
+      />
       </div>
 
       <ReactQuill
@@ -76,15 +60,13 @@ export const BookReviewEditor = () => {
       />
 
       <div className={styles.actions}>
-        <button onClick={handleSave}>💾 保存评论</button>
+        <button onClick={handleSave}>💾 保存评论（提交到服务器）</button>
       </div>
-
       <hr />
-
       <div className={styles.previewSection}>
         <h2>📝 已保存的评论</h2>
-        {savedReviews.length === 0 && <p>暂无评论内容。</p>}
-        {savedReviews.map((r) => (
+        {reviews.length === 0 && <p>暂无评论内容。</p>}
+        {reviews.map((r) => (
           <div key={r.id} className={styles.reviewCard}>
             <h3>{r.bookTitle} - {r.chapterTitle}</h3>
             <p><strong>作者：</strong>{r.author || "佚名"}</p>
@@ -99,3 +81,4 @@ export const BookReviewEditor = () => {
     </div>
   );
 };
+

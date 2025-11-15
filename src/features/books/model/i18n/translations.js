@@ -8,6 +8,10 @@ export const translations = {
             authorPlaceholder: "Author",
             descriptionPlaceholder: "Description",
             coverUrlPlaceholder: "Cover URL",
+            backCoverUrlPlaceholder: "Back Cover URL",
+            fontColorPlaceholder : "Font Color",
+            prefacePlaceholder: "Preface",
+            frontCoverBackTextPlaceholder: "Front Cover Back Text"
         },
         buttons: {
             addBook: "Add Book",
@@ -36,6 +40,10 @@ export const translations = {
             authorPlaceholder: "作者",
             descriptionPlaceholder: "简介",
             coverUrlPlaceholder: "封面URL",
+            backCoverUrlPlaceholder: "背面 URL",
+            fontColorPlaceholder : "字体颜色",
+            prefacePlaceholder: "序言",
+            frontCoverBackTextPlaceholder: "封皮背面文字"
         },
         buttons: {
             addBook: "添加书籍",

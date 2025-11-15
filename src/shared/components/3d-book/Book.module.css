@@ -83,6 +83,7 @@
 	background-color: #46d499;
 	-webkit-transform: rotate3d(0,1,0,-179deg);
 	transform: rotate3d(0,1,0,-179deg);
+	padding: 8px;
 }
 
 .bk-right {
@@ -520,7 +521,7 @@
   background-image: var(--cover-image);
   background-repeat: no-repeat;
   background-position: 100% 50%;
-  background-size: contain;
+  background-size: cover;
 }
 
 .book-default .bk-cover h2 {
@@ -530,9 +531,11 @@
   right: 0;
   padding: 20px;
   background: rgba(255, 255, 255, 0.3);
-  color: #222;
+  color: var(--book-color, #222);
   text-shadow: 0 1px 0 rgba(255, 255, 255, 0.5);
   font-family: "Big Caslon", "Book Antiqua", "Palatino Linotype", Georgia, serif;
+  display: flex;
+  flex-direction: column;
 }
 
 .book-default .bk-cover h2 span:first-child,

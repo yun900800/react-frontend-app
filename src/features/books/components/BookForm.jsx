@@ -68,6 +68,42 @@ export default function BookForm({ onSubmit, editingBook, onCancel, lang = 'zh' 
           className={styles.input}
         />
       </div>
+      <div className={styles.formGroup}>
+        <input
+          name="back_cover_url"
+          placeholder={t.fields.backCoverUrlPlaceholder}
+          value={formData.back_cover_url}
+          onChange={handleChange}
+          className={styles.input}
+        />
+      </div>
+      <div className={styles.formGroup}>
+        <input
+          name="font_color"
+          placeholder={t.fields.fontColorPlaceholder}
+          value={formData.font_color}
+          onChange={handleChange}
+          className={styles.input}
+        />
+      </div>
+      <div className={styles.formGroup}>
+        <input
+          name="preface"
+          placeholder={t.fields.prefacePlaceholder}
+          value={formData.preface}
+          onChange={handleChange}
+          className={styles.input}
+        />
+      </div>
+      <div className={styles.formGroup}>
+        <input
+          name="front_cover_back_text"
+          placeholder={t.fields.frontCoverBackTextPlaceholder}
+          value={formData.front_cover_back_text}
+          onChange={handleChange}
+          className={styles.input}
+        />
+      </div>
       
       <div className={styles.formGroup}>
         <button type="submit" className={`${styles.editButton} primary-button`}>

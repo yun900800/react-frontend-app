@@ -53,7 +53,7 @@ function App() {
             <Route path="/responsive-layout" element={<ResponsiveFlowApp />} />
             <Route path="/fixed-app" element={<FixedStructureApp />} />
             <Route path="/shelf" element={<FullPageApp />} />
-            <Route path="page-book" element={<FullPageBookApp />} />
+            <Route path="/page-book" element={<FullPageBookApp />} />
             <Route path="/flipbook" element={<FlipPageApp />} />
             <Route path="/animation" element={<AnimationPage />} />
             <Route path="/smart-menu" element={<SmartMenuPage />} />

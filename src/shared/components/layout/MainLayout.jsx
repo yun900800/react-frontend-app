@@ -56,7 +56,7 @@ function MainLayout() {
       <Link to="/shelf" style={{ textDecoration: 'none',  }}>
         <Book  style={{ display: 'flex',width: 'var(--font-size-1)', height: 'auto' }} />
       </Link>
-      <Link to="/animation" style={{ textDecoration: 'none',  }}>
+      <Link to="/page-book" style={{ textDecoration: 'none',  }}>
         <Aperture  style={{ display: 'flex',width: 'var(--font-size-1)', height: 'auto' }} />
       </Link>
       <Link to="/calendar" style={{ textDecoration: 'none',  }}>
@@ -64,12 +64,6 @@ function MainLayout() {
       </Link>
       <Link to="/animation" style={{ textDecoration: 'none',  }}>
         <Play  style={{ display: 'flex',width: 'var(--font-size-1)', height: 'auto' }} />
-      </Link>
-      <Link to="/editor" style={{ textDecoration: 'none',  }}>
-        <SquarePen  style={{ display: 'flex',width: 'var(--font-size-1)', height: 'auto' }} />
-      </Link>
-      <Link to="/books" style={{ textDecoration: 'none',  }}>
-        <Book  style={{ display: 'flex',width: 'var(--font-size-1)', height: 'auto' }} />
       </Link>
       <a 
         onClick={handleLogout}
