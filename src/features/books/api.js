@@ -10,8 +10,10 @@ export const booksApi = {
   createBook: (bookData) => 
     fetcher.post('/api/books', bookData),
 
-  updateBook: (id, bookData) => 
-    fetcher.put(`/api/books/${id}`, bookData),
+  updateBook: (id, bookData) => {
+    const { reviews, ...payload } = bookData; // 排除 reviews 字段
+    return fetcher.put(`/api/books/${id}`, payload);
+  },
 
   deleteBook: (id) => 
     fetcher.delete(`/api/books/${id}`)

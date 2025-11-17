@@ -20,16 +20,34 @@ export const translations = {
         },
         },
         booksPage: {
-        title: "📚 Book Management",
-        addNewButton: "➕ Add Book",
-        loading: "Loading...",
-        pagination: {
-            prev: "Previous",
-            next: "Next",
-            pageLabel: "Page",
-            ofLabel: "of",
+            title: "📚 Book Management",
+            addNewButton: "➕ Add Book",
+            loading: "Loading...",
+            pagination: {
+                prev: "Previous",
+                next: "Next",
+                pageLabel: "Page",
+                ofLabel: "of",
+            },
+            empty: "No books available.",
+            collapseList: '➕ Collapse List',
+            expandList: '➕ Expand List',
         },
-        empty: "No books available.",
+
+        /** --- 📚 BookList 部分 --- **/
+        bookList: {
+            empty: "No books available.",
+            columns: {
+                id: "ID",
+                title: "Title",
+                author: "Author",
+                description: "Description",
+                actions: "Actions",
+            },
+            actions: {
+                edit: "Edit",
+                delete: "Delete",
+            },
         },
     },
     zh: {
@@ -52,16 +70,34 @@ export const translations = {
         },
         },
         booksPage: {
-        title: "📚 书籍管理",
-        addNewButton: "➕ 新增书籍",
-        loading: "加载中...",
-        pagination: {
-            prev: "上一页",
-            next: "下一页",
-            pageLabel: "第",
-            ofLabel: "页，共",
+            title: "📚 书籍管理",
+            addNewButton: "➕ 新增书籍",
+            loading: "加载中...",
+            pagination: {
+                prev: "上一页",
+                next: "下一页",
+                pageLabel: "第",
+                ofLabel: "页，共",
+            },
+            empty: "暂无书籍。",
+            collapseList: '➕ 收起列表',
+            expandList: '➕ 展开列表',
         },
-        empty: "暂无书籍。",
+
+        /** --- 📚 BookList 部分 --- **/
+        bookList: {
+            empty: "暂无书籍",
+            columns: {
+                id: "ID",
+                title: "书名",
+                author: "作者",
+                description: "简介",
+                actions: "操作",
+            },
+            actions: {
+                edit: "编辑",
+                delete: "删除",
+            },
         },
     }
     

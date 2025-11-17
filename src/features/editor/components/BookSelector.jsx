@@ -25,6 +25,7 @@ export const BookSelector = ({ value, onSelect }) => {
 
   return (
     <div className={styles.selector}>
+      <div className={styles.inputWrapper}>
       <input
         type="text"
         placeholder="搜索书名..."
@@ -35,7 +36,7 @@ export const BookSelector = ({ value, onSelect }) => {
       />
 
       {loading && <div className={styles.loading}>加载中...</div>}
-
+      </div>
       {showDropdown && results?.data?.length > 0 && (
         <ul className={styles.dropdown}>
           {results.data.map((book) => (

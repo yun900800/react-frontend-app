@@ -205,7 +205,7 @@ const flipBookCommentData = [
 ];
 
 const reviews = JSON.parse(localStorage.getItem("bookReviews"));
-const content = reviews.map(r => r.content);
+const content = (reviews || flipBookCommentData).map(r => r.content);
   const bookTitle = <>
     <h2>百年孤独</h2>
     <a 

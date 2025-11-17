@@ -30,7 +30,10 @@ const handleResponse = async (res) => {
   const isJson = contentType && contentType.includes('application/json');
   const data = isJson ? await res.json() : await res.text();
   if (res.status === 401) {
-    return { data: null, status: 401 };
+    localStorage.removeItem('token');
+    window.location.href = '/login';
+    // 返回一个永远 pending 的 Promise，避免后续代码执行
+    return new Promise(() => {});
   }
   if (!res.ok) {
     return { error: { status: res.status, data } };

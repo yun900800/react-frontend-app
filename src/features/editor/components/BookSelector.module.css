@@ -3,6 +3,28 @@
   width: 60%;
 }
 
+/* 🌟 新增样式：用于对齐 input 和 loading 提示 */
+.inputWrapper {
+  display: flex; /* 启用 Flexbox */
+  align-items: center; /* 垂直居中对齐所有子元素（input 和 loading） */
+  gap: 10px; /* 如果需要，在 input 和 loading 之间增加间距 */
+}
+
+.inputWrapper input {
+  /* 确保 input 占据剩余空间，或者设置一个明确的宽度 */
+  flex-grow: 1; 
+  padding: 10px;
+  /* ... 其他 input 样式 */
+}
+
+/* loading 提示的样式，可以微调 */
+.loading {
+  /* 确保 loading 提示不会占用太多空间 */
+  flex-shrink: 0;
+  color: #888;
+  font-size: 0.9em;
+}
+
 .selector input {
   width: 100%;
   padding: 8px;

@@ -2,22 +2,27 @@ import React, { useState, useEffect } from 'react';
 import { translations } from '../model/i18n/translations';
 import styles from '../../../shared/css/components/_form.module.css';
 
+const initialBookState = {
+  title: '',
+  author: '',
+  description: '',
+  cover_url: '',
+  back_cover_url: '',
+  font_color: '',
+  preface: '',
+  front_cover_back_text: '',
+};
+
 export default function BookForm({ onSubmit, editingBook, onCancel, lang = 'zh' }) {
   const t = translations[lang].bookForm;
 
-  const [formData, setFormData] = useState({
-    title: '',
-    author: '',
-    description: '',
-    cover_url: ''
-  });
-
+  const [formData, setFormData] = useState(() => 
+    editingBook ? { ...initialBookState, ...editingBook } : initialBookState
+  );
+  
+  // 简化 useEffect，仅在 editingBook 变化时重置/填充表单
   useEffect(() => {
-    if (editingBook) {
-      setFormData(editingBook);
-    } else {
-      setFormData({ title: '', author: '', description: '', cover_url: '' });
-    }
+    setFormData(editingBook ? { ...initialBookState, ...editingBook } : initialBookState);
   }, [editingBook]);
 
   const handleChange = (e) => {
