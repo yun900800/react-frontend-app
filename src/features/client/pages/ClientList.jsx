@@ -26,8 +26,6 @@ const ClientList = () => {
         setCurrentPage, handleDeleteClient, handleEditClient, handleUpdateClient,
         setEditingClient, handleCloseModal
     } = useClientData(1, 5);
-
-    console.log('Rendering ClientList with clients:', clients);
     
     // 2. 渲染 UI
     return (

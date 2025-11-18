@@ -1,41 +1,63 @@
-import { useEffect, useState } from 'react';
+import { usePagination } from '../../../shared/hooks/usePagination';
 import { booksApi } from '../api';
 
-export function useBooks() {
-  const [books, setBooks] = useState([]);
-  const [total, setTotal] = useState(0);
-  const [page, setPage] = useState(1);
-  const [limit] = useState(10);
-  const [loading, setLoading] = useState(false);
+export function useBooks(initialPage = 1, limit = 10) {
 
-  const fetchBooks = async (pageNum = 1) => {
-    setLoading(true);
-    const res = await booksApi.getBooks(pageNum, limit);
-    if (res.data) {
-      setBooks(res.data.data);
-      setTotal(res.data.total);
-    }
-    setLoading(false);
-  };
+  // ------------------------------
+  // 使用 usePagination 处理分页
+  // ------------------------------
+  const {
+    data: books,
+    total,
+    page,
+    setPage,
+    loading,
+    error,
+    refresh, // 刷新当前页
+  } = usePagination(booksApi.getBooks, initialPage, limit);
 
+
+  // ------------------------------
+  // 添加书籍
+  // ------------------------------
   const addBook = async (book) => {
     const res = await booksApi.createBook(book);
-    if (res.data) fetchBooks(page);
+    if (res.data) await refresh();  // 刷新当前页
   };
 
+
+  // ------------------------------
+  // 更新书籍
+  // ------------------------------
   const updateBook = async (id, book) => {
     const res = await booksApi.updateBook(id, book);
-    if (res.data) fetchBooks(page);
+    if (res.data) await refresh();
   };
 
+
+  // ------------------------------
+  // 删除书籍
+  // ------------------------------
   const deleteBook = async (id) => {
     const res = await booksApi.deleteBook(id);
-    if (res.data || res.status === 200) fetchBooks(page);
+    if (res.data || res.status === 200) await refresh();
   };
 
-  useEffect(() => {
-    fetchBooks(page);
-  }, [page]);
 
-  return { books, total, page, limit, setPage, addBook, updateBook, deleteBook, loading };
+  // ------------------------------
+  // 保持原返回结构不变
+  // ------------------------------
+  return {
+    books,
+    total,
+    page,
+    limit,
+    setPage,
+    loading,
+    error,
+
+    addBook,
+    updateBook,
+    deleteBook,
+  };
 }

@@ -7,6 +7,8 @@ import styles from './BooksPage.module.css';
 import { translations } from '../model/i18n/translations';
 import ThemeToggle from '../../../shared/components/ThemeToggle';
 import SpacerLayout from '../../../shared/components/layout/SpacerLayout';
+import Pagination from '../../../shared/components/pagination/Pagination'; // 假设导入路径
+import { styles as paginationStyles } from '../../../shared/css/components/styles.js';
 
 export default function BooksPage({ lang = 'zh' }) {
   const { books, total, page, setPage, addBook, updateBook, deleteBook, loading } = useBooks();
@@ -45,8 +47,9 @@ export default function BooksPage({ lang = 'zh' }) {
   const toggleListExpanded = () => {
     setListExpanded(prev => !prev);
   };
-
+  console.log('total',total);
   const totalPages = Math.ceil(total / 10);
+
   const hasBooks = books.length > 0;
 
   return (
@@ -97,7 +100,13 @@ export default function BooksPage({ lang = 'zh' }) {
                 lang={lang}
               />
               {/* 分页组件也应该放在 ExpandedContainer 内部，因为它与列表内容相关 */}
-              <div className={styles.pagination}>
+              <Pagination
+                    currentPage={page}
+                    totalPages={totalPages}
+                    onPageChange={setPage}
+                    styles={paginationStyles} // 传递样式 prop
+                />
+              {/* <div className={styles.pagination}>
                 <button disabled={page <= 1} onClick={() => setPage(page - 1)}>
                   {t.pagination.prev}
                 </button>
@@ -107,7 +116,7 @@ export default function BooksPage({ lang = 'zh' }) {
                 <button disabled={page >= totalPages} onClick={() => setPage(page + 1)}>
                   {t.pagination.next}
                 </button>
-              </div>
+              </div> */}
             </>
           )}
         </div>
