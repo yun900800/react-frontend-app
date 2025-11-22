@@ -1,7 +1,7 @@
 // client/hooks/useClientData.js
 
-import { useState, useEffect, useCallback } from 'react';
-import { fetchClientsApi, deleteClientApi, updateClientApi } from '../api';
+import { useState} from 'react';
+import { deleteClientApi, updateClientApi,fetchClientsAdapter } from '../api';
 import { usePagination } from '../../../shared/hooks/usePagination';
 
 const useClientData = (initialPage = 1, pageSize = 5) => {
@@ -16,7 +16,8 @@ const useClientData = (initialPage = 1, pageSize = 5) => {
         loading,
         error,
         refresh
-    } = usePagination(fetchClientsApi, initialPage, pageSize);
+    } = usePagination(fetchClientsAdapter, initialPage, pageSize);
+    console.log(clients, total, currentPage);
 
     const totalPages = Math.ceil(total / pageSize);
 

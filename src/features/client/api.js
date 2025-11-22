@@ -43,6 +43,22 @@ export const fetchClientsApi = async (page, pageSize) => {
 };
 
 /**
+ * 适配器：将 getClientsByPage 的返回格式统一为 { data, total }
+ * @param {number} page 
+ * @param {number} limit 
+ */
+export const fetchClientsAdapter = async (page, limit) => {
+    // 调用原始 API
+    const result = await fetchClientsApi(page, limit); 
+
+    // 格式化为统一的结构
+    return {
+        data: result.clients,     // 适配 result.clients -> data
+        total: result.totalCount, // 适配 result.totalCount -> total
+    };
+}
+
+/**
  * 删除指定 ID 的客户端
  */
 export const deleteClientApi = async (clientId) => {
