@@ -22,6 +22,7 @@ import FullPageBookApp from './features/home/pages/FullPageBookApp.jsx';
 import SmartMenuPage from './features/animation/pages/SmartMenuPage.jsx';
 import BookEditorPages from './features/editor/pages/BookEditorPages.jsx';
 import BooksPage from './features/books/pages/BooksPage.jsx';
+import { FullBleedPage } from './features/home/pages/FullBleedPage.jsx';
 
 function App() {
   return (
@@ -59,6 +60,7 @@ function App() {
             <Route path="/smart-menu" element={<SmartMenuPage />} />
             <Route path="/editor" element={ <BookEditorPages />}/> 
             <Route path="/books" element={ <BooksPage />}/> 
+            <Route path="/full-bleed" element={<FullBleedPage />} />
           </Route>
           
           {/* 3. 可选：404 Not Found 路由 */}

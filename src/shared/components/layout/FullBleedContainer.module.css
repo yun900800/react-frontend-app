@@ -1,0 +1,46 @@
+/* ContentLayout.css */
+
+.wrapper {
+  display: grid;
+  /* 使用 CSS 变量来定义最大宽度 */
+  grid-template-columns: 1fr min(var(--content-max-width, 42rem), 100%) 1fr;
+
+  /* 可选：在小屏幕上添加侧边内边距，避免内容紧贴边缘 */
+  padding-inline: 16px; 
+}
+
+/* 默认情况下，所有直接子元素都在第二栏（内容区） */
+.wrapper > * {
+  grid-column: 2;
+}
+
+/* 突破限制的元素类名 */
+.full-bleed {
+  grid-column: 1 / -1; 
+
+  /* ------------------------------------------- */
+  /* 新增：使其内部子元素居中 */
+  /* display: flex;
+  justify-content: center;
+  align-items: center;  */
+  /* 可选：垂直居中 */
+  
+  width: 100%;
+}
+
+/* 目标：限制 FullBleed 内部的直接子元素 */
+.full-bleed > * {
+  /* 限制内部内容的宽度，这里可以复用全局设置的最大内容宽度 */
+  /* max-width: var(--content-max-width, 42rem);  */
+  
+  /* 确保它在限制范围内填满宽度 */
+  width: 100%; 
+  
+  /* 移除 Flex 容器带来的额外边距影响 */
+  margin: 0;
+}
+
+/* 特殊情况：如果内部元素需要完全填充 FullBleed 容器，可以设置例外 */
+.full-bleed .full-fill-child {
+  max-width: 100%; 
+}

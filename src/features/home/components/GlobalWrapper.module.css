@@ -1,0 +1,14 @@
+/* GlobalWrapper.css */
+
+.global-wrapper {
+  /* 设置整个应用的最大宽度，超过这个宽度就不会再延伸 */
+  max-width: var(--global-max-width, 1440px);
+  
+  /* 确保整个容器在超宽屏幕上居中 */
+  margin-left: auto;
+  margin-right: auto; 
+  /* 简写：margin: 0 auto; */
+  
+  /* 确保它填满父容器的宽度，直到达到 max-width */
+  width: 100%; 
+}
