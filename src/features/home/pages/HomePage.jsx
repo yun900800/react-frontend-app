@@ -92,25 +92,45 @@ function HomePage() {
   }, [currentPage]);
 
   if (loading) {
-    return <ContentWrapper>📚 正在加载书籍中...</ContentWrapper>;
+    return (
+      <ContentWrapper style={{ padding: '60px 20px', textAlign: 'center' }}>
+        <div style={{ color: 'var(--lux-gold)', fontSize: '1.2rem', marginBottom: '10px' }}>✦ 正在加载尊享门户内容...</div>
+        <div style={{ color: 'var(--lux-text-muted)', fontSize: '0.9rem' }}>正在同步最新高端数据</div>
+      </ContentWrapper>
+    );
   }
 
   if (error) {
-    return <ContentWrapper>❌ 出错啦：{error}</ContentWrapper>;
+    return (
+      <ContentWrapper style={{ padding: '60px 20px', textAlign: 'center' }}>
+        <div style={{ color: '#e74c3c', fontSize: '1.2rem', marginBottom: '10px' }}>✦ 加载遇到阻碍</div>
+        <div style={{ color: 'var(--lux-text-muted)', fontSize: '0.9rem' }}>{error}</div>
+      </ContentWrapper>
+    );
   }
 
 
   return (
     <ContentWrapper 
       style={{ 
-        padding: '20px', 
-        border: '1px solid #ddd', 
-        borderRadius: '5px',
+        padding: '30px', 
+        background: 'var(--lux-surface)',
+        border: '1px solid var(--lux-border)', 
+        borderRadius: '12px',
+        boxShadow: 'var(--lux-shadow)',
+        margin: '20px auto',
+        maxWidth: '1400px'
       }}
     >
-      <BookBlock pages={pageInfos} width={'90%'} height={'200px'} maxWidth={'320px'}/>
-      <BookBlock pages={pageInfos} width={'90%'} height={'200px'} maxWidth={'320px'} direction="rtl"/>    
-      <BookList books={books || booksData} />
+      <div style={{ marginBottom: '30px', textAlign: 'center' }}>
+        <h1 style={{ color: 'var(--lux-gold)', fontWeight: 400, letterSpacing: '2px', marginBottom: '8px' }}>EXQUISITE PORTAL</h1>
+        <p style={{ color: 'var(--lux-text-muted)', fontSize: 'var(--font-size-0)' }}>探索极致美学与尊贵体验</p>
+      </div>
+      <div style={{ display: 'flex', gap: '20px', flexWrap: 'wrap', justifyContent: 'center', marginBottom: '40px' }}>
+        <BookBlock pages={pageInfos} width={'90%'} height={'200px'} maxWidth={'320px'}/>
+        <BookBlock pages={pageInfos} width={'90%'} height={'200px'} maxWidth={'320px'} direction="rtl"/>    
+      </div>
+      <BookList books={books && books.length > 0 ? books : booksData} />
     </ContentWrapper>
   );
 }
