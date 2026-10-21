@@ -296,7 +296,33 @@ input.error, textarea.error {
   border-color: var(--lux-border-hover);
 }
 
-/* Ambient background glow */
+/* Ambient Lighting & Vignette */
+body::after {
+  content: '';
+  position: fixed;
+  bottom: -30vh;
+  right: -10vw;
+  width: 60vw;
+  height: 60vh;
+  background: radial-gradient(circle, rgba(184, 151, 66, 0.05) 0%, rgba(12, 14, 18, 0) 65%);
+  pointer-events: none;
+  z-index: 0;
+}
+
+.lux-ambient-card {
+  position: relative;
+  overflow: hidden;
+}
+
+.lux-ambient-card::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 1px;
+  background: linear-gradient(90deg, transparent, rgba(223, 189, 115, 0.4), transparent);
+}
 body::before {
   content: '';
   position: fixed;
