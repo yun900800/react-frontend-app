@@ -7,11 +7,13 @@
 	transform-style: preserve-3d;
 	-webkit-transition: -webkit-transform .5s;
 	transition: transform .5s;
-	-webkit-transform: rotate3d(0,1,0,90deg);
-	transform: rotate3d(0,1,0,90deg);
+	-webkit-transform: translateX(0) rotateY(90deg) translateZ(0);
+	transform: translateX(0) rotateY(90deg) translateZ(0);
 }
 
-.bk-book:hover {
+/* Match the original showcase: the translation stays in the rotated
+   book coordinate system, so the spine only leans instead of sliding. */
+.bk-book:not(.bk-viewinside):hover {
 	-webkit-transform: rotateY(90deg) rotateZ(-15deg) translate3d(-100px,0,0);
 	transform: rotateY(90deg) rotateZ(-15deg) translate3d(-100px,0,0);
 }
@@ -27,10 +29,10 @@
 	transform-style: preserve-3d;
 	-webkit-transform-origin: 0% 50%;
 	transform-origin: 0% 50%;
-	-webkit-transition: -webkit-transform .5s;
-	transition: transform .5s;
-	-webkit-transform: translate3d(0,0,20px);
-	transform: translate3d(0,0,20px);
+	-webkit-transition: -webkit-transform .45s cubic-bezier(.22,.61,.36,1);
+	transition: transform .45s cubic-bezier(.22,.61,.36,1);
+	-webkit-transform: translate3d(0,0,20px) rotateY(0deg);
+	transform: translate3d(0,0,20px) rotateY(0deg);
 }
 
 .bk-front > div {
@@ -81,7 +83,19 @@
 }
 
 .bk-cover-back {
+	box-sizing: border-box;
+	padding: 34px 28px 30px;
+	overflow: auto;
 	background-color: #000;
+	color: var(--book-color, #f7f3e8);
+	font-size: 13px;
+	font-weight: 400;
+	line-height: 1.75;
+	overflow-wrap: anywhere;
+	text-align: left;
+	white-space: pre-wrap;
+	-webkit-user-select: text;
+	user-select: text;
 	-webkit-transform: rotate3d(0,1,0,-179deg);
 	transform: rotate3d(0,1,0,-179deg);
 }
@@ -118,18 +132,28 @@
 /* Transform classes */
 
 .bk-viewinside .bk-front {
-	-webkit-transform: translate3d(0,0,20px) rotate3d(0,1,0,-160deg);
-	transform: translate3d(0,0,20px) rotate3d(0,1,0,-160deg);
+	-webkit-transform: translate3d(0,0,20px) rotateY(-160deg);
+	transform: translate3d(0,0,20px) rotateY(-160deg);
+	-webkit-transition-delay: .12s;
+	transition-delay: .12s;
 }
 
 .bk-book.bk-viewinside {
-	-webkit-transform: rotate3d(0,1,0,0deg) translateX(0px) translateZ(100px) !important;
-	transform: rotate3d(0,1,0,0deg) translateX(0px) translateZ(100px) !important;
+	-webkit-transform: translateX(var(--open-x, 0px)) rotateY(0deg) translateZ(100px);
+	transform: translateX(var(--open-x, 0px)) rotateY(0deg) translateZ(100px);
 }
 
-.bk-book.bk-outside {
-	-webkit-transform: rotate3d(0,1,0,90deg) translateX(-300px);
-	transform: rotate3d(0,1,0,90deg) translateX(-300px);
+.bk-viewinside .bk-page {
+	display: block;
+}
+
+/* The page owns pointer events while a book is open. The 3D back cover
+   can otherwise sit in front of the page and swallow text clicks. */
+.bk-viewinside .bk-back,
+.bk-viewinside .bk-right,
+.bk-viewinside .bk-top,
+.bk-viewinside .bk-bottom {
+	pointer-events: none;
 }
 
 .bk-book.bk-viewback {
@@ -226,21 +250,75 @@
 }
 
 .bk-page nav {
-	display: block;
-	text-align: center;
-	margin-top: 20px;
-	position: relative;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	gap: 8px;
+	position: absolute;
+	right: 0;
+	bottom: 14px;
+	left: 0;
 	z-index: 100;
+}
+
+.bk-page nav button {
+	display: inline-flex;
+	align-items: center;
+	justify-content: center;
+	width: 24px;
+	height: 24px;
+	padding: 0;
+	border: 0;
+	border-radius: 50%;
+	background: #f0f0f0;
+	color: #555;
+	font: inherit;
+	font-size: 16px;
+	line-height: 1;
 	cursor: pointer;
 }
 
-.bk-page nav span {
-	display: inline-block;
-	width: 20px;
-	height: 20px;
-	color: #aaa;
-	background: #f0f0f0;
+.bk-page nav button:hover:not(:disabled) {
+	background: #e4e4e4;
+}
+
+.bk-page nav button:disabled {
+	opacity: .35;
+	cursor: default;
+}
+
+.bk-page-count {
+	min-width: 36px;
+	color: #888;
+	font-size: 11px;
+	line-height: 1;
+	text-align: center;
+}
+
+.bk-close {
+	position: absolute;
+	top: 12px;
+	right: 12px;
+	z-index: 120;
+	display: inline-flex;
+	align-items: center;
+	justify-content: center;
+	width: 28px;
+	height: 28px;
+	padding: 0;
+	border: 1px solid rgba(0, 0, 0, 0.12);
 	border-radius: 50%;
+	background: rgba(255, 255, 255, 0.86);
+	color: #333;
+	font: inherit;
+	font-size: 18px;
+	line-height: 1;
+	cursor: pointer;
+	box-shadow: 0 2px 8px rgba(0, 0, 0, 0.12);
+}
+
+.bk-close:hover {
+	background: #fff;
 }
 
 /* Individual style & artwork */
@@ -492,4 +570,53 @@
 	width: 300px;
 	margin: 10px;
 	float: left;
+}
+
+/* Default covers use the normalized book image. */
+.book-default .bk-cover {
+	background-image: var(--cover-image);
+	background-position: center;
+	background-size: cover;
+}
+
+/* Spine typography: keep one line and ellipsize long metadata. */
+.bk-book .bk-left h2 {
+	display: flex;
+	align-items: center;
+	justify-content: flex-end;
+	gap: .4em;
+	width: 400px;
+	height: 40px;
+	padding: 0 12px;
+	overflow: hidden;
+	color: var(--book-color, #fff);
+	font-size: 11px;
+	font-weight: 600;
+	line-height: 1;
+	text-align: right;
+	white-space: nowrap;
+}
+
+.bk-book .bk-left h2 span {
+	min-width: 0;
+	overflow: hidden;
+	text-overflow: ellipsis;
+	white-space: nowrap;
+}
+
+.bk-book .bk-left h2 span:first-child {
+	flex: 0 1 auto;
+	max-width: 42%;
+	padding-right: 0;
+	font-size: 9px;
+	font-weight: 400;
+	letter-spacing: .04em;
+	opacity: .72;
+	text-transform: uppercase;
+}
+
+.bk-book .bk-left h2 span:last-child {
+	flex: 1 1 auto;
+	font-size: 11px;
+	font-weight: 600;
 }

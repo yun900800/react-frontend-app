@@ -6,15 +6,33 @@
     padding-right: 20px;
 }
 
-/* 覆盖 StickyHeaderLayout 中 header 的背景颜色，确保 Link 看得清 */
 .main_header_custom {
-    background-color: oklch(var(--masthead-primary)); /* 假设你想用白色背景 */
-    padding: 0.5rem 1rem;
+    background-color: var(--glass-bg);
+    backdrop-filter: blur(16px);
+    -webkit-backdrop-filter: blur(16px);
+    border-bottom: 1px solid var(--lux-border);
+    padding: 0.8rem 1.5rem;
+    box-shadow: var(--lux-shadow);
 }
 
 .main_content_custom {
-    background-color: oklch(var(--color-background2));
-    padding-top: 0;
+    background-color: var(--lux-bg);
+    padding-top: 10px;
+    min-height: calc(100vh - 60px);
+}
+
+/* 导航链接轻奢光效与悬停过渡 */
+:global(.sticky_header a) {
+    color: var(--lux-text-muted);
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    padding: 6px 10px;
+    border-radius: 8px;
+}
+
+:global(.sticky_header a:hover) {
+    color: var(--lux-gold);
+    background-color: var(--lux-surface-hover);
+    box-shadow: var(--lux-glow);
 }
 
 @media (max-width: 768px) {

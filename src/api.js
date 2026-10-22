@@ -2,8 +2,8 @@
 
 // 替换为你的 WebHostMost 上的后端服务域名 (例如: https://api.yourdomain.com)
 // 确保它与你后端 Express 中的 /api 路由匹配
-// const BASE_URL = 'http://localhost:5002'; 
-const BASE_URL = 'https://bayh.pp.ua';   
+// API 基础地址：优先读取环境变量 VITE_API_BASE_URL，未配置时回退到默认地址
+const BASE_URL = import.meta.env.VITE_API_BASE_URL || 'https://bayh.pp.ua';   
 
 
 /**

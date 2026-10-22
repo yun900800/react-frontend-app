@@ -13,7 +13,7 @@ import calendarImage11 from '../../../assets/resources/calendar/11.jpg'
 import calendarImage12 from '../../../assets/resources/calendar/12.jpg'
 import calendarStyles from './calendar.module.css';
 import { useMediaQuery } from '../../../shared/hooks/useMediaQuery.js';
-import { BookBlock } from '../../../shared/components/book-block/BookBlock.jsx';
+import { BookBlock } from '../../books/components/BookReader/BookBlock.jsx';
 
 
 const pages1= [

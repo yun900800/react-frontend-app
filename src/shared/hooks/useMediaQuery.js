@@ -2,7 +2,10 @@
 import { useEffect, useState } from 'react';
 
 export function useMediaQuery(query) {
-  const [matches, setMatches] = useState(false);
+  const [matches, setMatches] = useState(() => {
+    if (typeof window === 'undefined') return false;
+    return window.matchMedia(query).matches;
+  });
 
   useEffect(() => {
     // 如果在非浏览器环境中就直接返回

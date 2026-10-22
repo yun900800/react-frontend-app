@@ -1,8 +1,8 @@
 // shared/lib/fetch.js
-const BASE_URL = 'https://bayh.pp.ua'; // 可选，如 '/api'
-// const BASE_URL = "http://localhost:5002"; // 本地调试时使用本地后端地址
-// const BASE_URL = "http://192.168.5.228:5002"; // 本地调试时使用本地后端地址
-const DEFAULT_TIMEOUT = 5000; // 默认超时时间 5 秒
+// API 基础地址：优先读取环境变量 VITE_API_BASE_URL，未配置时回退到默认地址
+// 本地调试时可在 .env.development 中修改为 http://localhost:5002
+const BASE_URL = import.meta.env.VITE_API_BASE_URL || 'https://bayh.pp.ua';
+const DEFAULT_TIMEOUT = 50000; // 默认超时时间 5 秒
 
 // ----------------------------------------------------
 // 1. 超时功能封装

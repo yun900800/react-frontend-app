@@ -1,44 +1,58 @@
 import React, { useEffect, useState } from 'react';
 import { Sun, Moon } from 'lucide-react';
+import s from './ThemeToggle.module.css';
 
 const THEME_KEY = 'theme-preference';
+const THEME_EVENT = 'themechange';
 
 function getInitialTheme() {
-  if (typeof window === 'undefined') return 'light'; // SSR fallback
+  if (typeof window === 'undefined') return 'light';
   const saved = localStorage.getItem(THEME_KEY);
   if (saved === 'light' || saved === 'dark') return saved;
   return window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
 }
 
-export default function ThemeToggle(props) {
-  const [theme, setTheme] = useState('light');
-  const [mounted, setMounted] = useState(false);
+export default function ThemeToggle({ style, className }) {
+  const [theme, setTheme] = useState(getInitialTheme);
 
   useEffect(() => {
-    setTheme(getInitialTheme());
-    setMounted(true);
-  }, []);
-
-  useEffect(() => {
-    if (typeof document !== 'undefined') {
-      document.documentElement.setAttribute('data-theme', theme);
-      localStorage.setItem(THEME_KEY, theme);
-    }
+    document.documentElement.setAttribute('data-theme', theme);
+    localStorage.setItem(THEME_KEY, theme);
   }, [theme]);
 
+  // Keep multiple toggles in sync (top bar + mobile drawer).
+  useEffect(() => {
+    const sync = (event) => {
+      const next = event.detail;
+      setTheme(next === 'dark' || next === 'light' ? next : getInitialTheme());
+    };
+
+    window.addEventListener(THEME_EVENT, sync);
+    return () => window.removeEventListener(THEME_EVENT, sync);
+  }, []);
+
   const toggleTheme = () => {
-    setTheme((prev) => (prev === 'light' ? 'dark' : 'light'));
+    const next = theme === 'light' ? 'dark' : 'light';
+    setTheme(next);
+    window.dispatchEvent(new CustomEvent(THEME_EVENT, { detail: next }));
   };
 
-  if (!mounted) return null; // 🚨 SSR 时不渲染，客户端首次挂载后再显示
+  const label = theme === 'light' ? '切换到深色主题' : '切换到浅色主题';
 
   return (
-    <a onClick={toggleTheme} className="button-primary" style={props.style}>
+    <button
+      type="button"
+      onClick={toggleTheme}
+      className={`${s.toggle} ${className || ''}`}
+      style={style}
+      aria-label={label}
+      title={label}
+    >
       {theme === 'light' ? (
-        <Sun style={{ width: 'var(--font-size-1)', height: 'auto' }} />
+        <Sun aria-hidden="true" />
       ) : (
-        <Moon style={{ width: 'var(--font-size-1)', height: 'auto' }} />
+        <Moon aria-hidden="true" />
       )}
-    </a>
+    </button>
   );
 }

@@ -1,5 +1,5 @@
 import React from 'react';
-import { BookBlock } from '../../../shared/components/book-block/BookBlock';
+import { BookBlock } from '../../books/components/BookReader/BookBlock';
 import styles from './FullPageBookApp.module.css';
 import { useMediaQuery } from '../../../shared/hooks/useMediaQuery';
 const pages = [

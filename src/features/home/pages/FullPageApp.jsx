@@ -1,5 +1,5 @@
 import React from 'react';
-import { BookList } from '../../../shared/components/3d-book/BookList';
+import { BookShelf3D } from '../../books/components/BookShelf3D';
 import styles from './FullPageApp.module.css';
 import imageBack from '../../../assets/resources/3d-book-images/3.png'
 const booksData = [
@@ -135,7 +135,7 @@ export const FullPageApp = () => {
     return (
         <div className={styles['full-page']}>
             <div className={styles['full-main']}>
-                <BookList books={booksData} viewMode='shelf'/>
+                <BookShelf3D books={booksData} viewMode='shelf'/>
             </div>
         </div>
     );

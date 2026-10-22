@@ -1,0 +1,108 @@
+.page {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  width: 100%;
+  max-width: 1180px;
+  margin: 0 auto;
+  padding: 8px 0 40px;
+}
+
+.header {
+  padding-top: 8px;
+}
+
+.eyebrow {
+  display: inline-block;
+  margin-bottom: 10px;
+  color: var(--color-primary);
+  font-size: 11px;
+  letter-spacing: 0.16em;
+}
+
+.title {
+  margin: 0 0 8px;
+  font-size: clamp(1.6rem, 3vw, 2.2rem);
+}
+
+.lede {
+  max-width: 680px;
+  margin: 0;
+  color: var(--lux-text-muted);
+  line-height: 1.7;
+}
+
+.lede code {
+  padding: 2px 6px;
+  border: 1px solid var(--border-color);
+  border-radius: 6px;
+  background: var(--color-background2);
+  font-size: 12px;
+}
+
+.stage {
+  min-height: 420px;
+  padding: 16px;
+  border: 1px solid var(--border-color);
+  border-radius: 16px;
+  background: var(--color-background2);
+}
+
+.note {
+  margin: 0;
+  color: var(--lux-text-muted);
+  font-size: 12px;
+}
+
+.readerRow {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 16px;
+}
+
+.readerCard {
+  display: flex;
+  flex: 1 1 300px;
+  flex-direction: column;
+  align-items: center;
+  gap: 12px;
+  padding: 16px;
+  border: 1px solid var(--border-color);
+  border-radius: 16px;
+  background: var(--color-background2);
+}
+
+.readerLabel {
+  color: var(--lux-text-muted);
+  font-size: 11px;
+  letter-spacing: 0.14em;
+}
+
+.pageBody {
+  padding: 18px;
+}
+
+.pageBody h3 {
+  margin: 0 0 8px;
+  color: var(--color-primary);
+  font-size: 15px;
+}
+
+.pageBody p {
+  margin: 0;
+  color: var(--lux-text-muted);
+  font-size: 13px;
+  line-height: 1.7;
+}
+
+@media (max-width: 767px) {
+  .stage {
+    min-height: 320px;
+    padding: 10px;
+  }
+
+  .page {
+    gap: 16px;
+    padding-bottom: 24px;
+  }
+}

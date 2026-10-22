@@ -1,83 +1,75 @@
-import React , { useEffect, useState }from 'react';
-import { BookBlock } from '../../../shared/components/book-block/BookBlock';
-import { BookList } from '../../../shared/components/3d-book/BookList';
+import React, { useEffect, useState } from 'react';
+import { Link } from 'react-router-dom';
+import {
+  ArrowRight,
+  Bot,
+  BookOpen,
+  CalendarDays,
+  FlaskConical,
+  RefreshCw,
+  SquarePen,
+  Users,
+} from 'lucide-react';
+import { BookShelf3D } from '../../books/components/BookShelf3D';
 import { booksApi } from '../api';
-import ContentWrapper from '../../../shared/components/layout/ContentWrapper';
-import image1 from '../../../assets/resources/1.jpg'
-import image2 from '../../../assets/resources/2.jpg'
-import image3 from '../../../assets/resources/3.jpg'
-import image4 from '../../../assets/resources/4.jpg'
-import image5 from '../../../assets/resources/5.jpg'
-import imageBack from '../../../assets/resources/3d-book-images/3.png'
-const pageInfos = [
-  <a href="https://www.linkedin.com/in/kai-he-a52360a9/" name="红色大象"><img src={image1} alt="image01"/></a>,
-  <a href="https://www.linkedin.com/in/kai-he-a52360a9/" name="灰色大象"><img src={image2} alt="image02"/></a>,
-  <a href="https://www.linkedin.com/in/kai-he-a52360a9/" name="黄色老虎"><img src={image3} alt="image03"/></a>,
-  <a href="https://www.linkedin.com/in/kai-he-a52360a9/" name="蓝色小鹿"><img src={image4} alt="image04"/></a>,
-  <a href="https://www.linkedin.com/in/kai-he-a52360a9/" name="绿色叮当猫"><img src={image5} alt="image05"/></a>,
-  <a href="https://www.linkedin.com/in/kai-he-a52360a9/" name="紫色独角兽"><img src={'https://res.cloudinary.com/dqmqakbd6/image/upload/v1755510388/user_uploads/azh2mwf4tcifcnihwpch.jpg'} alt="image06"/></a>
-  // ...更多页
-];
+import { normalizeBooks } from '../../books/model/normalizeBook';
+import imageBack from '../../../assets/resources/3d-book-images/3.png';
+import s from './HomePage.module.css';
 
-
-const booksData = [
+const fallbackBooks = [
   {
     id: 1,
-    title: "A Catwork Orange",
-    author: "Anthony Burghiss",
-    coverBackText: "这是旋转背面内容", // bk-cover-back 的内容
+    title: 'A Catwork Orange',
+    author: 'Anthony Burghiss',
+    backCoverImage: imageBack,
+    infoSummary:
+      'A modern masterpiece, a searing portrayal of the criminal underworld and the family at its core.',
     pages: [
-      { id: 1, content: "Whale catfish leatherjacket deep sea anglerfish grenadier sawfish pompano dolphinfish carp large-eye bream, squeaker amago. Sandroller; rough scad, tiger shovelnose catfish snubnose parasitic eel? Black bass soldierfish duckbill--Rattail Atlantic saury Blind shark California halibut; false trevally warty angler!" },
-      { id: 2, content: "Trahira giant wels cutlassfish snapper koi blackchin mummichog mustard eel rock bass whiff murray cod. Bigmouth buffalo ling cod giant wels, sauger pink salmon. Clingfish luderick treefish flatfish Cherubfish oldwife Indian mul gizzard shad hagfish zebra danio. Butterfly ray lizardfish ponyfish muskellunge Long-finned sand diver mullet swordfish limia ghost carp filefish." },
-      { id: 3, content: "Red snapper Kafue pike fangtooth humums's slipmouth, salmon cutlassfish; swallower European perch mola mola sunfish, threadfin bream. Billfish hog sucker trout-perch lenok orbicular velvetfish. Delta smelt striped bass, medusafish dragon goby starry flounder cuchia round whitefish northern anchovy spadefish merluccid hake cat shark Black pickerel. Pacific cod." },
+      { id: 1, content: 'Whale catfish leatherjacket deep sea anglerfish grenadier sawfish pompano.' },
+      { id: 2, content: 'Trahira giant wels cutlassfish snapper koi blackchin mummichog mustard eel.' },
     ],
-    backCoverSummary: "Tyrant, blackmailer, racketeer, murderer - his influence reaches every level of American society. Meet Cat Corleone, a friendly cat, a just cat, a reasonable cat. The deadliest lord of the Cata Nostra. The Catfather.", // bk-back 的内容
-    infoSummary: "A modern masterpiece,The Godfather is a searing portrayal of the 1940s criminal underworld. It is also the intimate story of the Corleone family, at once drawn together and ripped apart by its unique position at the core of the American Mafia.", // bk-info 的内容
   },
   {
     id: 2,
-    title: "The Catfather",
-    author: "Mario Purrzo",
-    // ... 其他书籍数据
+    title: 'The Catfather',
+    author: 'Mario Purrzo',
+    backCoverImage: imageBack,
   },
   {
     id: 3,
-    title: "The Catcher in the Rye",
-    author: "J.C. Salinger",
+    title: 'The Catcher in the Rye',
+    author: 'J.C. Salinger',
     backCoverImage: imageBack,
-    // ... 其他书籍数据
   },
 ];
+
+const quickLinks = [
+  { to: '/clients', label: '客户管理', description: '查看与新建客户', icon: Users },
+  { to: '/books', label: '图书', description: '浏览书架与详情', icon: BookOpen },
+  { to: '/editor', label: '评论编辑', description: '编辑书评与页面', icon: SquarePen },
+  { to: '/ai', label: 'AI 助手', description: '生成与润色内容', icon: Bot },
+];
+
 function HomePage() {
   const [books, setBooks] = useState([]);
-  const [currentPage, setCurrentPage] = useState(1);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
-
-  // 分页参数（如果你的后端支持分页）
-  const [page, setPage] = useState(1);
-  const limit = 10;
+  const [reloadKey, setReloadKey] = useState(0);
 
   useEffect(() => {
-    let isMounted = true; // 防止组件卸载后设置状态
+    let isMounted = true;
 
     async function loadBooks() {
       try {
         setLoading(true);
-        const res = await booksApi.getBooks(currentPage, limit);
+        setError(null);
+
+        const res = await booksApi.getBooks(1, 10);
         if (!isMounted) return;
 
-        // 假设后端返回的数据结构为：
-        // { data: [ { id, title, author, coverImage, backCoverImage, pages: [...], ... } ] }
-        const fetchedBooks = res.data?.data || res.data || [];
-        fetchedBooks.map(book=>{
-          book.backCoverImage = book.back_cover_url || imageBack;
-          book.infoSummary = book.preface;
-          book.pages = book.reviews;
-          return book;
-        });
-        setBooks(fetchedBooks);
+        setBooks(normalizeBooks(res, imageBack));
       } catch (err) {
+        if (!isMounted) return;
         console.error('加载图书失败:', err);
         setError(err.message || '加载失败');
       } finally {
@@ -89,49 +81,104 @@ function HomePage() {
     return () => {
       isMounted = false;
     };
-  }, [currentPage]);
+  }, [reloadKey]);
 
-  if (loading) {
-    return (
-      <ContentWrapper style={{ padding: '60px 20px', textAlign: 'center' }}>
-        <div style={{ color: 'var(--lux-gold)', fontSize: '1.2rem', marginBottom: '10px' }}>✦ 正在加载尊享门户内容...</div>
-        <div style={{ color: 'var(--lux-text-muted)', fontSize: '0.9rem' }}>正在同步最新高端数据</div>
-      </ContentWrapper>
-    );
-  }
-
-  if (error) {
-    return (
-      <ContentWrapper style={{ padding: '60px 20px', textAlign: 'center' }}>
-        <div style={{ color: '#e74c3c', fontSize: '1.2rem', marginBottom: '10px' }}>✦ 加载遇到阻碍</div>
-        <div style={{ color: 'var(--lux-text-muted)', fontSize: '0.9rem' }}>{error}</div>
-      </ContentWrapper>
-    );
-  }
-
+  const displayBooks = books.length > 0 ? books : fallbackBooks;
+  const isFallback = books.length === 0;
 
   return (
-    <ContentWrapper 
-      style={{ 
-        padding: '30px', 
-        background: 'var(--lux-surface)',
-        border: '1px solid var(--lux-border)', 
-        borderRadius: '12px',
-        boxShadow: 'var(--lux-shadow)',
-        margin: '20px auto',
-        maxWidth: '1400px'
-      }}
-    >
-      <div style={{ marginBottom: '30px', textAlign: 'center' }}>
-        <h1 style={{ color: 'var(--lux-gold)', fontWeight: 400, letterSpacing: '2px', marginBottom: '8px' }}>EXQUISITE PORTAL</h1>
-        <p style={{ color: 'var(--lux-text-muted)', fontSize: 'var(--font-size-0)' }}>探索极致美学与尊贵体验</p>
-      </div>
-      <div style={{ display: 'flex', gap: '20px', flexWrap: 'wrap', justifyContent: 'center', marginBottom: '40px' }}>
-        <BookBlock pages={pageInfos} width={'90%'} height={'200px'} maxWidth={'320px'}/>
-        <BookBlock pages={pageInfos} width={'90%'} height={'200px'} maxWidth={'320px'} direction="rtl"/>    
-      </div>
-      <BookList books={books && books.length > 0 ? books : booksData} />
-    </ContentWrapper>
+    <div className={s.page}>
+      <header className={s.header}>
+        <div>
+          <span className={s.eyebrow}>WORKSPACE</span>
+          <h1 className={s.title}>工作台</h1>
+          <p className={s.lede}>客户、图书、评论与 AI 的日常工作入口。</p>
+        </div>
+        <Link to="/lab" className={s.labLink}>
+          <FlaskConical className={s.labIcon} aria-hidden="true" />
+          实验室
+        </Link>
+      </header>
+
+      <section className={s.quickSection} aria-labelledby="quick-title">
+        <div className={s.sectionHeader}>
+          <h2 id="quick-title" className={s.sectionTitle}>
+            常用入口
+          </h2>
+        </div>
+        <div className={s.quickGrid}>
+          {quickLinks.map((item) => {
+            const Icon = item.icon;
+            return (
+              <Link key={item.to} to={item.to} className={s.quickCard}>
+                <span className={s.quickIcon}>
+                  <Icon aria-hidden="true" />
+                </span>
+                <span className={s.quickText}>
+                  <span className={s.quickLabel}>{item.label}</span>
+                  <span className={s.quickDescription}>{item.description}</span>
+                </span>
+                <ArrowRight className={s.quickArrow} aria-hidden="true" />
+              </Link>
+            );
+          })}
+        </div>
+      </section>
+
+      <section className={s.shelfSection} aria-labelledby="shelf-title">
+        <div className={s.sectionHeader}>
+          <div>
+            <h2 id="shelf-title" className={s.sectionTitle}>
+              3D 书架
+            </h2>
+            <p className={s.sectionHint}>从书架取下一本书，查看详情或直接阅读。</p>
+          </div>
+          <Link to="/books" className={s.textLink}>
+            全部图书
+            <ArrowRight aria-hidden="true" />
+          </Link>
+        </div>
+
+        {loading ? <div className={s.status}>正在同步图书…</div> : null}
+
+        {error ? (
+          <div className={s.warning} role="status">
+            <span>图书接口暂不可用，当前展示示例书架。</span>
+            <button type="button" className={s.retry} onClick={() => setReloadKey((key) => key + 1)}>
+              <RefreshCw aria-hidden="true" />
+              重试
+            </button>
+          </div>
+        ) : null}
+
+        <div className={s.shelfWrap}>
+          <BookShelf3D books={displayBooks} viewMode="shelf" />
+        </div>
+
+        {isFallback && !loading ? (
+          <p className={s.fallbackNote}>
+            示例书架 · <Link to="/books">连接图书数据后自动替换</Link>
+          </p>
+        ) : null}
+      </section>
+
+      <section className={s.metaSection} aria-label="快捷信息">
+        <Link to="/calendar" className={s.metaCard}>
+          <CalendarDays aria-hidden="true" />
+          <span>
+            <strong>日历</strong>
+            <small>查看排期与提醒</small>
+          </span>
+        </Link>
+        <Link to="/editor" className={s.metaCard}>
+          <SquarePen aria-hidden="true" />
+          <span>
+            <strong>评论编辑</strong>
+            <small>继续未完成的编辑</small>
+          </span>
+        </Link>
+      </section>
+    </div>
   );
 }
 

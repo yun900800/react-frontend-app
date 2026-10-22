@@ -1,22 +1,25 @@
 .bk-list {
 	list-style: none;
 	position: relative;
-	width: 533px; /* 13 books * 40px + 13 books * margin (1px) */
+	display: flex;
+	justify-content: center;
+	width: 100%;
+	max-width: 533px;
 	margin: 0 auto;
 	-webkit-perspective: 1800px;
 	perspective: 1800px;
 	-webkit-perspective-origin: 50% 15%;
 	perspective-origin: 50% 15%;
-    z-index: 1;
+	z-index: 2;
 }
 
 .bk-list li {
 	position: relative;
 	width: 40px;
 	height: 400px;
-	float: left;
+	flex: 0 0 40px;
 	z-index: 1;
-	margin: 0px 0px 0px 1px;
+	margin: 0 0 0 1px;
 	-webkit-transform-style: preserve-3d;
 	transform-style: preserve-3d;
 }
@@ -26,13 +29,13 @@
 }
 
 .book-shelf {
+	position: relative;
 	width: 100%;
 	height: 63px;
-	z-index: -1;
 	margin-top: -25px;
-	background: transparent url(../../../assets/resources/3d-book-images/shelf.png) no-repeat center center;
-	position: relative;
-    z-index: 0;
+	z-index: 0;
+	background: transparent url(../../../../assets/resources/3d-book-images/shelf.png) no-repeat center center;
+	pointer-events: none;
 }
 
 @media (max-width: 768px) {
