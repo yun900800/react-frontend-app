@@ -1,5 +1,60 @@
 /* Style from Caledario: */
 
+/* 页面外壳与年份切换工具栏 */
+.calendar-page {
+	padding: 20px;
+	border: 1px solid #ddd;
+	border-radius: 5px;
+}
+
+.calendar-toolbar {
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	gap: 10px;
+	flex-wrap: wrap;
+	margin-bottom: 16px;
+}
+
+.calendar-year-label {
+	font-size: 14px;
+	color: var(--lux-text-main, #f5f6f8);
+}
+
+.calendar-select {
+	width: auto;
+	min-width: 110px;
+	padding: 6px 12px;
+	font-size: 14px;
+	font-weight: 600;
+	color: var(--lux-text-main, #f5f6f8);
+	background: var(--lux-surface, #14171f);
+	border: 1px solid var(--lux-border, rgba(223, 189, 115, 0.2));
+	border-radius: 6px;
+	cursor: pointer;
+	color-scheme: dark;
+	transition: border-color 0.2s ease, box-shadow 0.2s ease;
+}
+
+.calendar-select:hover {
+	border-color: var(--lux-border-hover, rgba(223, 189, 115, 0.5));
+}
+
+.calendar-select:focus-visible {
+	outline: none;
+	border-color: var(--lux-gold, #dfbd73);
+	box-shadow: 0 0 0 2px rgba(223, 189, 115, 0.25);
+}
+
+.calendar-year-hint {
+	font-size: 12px;
+	color: var(--lux-text-muted, #9ba1a6);
+}
+
+.calendar-book {
+	display: block;
+}
+
 .fc-calendar-wrap {
 	margin-top: 300px;
 	-moz-osx-font-smoothing: grayscale;
@@ -34,10 +89,10 @@
 	line-height: 30px;
 	background: #883b61;
 	color: #fff;
-	font-size: 10px;
-	font-weight: 700;
-	letter-spacing: 1px;
-	text-transform: uppercase;
+	font-size: 11px;
+	font-weight: 600;
+	letter-spacing: 0;
+	overflow: hidden;
 }
 
 .fc-calendar .fc-body {
@@ -89,7 +144,12 @@
 }
 
 .fc-calendar .fc-head > div {
+	display: flex;
+	align-items: center;
+	justify-content: center;
 	text-align: center;
+	white-space: nowrap;
+	overflow: hidden;
 }
 
 .fc-calendar .fc-row > div > span.fc-date {
@@ -108,6 +168,18 @@
 .fc-calendar .fc-row > div > span.fc-weekday {
 	padding-left: 5px;
 	display: none;
+}
+
+/* 日期事件标记（例如元旦） */
+.fc-calendar .fc-row > div > .fc-event {
+	padding-top: 2px;
+	font-size: 9px;
+	font-weight: 600;
+	line-height: 1.15;
+	color: #883b61;
+	white-space: nowrap;
+	overflow: hidden;
+	text-overflow: ellipsis;
 }
 
 .fc-calendar .fc-row > div.fc-today {
@@ -135,3 +207,19 @@
 }
 
 .fc-content{}
+
+@media (max-width: 767px) {
+	.fc-calendar-wrap h2 {
+		margin: -2.8em 0.6em 0 0;
+		padding: 4px 12px;
+		font-size: 26px;
+	}
+
+	.fc-calendar .fc-head {
+		font-size: 10px;
+	}
+
+	.fc-calendar .fc-body {
+		padding: 8px;
+	}
+}

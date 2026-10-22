@@ -4,13 +4,14 @@ import navStyles from './nav.module.css';
 import { FlipPage } from "./FlipPage";
 
 export function BookBlock({ pages, orientation='vertical', direction='ltr',
-     width='400px', height='300px', maxWidth='800px' }) {
-    const [current,setCurrent] = useState(0);
+     width='400px', height='300px', maxWidth='800px', initialPage = 0 }) {
+    const safeInitialPage = Math.min(Math.max(initialPage, 0), Math.max(pages.length - 1, 0));
+    const [current,setCurrent] = useState(safeInitialPage);
     const [isAnimating, setIsAnimating] = useState(false);
     const [flipDirection, setFlipDirection] = useState('next');
 
     // 存储目标页码的 Ref
-    const targetPageRef = useRef(0);
+    const targetPageRef = useRef(safeInitialPage);
 
     const touchStart = useRef(0);
     const touchEnd = useRef(0);

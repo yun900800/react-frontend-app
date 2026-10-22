@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useMemo, useState } from 'react';
 import calendarImage1 from '../../../assets/resources/calendar/1.jpg'
 import calendarImage2 from '../../../assets/resources/calendar/2.jpg'
 import calendarImage3 from '../../../assets/resources/calendar/3.jpg'
@@ -15,230 +15,162 @@ import calendarStyles from './calendar.module.css';
 import { useMediaQuery } from '../../../shared/hooks/useMediaQuery.js';
 import { BookBlock } from '../../books/components/BookReader/BookBlock.jsx';
 
+const MONTH_IMAGES = [
+  calendarImage1,
+  calendarImage2,
+  calendarImage3,
+  calendarImage4,
+  calendarImage5,
+  calendarImage6,
+  calendarImage7,
+  calendarImage8,
+  calendarImage9,
+  calendarImage10,
+  calendarImage11,
+  calendarImage12,
+];
 
-const pages1= [
-  <>
-      <img className={calendarStyles['bb-custom-img']} src={calendarImage1} alt="image01"/>
+// 周一为每周第一天
+const WEEKDAY_LABELS = ['周一', '周二', '周三', '周四', '周五', '周六', '周日'];
+
+const CURRENT_YEAR = new Date().getFullYear();
+const CURRENT_MONTH = new Date().getMonth();
+const YEAR_RANGE = 3;
+const YEAR_OPTIONS = Array.from(
+  { length: YEAR_RANGE * 2 + 1 },
+  (_, index) => CURRENT_YEAR - YEAR_RANGE + index,
+);
+
+// 事件数据：key 为 `${monthIndex}-${day}`（monthIndex 从 0 开始），便于后续扩展
+const CALENDAR_EVENTS = {
+  '0-1': '元旦',
+};
+
+/**
+ * 生成某个月的日期格（周一为第一列）。
+ * null 表示该位置的空白格。
+ */
+function buildMonthCells(year, month) {
+  const firstDayOffset = (new Date(year, month, 1).getDay() + 6) % 7;
+  const daysInMonth = new Date(year, month + 1, 0).getDate();
+
+  const cells = [
+    ...Array.from({ length: firstDayOffset }, () => null),
+    ...Array.from({ length: daysInMonth }, (_, index) => index + 1),
+  ];
+
+  while (cells.length % 7 !== 0) {
+    cells.push(null);
+  }
+
+  return cells;
+}
+
+function buildMonthPage(year, month) {
+  const cells = buildMonthCells(year, month);
+  const rows = [];
+
+  for (let index = 0; index < cells.length; index += 7) {
+    rows.push(cells.slice(index, index + 7));
+  }
+
+  const rowClass = rows.length === 4
+    ? 'fc-four-rows'
+    : rows.length === 6
+      ? 'fc-six-rows'
+      : 'fc-five-rows';
+
+  return (
+    <React.Fragment key={`${year}-${month}`}>
+      <img
+        className={calendarStyles['bb-custom-img']}
+        src={MONTH_IMAGES[month]}
+        alt={`${year}年${month + 1}月`}
+      />
       <div className={calendarStyles['fc-calendar-wrap']}>
-        <h2>January 2013</h2>
-        <div className={calendarStyles['fc-calendar-container']}><div className={`${calendarStyles['fc-calendar']} ${calendarStyles['fc-five-rows']}`}><div className={calendarStyles['fc-head']}><div>Monday</div><div>Tuesday</div><div>Wednesday</div><div>Thursday</div><div>Friday</div><div>Saturday</div><div>Sunday</div></div><div className={calendarStyles['fc-body']}><div className={calendarStyles['fc-row']}><div></div><div className={calendarStyles['fc-content']}><span className={calendarStyles['fc-date']}>1</span><span className={calendarStyles['fc-weekday']}>Tue</span><div><span>New Year's day</span></div></div><div><span className={calendarStyles['fc-date']}>2</span><span className={calendarStyles['fc-weekday']}>Wed</span></div><div><span className={calendarStyles['fc-date']}>3</span><span className={calendarStyles['fc-weekday']}>Thu</span></div><div><span className={calendarStyles['fc-date']}>4</span><span className={calendarStyles['fc-weekday']}>Fri</span></div><div><span className={calendarStyles['fc-date']}>5</span><span className={calendarStyles['fc-weekday']}>Sat</span></div><div><span className={calendarStyles['fc-date']}>6</span><span className={calendarStyles['fc-weekday']}>Sun</span></div></div><div className={calendarStyles['fc-row']}><div><span className={calendarStyles['fc-date']}>7</span><span className={calendarStyles['fc-weekday']}>Mon</span></div><div><span className={calendarStyles['fc-date']}>8</span><span className={calendarStyles['fc-weekday']}>Tue</span></div><div><span className={calendarStyles['fc-date']}>9</span><span className={calendarStyles['fc-weekday']}>Wed</span></div><div><span className={calendarStyles['fc-date']}>10</span><span className={calendarStyles['fc-weekday']}>Thu</span></div><div><span className={calendarStyles['fc-date']}>11</span><span className={calendarStyles['fc-weekday']}>Fri</span></div><div><span className={calendarStyles['fc-date']}>12</span><span className={calendarStyles['fc-weekday']}>Sat</span></div><div><span className={calendarStyles['fc-date']}>13</span><span className={calendarStyles['fc-weekday']}>Sun</span></div></div><div className={calendarStyles['fc-row']}><div><span className={calendarStyles['fc-date']}>14</span><span className={calendarStyles['fc-weekday']}>Mon</span></div><div><span className={calendarStyles['fc-date']}>15</span><span className={calendarStyles['fc-weekday']}>Tue</span></div><div><span className={calendarStyles['fc-date']}>16</span><span className={calendarStyles['fc-weekday']}>Wed</span></div><div><span className={calendarStyles['fc-date']}>17</span><span className={calendarStyles['fc-weekday']}>Thu</span></div><div><span className={calendarStyles['fc-date']}>18</span><span className={calendarStyles['fc-weekday']}>Fri</span></div><div><span className={calendarStyles['fc-date']}>19</span><span className={calendarStyles['fc-weekday']}>Sat</span></div><div><span className={calendarStyles['fc-date']}>20</span><span className={calendarStyles['fc-weekday']}>Sun</span></div></div><div className={calendarStyles['fc-row']}><div><span className={calendarStyles['fc-date']}>21</span><span className={calendarStyles['fc-weekday']}>Mon</span></div><div><span className={calendarStyles['fc-date']}>22</span><span className={calendarStyles['fc-weekday']}>Tue</span></div><div><span className={calendarStyles['fc-date']}>23</span><span className={calendarStyles['fc-weekday']}>Wed</span></div><div><span className={calendarStyles['fc-date']}>24</span><span className={calendarStyles['fc-weekday']}>Thu</span></div><div><span className={calendarStyles['fc-date']}>25</span><span className={calendarStyles['fc-weekday']}>Fri</span></div><div><span className={calendarStyles['fc-date']}>26</span><span className={calendarStyles['fc-weekday']}>Sat</span></div><div><span className={calendarStyles['fc-date']}>27</span><span className={calendarStyles['fc-weekday']}>Sun</span></div></div><div className={calendarStyles['fc-row']}><div><span className={calendarStyles['fc-date']}>28</span><span className={calendarStyles['fc-weekday']}>Mon</span></div><div><span className={calendarStyles['fc-date']}>29</span><span className={calendarStyles['fc-weekday']}>Tue</span></div><div><span className={calendarStyles['fc-date']}>30</span><span className={calendarStyles['fc-weekday']}>Wed</span></div><div><span className={calendarStyles['fc-date']}>31</span><span className={calendarStyles['fc-weekday']}>Thu</span></div><div></div><div></div><div></div></div></div></div></div>
-      </div>
-    </>,
-    <>
-      <img className={calendarStyles['bb-custom-img']} src={calendarImage2} alt="image02"/>
-      <div className={calendarStyles['fc-calendar-wrap']}>
-        <h2>February 2013</h2>
-        <div className={calendarStyles['fc-calendar-container']}><div className={`${calendarStyles['fc-calendar']} ${calendarStyles['fc-five-rows']}`}><div className={calendarStyles['fc-head']}><div>Monday</div><div>Tuesday</div><div>Wednesday</div><div>Thursday</div><div>Friday</div><div>Saturday</div><div>Sunday</div></div><div className={calendarStyles['fc-body']}><div className={calendarStyles['fc-row']}><div></div><div></div><div></div><div></div><div><span className={calendarStyles['fc-date']}>1</span><span className={calendarStyles['fc-weekday']}>Fri</span></div><div><span className={calendarStyles['fc-date']}>2</span><span className={calendarStyles['fc-weekday']}>Sat</span></div><div><span className={calendarStyles['fc-date']}>3</span><span className={calendarStyles['fc-weekday']}>Sun</span></div></div><div className={calendarStyles['fc-row']}><div><span className={calendarStyles['fc-date']}>4</span><span className={calendarStyles['fc-weekday']}>Mon</span></div><div><span className={calendarStyles['fc-date']}>5</span><span className={calendarStyles['fc-weekday']}>Tue</span></div><div><span className={calendarStyles['fc-date']}>6</span><span className={calendarStyles['fc-weekday']}>Wed</span></div><div><span className={calendarStyles['fc-date']}>7</span><span className={calendarStyles['fc-weekday']}>Thu</span></div><div><span className={calendarStyles['fc-date']}>8</span><span className={calendarStyles['fc-weekday']}>Fri</span></div><div><span className={calendarStyles['fc-date']}>9</span><span className={calendarStyles['fc-weekday']}>Sat</span></div><div><span className={calendarStyles['fc-date']}>10</span><span className={calendarStyles['fc-weekday']}>Sun</span></div></div><div className={calendarStyles['fc-row']}><div><span className={calendarStyles['fc-date']}>11</span><span className={calendarStyles['fc-weekday']}>Mon</span></div><div><span className={calendarStyles['fc-date']}>12</span><span className={calendarStyles['fc-weekday']}>Tue</span></div><div><span className={calendarStyles['fc-date']}>13</span><span className={calendarStyles['fc-weekday']}>Wed</span></div><div><span className={calendarStyles['fc-date']}>14</span><span className={calendarStyles['fc-weekday']}>Thu</span></div><div><span className={calendarStyles['fc-date']}>15</span><span className={calendarStyles['fc-weekday']}>Fri</span></div><div><span className={calendarStyles['fc-date']}>16</span><span className={calendarStyles['fc-weekday']}>Sat</span></div><div><span className={calendarStyles['fc-date']}>17</span><span className={calendarStyles['fc-weekday']}>Sun</span></div></div><div className={calendarStyles['fc-row']}><div><span className={calendarStyles['fc-date']}>18</span><span className={calendarStyles['fc-weekday']}>Mon</span></div><div><span className={calendarStyles['fc-date']}>19</span><span className={calendarStyles['fc-weekday']}>Tue</span></div><div><span className={calendarStyles['fc-date']}>20</span><span className={calendarStyles['fc-weekday']}>Wed</span></div><div><span className={calendarStyles['fc-date']}>21</span><span className={calendarStyles['fc-weekday']}>Thu</span></div><div><span className={calendarStyles['fc-date']}>22</span><span className={calendarStyles['fc-weekday']}>Fri</span></div><div><span className={calendarStyles['fc-date']}>23</span><span className={calendarStyles['fc-weekday']}>Sat</span></div><div><span className={calendarStyles['fc-date']}>24</span><span className={calendarStyles['fc-weekday']}>Sun</span></div></div><div className={calendarStyles['fc-row']}><div><span className={calendarStyles['fc-date']}>25</span><span className={calendarStyles['fc-weekday']}>Mon</span></div><div><span className={calendarStyles['fc-date']}>26</span><span className={calendarStyles['fc-weekday']}>Tue</span></div><div><span className={calendarStyles['fc-date']}>27</span><span className={calendarStyles['fc-weekday']}>Wed</span></div><div><span className={calendarStyles['fc-date']}>28</span><span className={calendarStyles['fc-weekday']}>Thu</span></div><div></div><div></div><div></div></div></div></div></div>
-      </div>
-    </>,
-    <>
-      <img className={calendarStyles['bb-custom-img']} src={calendarImage3} alt="image03"/>
-      <div className={calendarStyles['fc-calendar-wrap']}>
-        <h2>March 2013</h2>
-        <div className={calendarStyles['fc-calendar-container']}><div className={`${calendarStyles['fc-calendar']} ${calendarStyles['fc-five-rows']}`}><div className={calendarStyles['fc-head']}><div>Monday</div><div>Tuesday</div><div>Wednesday</div><div>Thursday</div><div>Friday</div><div>Saturday</div><div>Sunday</div></div><div className={calendarStyles['fc-body']}><div className={calendarStyles['fc-row']}><div></div><div></div><div></div><div></div><div><span className={calendarStyles['fc-date']}>1</span><span className={calendarStyles['fc-weekday']}>Fri</span></div><div><span className={calendarStyles['fc-date']}>2</span><span className={calendarStyles['fc-weekday']}>Sat</span></div><div><span className={calendarStyles['fc-date']}>3</span><span className={calendarStyles['fc-weekday']}>Sun</span></div></div><div className={calendarStyles['fc-row']}><div><span className={calendarStyles['fc-date']}>4</span><span className={calendarStyles['fc-weekday']}>Mon</span></div><div><span className={calendarStyles['fc-date']}>5</span><span className={calendarStyles['fc-weekday']}>Tue</span></div><div><span className={calendarStyles['fc-date']}>6</span><span className={calendarStyles['fc-weekday']}>Wed</span></div><div><span className={calendarStyles['fc-date']}>7</span><span className={calendarStyles['fc-weekday']}>Thu</span></div><div><span className={calendarStyles['fc-date']}>8</span><span className={calendarStyles['fc-weekday']}>Fri</span></div><div><span className={calendarStyles['fc-date']}>9</span><span className={calendarStyles['fc-weekday']}>Sat</span></div><div><span className={calendarStyles['fc-date']}>10</span><span className={calendarStyles['fc-weekday']}>Sun</span></div></div><div className={calendarStyles['fc-row']}><div><span className={calendarStyles['fc-date']}>11</span><span className={calendarStyles['fc-weekday']}>Mon</span></div><div><span className={calendarStyles['fc-date']}>12</span><span className={calendarStyles['fc-weekday']}>Tue</span></div><div><span className={calendarStyles['fc-date']}>13</span><span className={calendarStyles['fc-weekday']}>Wed</span></div><div><span className={calendarStyles['fc-date']}>14</span><span className={calendarStyles['fc-weekday']}>Thu</span></div><div><span className={calendarStyles['fc-date']}>15</span><span className={calendarStyles['fc-weekday']}>Fri</span></div><div><span className={calendarStyles['fc-date']}>16</span><span className={calendarStyles['fc-weekday']}>Sat</span></div><div><span className={calendarStyles['fc-date']}>17</span><span className={calendarStyles['fc-weekday']}>Sun</span></div></div><div className={calendarStyles['fc-row']}><div><span className={calendarStyles['fc-date']}>18</span><span className={calendarStyles['fc-weekday']}>Mon</span></div><div><span className={calendarStyles['fc-date']}>19</span><span className={calendarStyles['fc-weekday']}>Tue</span></div><div><span className={calendarStyles['fc-date']}>20</span><span className={calendarStyles['fc-weekday']}>Wed</span></div><div><span className={calendarStyles['fc-date']}>21</span><span className={calendarStyles['fc-weekday']}>Thu</span></div><div><span className={calendarStyles['fc-date']}>22</span><span className={calendarStyles['fc-weekday']}>Fri</span></div><div><span className={calendarStyles['fc-date']}>23</span><span className={calendarStyles['fc-weekday']}>Sat</span></div><div><span className={calendarStyles['fc-date']}>24</span><span className={calendarStyles['fc-weekday']}>Sun</span></div></div><div className={calendarStyles['fc-row']}><div><span className={calendarStyles['fc-date']}>25</span><span className={calendarStyles['fc-weekday']}>Mon</span></div><div><span className={calendarStyles['fc-date']}>26</span><span className={calendarStyles['fc-weekday']}>Tue</span></div><div><span className={calendarStyles['fc-date']}>27</span><span className={calendarStyles['fc-weekday']}>Wed</span></div><div><span className={calendarStyles['fc-date']}>28</span><span className={calendarStyles['fc-weekday']}>Thu</span></div><div><span className={calendarStyles['fc-date']}>29</span><span className={calendarStyles['fc-weekday']}>Fri</span></div><div><span className={calendarStyles['fc-date']}>30</span><span className={calendarStyles['fc-weekday']}>Sat</span></div><div><span className={calendarStyles['fc-date']}>31</span><span className={calendarStyles['fc-weekday']}>Sun</span></div></div></div></div></div>
-      </div>
-    </>,
-    <>
-      <img className={calendarStyles['bb-custom-img']} src={calendarImage4} alt="image04"/>
-      <div className={calendarStyles['fc-calendar-wrap']}>
-        <h2>April 2013</h2>
-        <div className={calendarStyles['fc-calendar-container']}><div className={`${calendarStyles['fc-calendar']} ${calendarStyles['fc-five-rows']}`}><div className={calendarStyles['fc-head']}><div>Monday</div><div>Tuesday</div><div>Wednesday</div><div>Thursday</div><div>Friday</div><div>Saturday</div><div>Sunday</div></div><div className={calendarStyles['fc-body']}><div className={calendarStyles['fc-row']}><div><span className={calendarStyles['fc-date']}>1</span><span className={calendarStyles['fc-weekday']}>Mon</span></div><div><span className={calendarStyles['fc-date']}>2</span><span className={calendarStyles['fc-weekday']}>Tue</span></div><div><span className={calendarStyles['fc-date']}>3</span><span className={calendarStyles['fc-weekday']}>Wed</span></div><div><span className={calendarStyles['fc-date']}>4</span><span className={calendarStyles['fc-weekday']}>Thu</span></div><div><span className={calendarStyles['fc-date']}>5</span><span className={calendarStyles['fc-weekday']}>Fri</span></div><div><span className={calendarStyles['fc-date']}>6</span><span className={calendarStyles['fc-weekday']}>Sat</span></div><div><span className={calendarStyles['fc-date']}>7</span><span className={calendarStyles['fc-weekday']}>Sun</span></div></div><div className={calendarStyles['fc-row']}><div><span className={calendarStyles['fc-date']}>8</span><span className={calendarStyles['fc-weekday']}>Mon</span></div><div><span className={calendarStyles['fc-date']}>9</span><span className={calendarStyles['fc-weekday']}>Tue</span></div><div><span className={calendarStyles['fc-date']}>10</span><span className={calendarStyles['fc-weekday']}>Wed</span></div><div><span className={calendarStyles['fc-date']}>11</span><span className={calendarStyles['fc-weekday']}>Thu</span></div><div><span className={calendarStyles['fc-date']}>12</span><span className={calendarStyles['fc-weekday']}>Fri</span></div><div><span className={calendarStyles['fc-date']}>13</span><span className={calendarStyles['fc-weekday']}>Sat</span></div><div><span className={calendarStyles['fc-date']}>14</span><span className={calendarStyles['fc-weekday']}>Sun</span></div></div><div className={calendarStyles['fc-row']}><div><span className={calendarStyles['fc-date']}>15</span><span className={calendarStyles['fc-weekday']}>Mon</span></div><div><span className={calendarStyles['fc-date']}>16</span><span className={calendarStyles['fc-weekday']}>Tue</span></div><div><span className={calendarStyles['fc-date']}>17</span><span className={calendarStyles['fc-weekday']}>Wed</span></div><div><span className={calendarStyles['fc-date']}>18</span><span className={calendarStyles['fc-weekday']}>Thu</span></div><div><span className={calendarStyles['fc-date']}>19</span><span className={calendarStyles['fc-weekday']}>Fri</span></div><div><span className={calendarStyles['fc-date']}>20</span><span className={calendarStyles['fc-weekday']}>Sat</span></div><div><span className={calendarStyles['fc-date']}>21</span><span className={calendarStyles['fc-weekday']}>Sun</span></div></div><div className={calendarStyles['fc-row']}><div><span className={calendarStyles['fc-date']}>22</span><span className={calendarStyles['fc-weekday']}>Mon</span></div><div><span className={calendarStyles['fc-date']}>23</span><span className={calendarStyles['fc-weekday']}>Tue</span></div><div><span className={calendarStyles['fc-date']}>24</span><span className={calendarStyles['fc-weekday']}>Wed</span></div><div><span className={calendarStyles['fc-date']}>25</span><span className={calendarStyles['fc-weekday']}>Thu</span></div><div><span className={calendarStyles['fc-date']}>26</span><span className={calendarStyles['fc-weekday']}>Fri</span></div><div><span className={calendarStyles['fc-date']}>27</span><span className={calendarStyles['fc-weekday']}>Sat</span></div><div><span className={calendarStyles['fc-date']}>28</span><span className={calendarStyles['fc-weekday']}>Sun</span></div></div><div className={calendarStyles['fc-row']}><div><span className={calendarStyles['fc-date']}>29</span><span className={calendarStyles['fc-weekday']}>Mon</span></div><div><span className={calendarStyles['fc-date']}>30</span><span className={calendarStyles['fc-weekday']}>Tue</span></div><div></div><div></div><div></div><div></div><div></div></div></div></div></div>
-      </div>
-    </>,
-    <>
-      <img className={calendarStyles['bb-custom-img']} src={calendarImage5} alt="image05"/>
-                            <div className={calendarStyles['fc-calendar-wrap']}>
-                                <h2>May 2013</h2>
-                                <div className={calendarStyles['fc-calendar-container']}><div className={`${calendarStyles['fc-calendar']} ${calendarStyles['fc-five-rows']}`}><div className={calendarStyles['fc-head']}><div>Monday</div><div>Tuesday</div><div>Wednesday</div><div>Thursday</div><div>Friday</div><div>Saturday</div><div>Sunday</div></div><div className={calendarStyles['fc-body']}><div className={calendarStyles['fc-row']}><div></div><div></div><div><span className={calendarStyles['fc-date']}>1</span><span className={calendarStyles['fc-weekday']}>Wed</span></div><div><span className={calendarStyles['fc-date']}>2</span><span className={calendarStyles['fc-weekday']}>Thu</span></div><div><span className={calendarStyles['fc-date']}>3</span><span className={calendarStyles['fc-weekday']}>Fri</span></div><div><span className={calendarStyles['fc-date']}>4</span><span className={calendarStyles['fc-weekday']}>Sat</span></div><div><span className={calendarStyles['fc-date']}>5</span><span className={calendarStyles['fc-weekday']}>Sun</span></div></div><div className={calendarStyles['fc-row']}><div><span className={calendarStyles['fc-date']}>6</span><span className={calendarStyles['fc-weekday']}>Mon</span></div><div><span className={calendarStyles['fc-date']}>7</span><span className={calendarStyles['fc-weekday']}>Tue</span></div><div><span className={calendarStyles['fc-date']}>8</span><span className={calendarStyles['fc-weekday']}>Wed</span></div><div><span className={calendarStyles['fc-date']}>9</span><span className={calendarStyles['fc-weekday']}>Thu</span></div><div><span className={calendarStyles['fc-date']}>10</span><span className={calendarStyles['fc-weekday']}>Fri</span></div><div><span className={calendarStyles['fc-date']}>11</span><span className={calendarStyles['fc-weekday']}>Sat</span></div><div><span className={calendarStyles['fc-date']}>12</span><span className={calendarStyles['fc-weekday']}>Sun</span></div></div><div className={calendarStyles['fc-row']}><div><span className={calendarStyles['fc-date']}>13</span><span className={calendarStyles['fc-weekday']}>Mon</span></div><div><span className={calendarStyles['fc-date']}>14</span><span className={calendarStyles['fc-weekday']}>Tue</span></div><div><span className={calendarStyles['fc-date']}>15</span><span className={calendarStyles['fc-weekday']}>Wed</span></div><div><span className={calendarStyles['fc-date']}>16</span><span className={calendarStyles['fc-weekday']}>Thu</span></div><div><span className={calendarStyles['fc-date']}>17</span><span className={calendarStyles['fc-weekday']}>Fri</span></div><div><span className={calendarStyles['fc-date']}>18</span><span className={calendarStyles['fc-weekday']}>Sat</span></div><div><span className={calendarStyles['fc-date']}>19</span><span className={calendarStyles['fc-weekday']}>Sun</span></div></div><div className={calendarStyles['fc-row']}><div><span className={calendarStyles['fc-date']}>20</span><span className={calendarStyles['fc-weekday']}>Mon</span></div><div><span className={calendarStyles['fc-date']}>21</span><span className={calendarStyles['fc-weekday']}>Tue</span></div><div><span className={calendarStyles['fc-date']}>22</span><span className={calendarStyles['fc-weekday']}>Wed</span></div><div><span className={calendarStyles['fc-date']}>23</span><span className={calendarStyles['fc-weekday']}>Thu</span></div><div><span className={calendarStyles['fc-date']}>24</span><span className={calendarStyles['fc-weekday']}>Fri</span></div><div><span className={calendarStyles['fc-date']}>25</span><span className={calendarStyles['fc-weekday']}>Sat</span></div><div><span className={calendarStyles['fc-date']}>26</span><span className={calendarStyles['fc-weekday']}>Sun</span></div></div><div className={calendarStyles['fc-row']}><div><span className={calendarStyles['fc-date']}>27</span><span className={calendarStyles['fc-weekday']}>Mon</span></div><div><span className={calendarStyles['fc-date']}>28</span><span className={calendarStyles['fc-weekday']}>Tue</span></div><div><span className={calendarStyles['fc-date']}>29</span><span className={calendarStyles['fc-weekday']}>Wed</span></div><div><span className={calendarStyles['fc-date']}>30</span><span className={calendarStyles['fc-weekday']}>Thu</span></div><div><span className={calendarStyles['fc-date']}>31</span><span className={calendarStyles['fc-weekday']}>Fri</span></div><div></div><div></div></div></div></div></div>
-                            </div>
-    </>,
-    <>
-      <img className={calendarStyles['bb-custom-img']} src={calendarImage6}  alt="image06"/>
-                            <div className={calendarStyles['fc-calendar-wrap']}>
-                                <h2>June 2013</h2>
-                                <div className={calendarStyles['fc-calendar-container']}><div className={`${calendarStyles['fc-calendar']} ${calendarStyles['fc-five-rows']}`}><div className={calendarStyles['fc-head']}><div>Monday</div><div>Tuesday</div><div>Wednesday</div><div>Thursday</div><div>Friday</div><div>Saturday</div><div>Sunday</div></div><div className={calendarStyles['fc-body']}><div className={calendarStyles['fc-row']}><div></div><div></div><div></div><div></div><div></div><div><span className={calendarStyles['fc-date']}>1</span><span className={calendarStyles['fc-weekday']}>Sat</span></div><div><span className={calendarStyles['fc-date']}>2</span><span className={calendarStyles['fc-weekday']}>Sun</span></div></div><div className={calendarStyles['fc-row']}><div><span className={calendarStyles['fc-date']}>3</span><span className={calendarStyles['fc-weekday']}>Mon</span></div><div><span className={calendarStyles['fc-date']}>4</span><span className={calendarStyles['fc-weekday']}>Tue</span></div><div><span className={calendarStyles['fc-date']}>5</span><span className={calendarStyles['fc-weekday']}>Wed</span></div><div><span className={calendarStyles['fc-date']}>6</span><span className={calendarStyles['fc-weekday']}>Thu</span></div><div><span className={calendarStyles['fc-date']}>7</span><span className={calendarStyles['fc-weekday']}>Fri</span></div><div><span className={calendarStyles['fc-date']}>8</span><span className={calendarStyles['fc-weekday']}>Sat</span></div><div><span className={calendarStyles['fc-date']}>9</span><span className={calendarStyles['fc-weekday']}>Sun</span></div></div><div className={calendarStyles['fc-row']}><div><span className={calendarStyles['fc-date']}>10</span><span className={calendarStyles['fc-weekday']}>Mon</span></div><div><span className={calendarStyles['fc-date']}>11</span><span className={calendarStyles['fc-weekday']}>Tue</span></div><div><span className={calendarStyles['fc-date']}>12</span><span className={calendarStyles['fc-weekday']}>Wed</span></div><div><span className={calendarStyles['fc-date']}>13</span><span className={calendarStyles['fc-weekday']}>Thu</span></div><div><span className={calendarStyles['fc-date']}>14</span><span className={calendarStyles['fc-weekday']}>Fri</span></div><div><span className={calendarStyles['fc-date']}>15</span><span className={calendarStyles['fc-weekday']}>Sat</span></div><div><span className={calendarStyles['fc-date']}>16</span><span className={calendarStyles['fc-weekday']}>Sun</span></div></div><div className={calendarStyles['fc-row']}><div><span className={calendarStyles['fc-date']}>17</span><span className={calendarStyles['fc-weekday']}>Mon</span></div><div><span className={calendarStyles['fc-date']}>18</span><span className={calendarStyles['fc-weekday']}>Tue</span></div><div><span className={calendarStyles['fc-date']}>19</span><span className={calendarStyles['fc-weekday']}>Wed</span></div><div><span className={calendarStyles['fc-date']}>20</span><span className={calendarStyles['fc-weekday']}>Thu</span></div><div><span className={calendarStyles['fc-date']}>21</span><span className={calendarStyles['fc-weekday']}>Fri</span></div><div><span className={calendarStyles['fc-date']}>22</span><span className={calendarStyles['fc-weekday']}>Sat</span></div><div><span className={calendarStyles['fc-date']}>23</span><span className={calendarStyles['fc-weekday']}>Sun</span></div></div><div className={calendarStyles['fc-row']}><div><span className={calendarStyles['fc-date']}>24</span><span className={calendarStyles['fc-weekday']}>Mon</span></div><div><span className={calendarStyles['fc-date']}>25</span><span className={calendarStyles['fc-weekday']}>Tue</span></div><div><span className={calendarStyles['fc-date']}>26</span><span className={calendarStyles['fc-weekday']}>Wed</span></div><div><span className={calendarStyles['fc-date']}>27</span><span className={calendarStyles['fc-weekday']}>Thu</span></div><div><span className={calendarStyles['fc-date']}>28</span><span className={calendarStyles['fc-weekday']}>Fri</span></div><div><span className={calendarStyles['fc-date']}>29</span><span className={calendarStyles['fc-weekday']}>Sat</span></div><div><span className={calendarStyles['fc-date']}>30</span><span className={calendarStyles['fc-weekday']}>Sun</span></div></div></div></div></div>
-                            </div>
-    </>,
-    <>
-      <img className={calendarStyles['bb-custom-img']} src={calendarImage7} alt="image07"/>
-                            <div className={calendarStyles['fc-calendar-wrap']}>
-                                <h2>July 2013</h2>
-                                <div className={calendarStyles['fc-calendar-container']}><div className={`${calendarStyles['fc-calendar']} ${calendarStyles['fc-five-rows']}`}><div className={calendarStyles['fc-head']}><div>Monday</div><div>Tuesday</div><div>Wednesday</div><div>Thursday</div><div>Friday</div><div>Saturday</div><div>Sunday</div></div><div className={calendarStyles['fc-body']}><div className={calendarStyles['fc-row']}><div><span className={calendarStyles['fc-date']}>1</span><span className={calendarStyles['fc-weekday']}>Mon</span></div><div><span className={calendarStyles['fc-date']}>2</span><span className={calendarStyles['fc-weekday']}>Tue</span></div><div><span className={calendarStyles['fc-date']}>3</span><span className={calendarStyles['fc-weekday']}>Wed</span></div><div><span className={calendarStyles['fc-date']}>4</span><span className={calendarStyles['fc-weekday']}>Thu</span></div><div><span className={calendarStyles['fc-date']}>5</span><span className={calendarStyles['fc-weekday']}>Fri</span></div><div><span className={calendarStyles['fc-date']}>6</span><span className={calendarStyles['fc-weekday']}>Sat</span></div><div><span className={calendarStyles['fc-date']}>7</span><span className={calendarStyles['fc-weekday']}>Sun</span></div></div><div className={calendarStyles['fc-row']}><div><span className={calendarStyles['fc-date']}>8</span><span className={calendarStyles['fc-weekday']}>Mon</span></div><div><span className={calendarStyles['fc-date']}>9</span><span className={calendarStyles['fc-weekday']}>Tue</span></div><div><span className={calendarStyles['fc-date']}>10</span><span className={calendarStyles['fc-weekday']}>Wed</span></div><div><span className={calendarStyles['fc-date']}>11</span><span className={calendarStyles['fc-weekday']}>Thu</span></div><div><span className={calendarStyles['fc-date']}>12</span><span className={calendarStyles['fc-weekday']}>Fri</span></div><div><span className={calendarStyles['fc-date']}>13</span><span className={calendarStyles['fc-weekday']}>Sat</span></div><div><span className={calendarStyles['fc-date']}>14</span><span className={calendarStyles['fc-weekday']}>Sun</span></div></div><div className={calendarStyles['fc-row']}><div><span className={calendarStyles['fc-date']}>15</span><span className={calendarStyles['fc-weekday']}>Mon</span></div><div><span className={calendarStyles['fc-date']}>16</span><span className={calendarStyles['fc-weekday']}>Tue</span></div><div><span className={calendarStyles['fc-date']}>17</span><span className={calendarStyles['fc-weekday']}>Wed</span></div><div><span className={calendarStyles['fc-date']}>18</span><span className={calendarStyles['fc-weekday']}>Thu</span></div><div><span className={calendarStyles['fc-date']}>19</span><span className={calendarStyles['fc-weekday']}>Fri</span></div><div><span className={calendarStyles['fc-date']}>20</span><span className={calendarStyles['fc-weekday']}>Sat</span></div><div><span className={calendarStyles['fc-date']}>21</span><span className={calendarStyles['fc-weekday']}>Sun</span></div></div><div className={calendarStyles['fc-row']}><div><span className={calendarStyles['fc-date']}>22</span><span className={calendarStyles['fc-weekday']}>Mon</span></div><div><span className={calendarStyles['fc-date']}>23</span><span className={calendarStyles['fc-weekday']}>Tue</span></div><div><span className={calendarStyles['fc-date']}>24</span><span className={calendarStyles['fc-weekday']}>Wed</span></div><div><span className={calendarStyles['fc-date']}>25</span><span className={calendarStyles['fc-weekday']}>Thu</span></div><div><span className={calendarStyles['fc-date']}>26</span><span className={calendarStyles['fc-weekday']}>Fri</span></div><div><span className={calendarStyles['fc-date']}>27</span><span className={calendarStyles['fc-weekday']}>Sat</span></div><div><span className={calendarStyles['fc-date']}>28</span><span className={calendarStyles['fc-weekday']}>Sun</span></div></div><div className={calendarStyles['fc-row']}><div><span className={calendarStyles['fc-date']}>29</span><span className={calendarStyles['fc-weekday']}>Mon</span></div><div><span className={calendarStyles['fc-date']}>30</span><span className={calendarStyles['fc-weekday']}>Tue</span></div><div><span className={calendarStyles['fc-date']}>31</span><span className={calendarStyles['fc-weekday']}>Wed</span></div><div></div><div></div><div></div><div></div></div></div></div></div>
-                            </div>
-    </>,
-    <>
-      <img className={calendarStyles['bb-custom-img']} src={calendarImage8} alt="image08"/>
-                            <div className={calendarStyles['fc-calendar-wrap']}>
-                                <h2>August 2013</h2>
-                                <div className={calendarStyles['fc-calendar-container']}><div className={`${calendarStyles['fc-calendar']} ${calendarStyles['fc-five-rows']}`}><div className={calendarStyles['fc-head']}><div>Monday</div><div>Tuesday</div><div>Wednesday</div><div>Thursday</div><div>Friday</div><div>Saturday</div><div>Sunday</div></div><div className={calendarStyles['fc-body']}><div className={calendarStyles['fc-row']}><div></div><div></div><div></div><div><span className={calendarStyles['fc-date']}>1</span><span className={calendarStyles['fc-weekday']}>Thu</span></div><div><span className={calendarStyles['fc-date']}>2</span><span className={calendarStyles['fc-weekday']}>Fri</span></div><div><span className={calendarStyles['fc-date']}>3</span><span className={calendarStyles['fc-weekday']}>Sat</span></div><div><span className={calendarStyles['fc-date']}>4</span><span className={calendarStyles['fc-weekday']}>Sun</span></div></div><div className={calendarStyles['fc-row']}><div><span className={calendarStyles['fc-date']}>5</span><span className={calendarStyles['fc-weekday']}>Mon</span></div><div><span className={calendarStyles['fc-date']}>6</span><span className={calendarStyles['fc-weekday']}>Tue</span></div><div><span className={calendarStyles['fc-date']}>7</span><span className={calendarStyles['fc-weekday']}>Wed</span></div><div><span className={calendarStyles['fc-date']}>8</span><span className={calendarStyles['fc-weekday']}>Thu</span></div><div><span className={calendarStyles['fc-date']}>9</span><span className={calendarStyles['fc-weekday']}>Fri</span></div><div><span className={calendarStyles['fc-date']}>10</span><span className={calendarStyles['fc-weekday']}>Sat</span></div><div><span className={calendarStyles['fc-date']}>11</span><span className={calendarStyles['fc-weekday']}>Sun</span></div></div><div className={calendarStyles['fc-row']}><div><span className={calendarStyles['fc-date']}>12</span><span className={calendarStyles['fc-weekday']}>Mon</span></div><div><span className={calendarStyles['fc-date']}>13</span><span className={calendarStyles['fc-weekday']}>Tue</span></div><div><span className={calendarStyles['fc-date']}>14</span><span className={calendarStyles['fc-weekday']}>Wed</span></div><div><span className={calendarStyles['fc-date']}>15</span><span className={calendarStyles['fc-weekday']}>Thu</span></div><div><span className={calendarStyles['fc-date']}>16</span><span className={calendarStyles['fc-weekday']}>Fri</span></div><div><span className={calendarStyles['fc-date']}>17</span><span className={calendarStyles['fc-weekday']}>Sat</span></div><div><span className={calendarStyles['fc-date']}>18</span><span className={calendarStyles['fc-weekday']}>Sun</span></div></div><div className={calendarStyles['fc-row']}><div><span className={calendarStyles['fc-date']}>19</span><span className={calendarStyles['fc-weekday']}>Mon</span></div><div><span className={calendarStyles['fc-date']}>20</span><span className={calendarStyles['fc-weekday']}>Tue</span></div><div><span className={calendarStyles['fc-date']}>21</span><span className={calendarStyles['fc-weekday']}>Wed</span></div><div><span className={calendarStyles['fc-date']}>22</span><span className={calendarStyles['fc-weekday']}>Thu</span></div><div><span className={calendarStyles['fc-date']}>23</span><span className={calendarStyles['fc-weekday']}>Fri</span></div><div><span className={calendarStyles['fc-date']}>24</span><span className={calendarStyles['fc-weekday']}>Sat</span></div><div><span className={calendarStyles['fc-date']}>25</span><span className={calendarStyles['fc-weekday']}>Sun</span></div></div><div className={calendarStyles['fc-row']}><div><span className={calendarStyles['fc-date']}>26</span><span className={calendarStyles['fc-weekday']}>Mon</span></div><div><span className={calendarStyles['fc-date']}>27</span><span className={calendarStyles['fc-weekday']}>Tue</span></div><div><span className={calendarStyles['fc-date']}>28</span><span className={calendarStyles['fc-weekday']}>Wed</span></div><div><span className={calendarStyles['fc-date']}>29</span><span className={calendarStyles['fc-weekday']}>Thu</span></div><div><span className={calendarStyles['fc-date']}>30</span><span className={calendarStyles['fc-weekday']}>Fri</span></div><div><span className={calendarStyles['fc-date']}>31</span><span className={calendarStyles['fc-weekday']}>Sat</span></div><div></div></div></div></div></div>
-                            </div>
-    </>,
-    <>
-      <img className={calendarStyles['bb-custom-img']} src={calendarImage9} alt="image09"/>
-                            <div className={calendarStyles['fc-calendar-wrap']}>
-                                <h2>September 2013</h2>
-                                <div className={calendarStyles['fc-calendar-container']}><div className={`${calendarStyles['fc-calendar']} ${calendarStyles['fc-five-rows']}`}><div className={calendarStyles['fc-head']}><div>Monday</div><div>Tuesday</div><div>Wednesday</div><div>Thursday</div><div>Friday</div><div>Saturday</div><div>Sunday</div></div><div className={calendarStyles['fc-body']}><div className={calendarStyles['fc-row']}><div></div><div></div><div></div><div></div><div></div><div></div><div><span className={calendarStyles['fc-date']}>1</span><span className={calendarStyles['fc-weekday']}>Sun</span></div></div><div className={calendarStyles['fc-row']}><div><span className={calendarStyles['fc-date']}>2</span><span className={calendarStyles['fc-weekday']}>Mon</span></div><div><span className={calendarStyles['fc-date']}>3</span><span className={calendarStyles['fc-weekday']}>Tue</span></div><div><span className={calendarStyles['fc-date']}>4</span><span className={calendarStyles['fc-weekday']}>Wed</span></div><div><span className={calendarStyles['fc-date']}>5</span><span className={calendarStyles['fc-weekday']}>Thu</span></div><div><span className={calendarStyles['fc-date']}>6</span><span className={calendarStyles['fc-weekday']}>Fri</span></div><div><span className={calendarStyles['fc-date']}>7</span><span className={calendarStyles['fc-weekday']}>Sat</span></div><div><span className={calendarStyles['fc-date']}>8</span><span className={calendarStyles['fc-weekday']}>Sun</span></div></div><div className={calendarStyles['fc-row']}><div><span className={calendarStyles['fc-date']}>9</span><span className={calendarStyles['fc-weekday']}>Mon</span></div><div><span className={calendarStyles['fc-date']}>10</span><span className={calendarStyles['fc-weekday']}>Tue</span></div><div><span className={calendarStyles['fc-date']}>11</span><span className={calendarStyles['fc-weekday']}>Wed</span></div><div><span className={calendarStyles['fc-date']}>12</span><span className={calendarStyles['fc-weekday']}>Thu</span></div><div><span className={calendarStyles['fc-date']}>13</span><span className={calendarStyles['fc-weekday']}>Fri</span></div><div><span className={calendarStyles['fc-date']}>14</span><span className={calendarStyles['fc-weekday']}>Sat</span></div><div><span className={calendarStyles['fc-date']}>15</span><span className={calendarStyles['fc-weekday']}>Sun</span></div></div><div className={calendarStyles['fc-row']}><div><span className={calendarStyles['fc-date']}>16</span><span className={calendarStyles['fc-weekday']}>Mon</span></div><div><span className={calendarStyles['fc-date']}>17</span><span className={calendarStyles['fc-weekday']}>Tue</span></div><div><span className={calendarStyles['fc-date']}>18</span><span className={calendarStyles['fc-weekday']}>Wed</span></div><div><span className={calendarStyles['fc-date']}>19</span><span className={calendarStyles['fc-weekday']}>Thu</span></div><div><span className={calendarStyles['fc-date']}>20</span><span className={calendarStyles['fc-weekday']}>Fri</span></div><div><span className={calendarStyles['fc-date']}>21</span><span className={calendarStyles['fc-weekday']}>Sat</span></div><div><span className={calendarStyles['fc-date']}>22</span><span className={calendarStyles['fc-weekday']}>Sun</span></div></div><div className={calendarStyles['fc-row']}><div><span className={calendarStyles['fc-date']}>23</span><span className={calendarStyles['fc-weekday']}>Mon</span></div><div><span className={calendarStyles['fc-date']}>24</span><span className={calendarStyles['fc-weekday']}>Tue</span></div><div><span className={calendarStyles['fc-date']}>25</span><span className={calendarStyles['fc-weekday']}>Wed</span></div><div><span className={calendarStyles['fc-date']}>26</span><span className={calendarStyles['fc-weekday']}>Thu</span></div><div><span className={calendarStyles['fc-date']}>27</span><span className={calendarStyles['fc-weekday']}>Fri</span></div><div><span className={calendarStyles['fc-date']}>28</span><span className={calendarStyles['fc-weekday']}>Sat</span></div><div><span className={calendarStyles['fc-date']}>29</span><span className={calendarStyles['fc-weekday']}>Sun</span></div></div><div className={calendarStyles['fc-row']}><div><span className={calendarStyles['fc-date']}>30</span><span className={calendarStyles['fc-weekday']}>Mon</span></div><div></div><div></div><div></div><div></div><div></div><div></div></div></div></div></div>
-                            </div>
-    </>,
-    <>
-      <img className={calendarStyles['bb-custom-img']} src={calendarImage10} alt="image10"/>
-                            <div className={calendarStyles['fc-calendar-wrap']}>
-                                <h2>October 2013</h2>
-                                <div className={calendarStyles['fc-calendar-container']}><div className={`${calendarStyles['fc-calendar']} ${calendarStyles['fc-five-rows']}`}><div className={calendarStyles['fc-head']}><div>Monday</div><div>Tuesday</div><div>Wednesday</div><div>Thursday</div><div>Friday</div><div>Saturday</div><div>Sunday</div></div><div className={calendarStyles['fc-body']}><div className={calendarStyles['fc-row']}><div></div><div><span className={calendarStyles['fc-date']}>1</span><span className={calendarStyles['fc-weekday']}>Tue</span></div><div><span className={calendarStyles['fc-date']}>2</span><span className={calendarStyles['fc-weekday']}>Wed</span></div><div><span className={calendarStyles['fc-date']}>3</span><span className={calendarStyles['fc-weekday']}>Thu</span></div><div><span className={calendarStyles['fc-date']}>4</span><span className={calendarStyles['fc-weekday']}>Fri</span></div><div><span className={calendarStyles['fc-date']}>5</span><span className={calendarStyles['fc-weekday']}>Sat</span></div><div><span className={calendarStyles['fc-date']}>6</span><span className={calendarStyles['fc-weekday']}>Sun</span></div></div><div className={calendarStyles['fc-row']}><div><span className={calendarStyles['fc-date']}>7</span><span className={calendarStyles['fc-weekday']}>Mon</span></div><div><span className={calendarStyles['fc-date']}>8</span><span className={calendarStyles['fc-weekday']}>Tue</span></div><div><span className={calendarStyles['fc-date']}>9</span><span className={calendarStyles['fc-weekday']}>Wed</span></div><div><span className={calendarStyles['fc-date']}>10</span><span className={calendarStyles['fc-weekday']}>Thu</span></div><div><span className={calendarStyles['fc-date']}>11</span><span className={calendarStyles['fc-weekday']}>Fri</span></div><div><span className={calendarStyles['fc-date']}>12</span><span className={calendarStyles['fc-weekday']}>Sat</span></div><div><span className={calendarStyles['fc-date']}>13</span><span className={calendarStyles['fc-weekday']}>Sun</span></div></div><div className={calendarStyles['fc-row']}><div><span className={calendarStyles['fc-date']}>14</span><span className={calendarStyles['fc-weekday']}>Mon</span></div><div><span className={calendarStyles['fc-date']}>15</span><span className={calendarStyles['fc-weekday']}>Tue</span></div><div><span className={calendarStyles['fc-date']}>16</span><span className={calendarStyles['fc-weekday']}>Wed</span></div><div><span className={calendarStyles['fc-date']}>17</span><span className={calendarStyles['fc-weekday']}>Thu</span></div><div><span className={calendarStyles['fc-date']}>18</span><span className={calendarStyles['fc-weekday']}>Fri</span></div><div><span className={calendarStyles['fc-date']}>19</span><span className={calendarStyles['fc-weekday']}>Sat</span></div><div><span className={calendarStyles['fc-date']}>20</span><span className={calendarStyles['fc-weekday']}>Sun</span></div></div><div className={calendarStyles['fc-row']}><div><span className={calendarStyles['fc-date']}>21</span><span className={calendarStyles['fc-weekday']}>Mon</span></div><div><span className={calendarStyles['fc-date']}>22</span><span className={calendarStyles['fc-weekday']}>Tue</span></div><div><span className={calendarStyles['fc-date']}>23</span><span className={calendarStyles['fc-weekday']}>Wed</span></div><div><span className={calendarStyles['fc-date']}>24</span><span className={calendarStyles['fc-weekday']}>Thu</span></div><div><span className={calendarStyles['fc-date']}>25</span><span className={calendarStyles['fc-weekday']}>Fri</span></div><div><span className={calendarStyles['fc-date']}>26</span><span className={calendarStyles['fc-weekday']}>Sat</span></div><div><span className={calendarStyles['fc-date']}>27</span><span className={calendarStyles['fc-weekday']}>Sun</span></div></div><div className={calendarStyles['fc-row']}><div><span className={calendarStyles['fc-date']}>28</span><span className={calendarStyles['fc-weekday']}>Mon</span></div><div><span className={calendarStyles['fc-date']}>29</span><span className={calendarStyles['fc-weekday']}>Tue</span></div><div><span className={calendarStyles['fc-date']}>30</span><span className={calendarStyles['fc-weekday']}>Wed</span></div><div><span className={calendarStyles['fc-date']}>31</span><span className={calendarStyles['fc-weekday']}>Thu</span></div><div></div><div></div><div></div></div></div></div></div>
-                            </div>
-    </>,
-  <>
-  {/* November 2013 */}
-  <img className={calendarStyles['bb-custom-img']} src={calendarImage11} alt="image11"/>
-  <div className={calendarStyles['fc-calendar-wrap']}>
-    <h2>November 2013</h2>
-    <div className={calendarStyles['fc-calendar-container']}>
-      <div className={`${calendarStyles['fc-calendar']} ${calendarStyles['fc-five-rows']}`}>
-        <div className={calendarStyles['fc-head']}>
-          <div>Monday</div>
-          <div>Tuesday</div>
-          <div>Wednesday</div>
-          <div>Thursday</div>
-          <div>Friday</div>
-          <div>Saturday</div>
-          <div>Sunday</div>
-        </div>
-        <div className={calendarStyles['fc-body']}>
-          <div className={calendarStyles['fc-row']}>
-            <div></div>
-            <div></div>
-            <div></div>
-            <div></div>
-            <div><span className={calendarStyles['fc-date']}>1</span><span className={calendarStyles['fc-weekday']}>Fri</span></div>
-            <div><span className={calendarStyles['fc-date']}>2</span><span className={calendarStyles['fc-weekday']}>Sat</span></div>
-            <div><span className={calendarStyles['fc-date']}>3</span><span className={calendarStyles['fc-weekday']}>Sun</span></div>
-          </div>
-          <div className={calendarStyles['fc-row']}>
-            <div><span className={calendarStyles['fc-date']}>4</span><span className={calendarStyles['fc-weekday']}>Mon</span></div>
-            <div><span className={calendarStyles['fc-date']}>5</span><span className={calendarStyles['fc-weekday']}>Tue</span></div>
-            <div><span className={calendarStyles['fc-date']}>6</span><span className={calendarStyles['fc-weekday']}>Wed</span></div>
-            <div><span className={calendarStyles['fc-date']}>7</span><span className={calendarStyles['fc-weekday']}>Thu</span></div>
-            <div><span className={calendarStyles['fc-date']}>8</span><span className={calendarStyles['fc-weekday']}>Fri</span></div>
-            <div><span className={calendarStyles['fc-date']}>9</span><span className={calendarStyles['fc-weekday']}>Sat</span></div>
-            <div><span className={calendarStyles['fc-date']}>10</span><span className={calendarStyles['fc-weekday']}>Sun</span></div>
-          </div>
-          <div className={calendarStyles['fc-row']}>
-            <div><span className={calendarStyles['fc-date']}>11</span><span className={calendarStyles['fc-weekday']}>Mon</span></div>
-            <div><span className={calendarStyles['fc-date']}>12</span><span className={calendarStyles['fc-weekday']}>Tue</span></div>
-            <div><span className={calendarStyles['fc-date']}>13</span><span className={calendarStyles['fc-weekday']}>Wed</span></div>
-            <div><span className={calendarStyles['fc-date']}>14</span><span className={calendarStyles['fc-weekday']}>Thu</span></div>
-            <div><span className={calendarStyles['fc-date']}>15</span><span className={calendarStyles['fc-weekday']}>Fri</span></div>
-            <div><span className={calendarStyles['fc-date']}>16</span><span className={calendarStyles['fc-weekday']}>Sat</span></div>
-            <div><span className={calendarStyles['fc-date']}>17</span><span className={calendarStyles['fc-weekday']}>Sun</span></div>
-          </div>
-          <div className={calendarStyles['fc-row']}>
-            <div><span className={calendarStyles['fc-date']}>18</span><span className={calendarStyles['fc-weekday']}>Mon</span></div>
-            <div><span className={calendarStyles['fc-date']}>19</span><span className={calendarStyles['fc-weekday']}>Tue</span></div>
-            <div><span className={calendarStyles['fc-date']}>20</span><span className={calendarStyles['fc-weekday']}>Wed</span></div>
-            <div><span className={calendarStyles['fc-date']}>21</span><span className={calendarStyles['fc-weekday']}>Thu</span></div>
-            <div><span className={calendarStyles['fc-date']}>22</span><span className={calendarStyles['fc-weekday']}>Fri</span></div>
-            <div><span className={calendarStyles['fc-date']}>23</span><span className={calendarStyles['fc-weekday']}>Sat</span></div>
-            <div><span className={calendarStyles['fc-date']}>24</span><span className={calendarStyles['fc-weekday']}>Sun</span></div>
-          </div>
-          <div className={calendarStyles['fc-row']}>
-            <div><span className={calendarStyles['fc-date']}>25</span><span className={calendarStyles['fc-weekday']}>Mon</span></div>
-            <div><span className={calendarStyles['fc-date']}>26</span><span className={calendarStyles['fc-weekday']}>Tue</span></div>
-            <div><span className={calendarStyles['fc-date']}>27</span><span className={calendarStyles['fc-weekday']}>Wed</span></div>
-            <div><span className={calendarStyles['fc-date']}>28</span><span className={calendarStyles['fc-weekday']}>Thu</span></div>
-            <div><span className={calendarStyles['fc-date']}>29</span><span className={calendarStyles['fc-weekday']}>Fri</span></div>
-            <div><span className={calendarStyles['fc-date']}>30</span><span className={calendarStyles['fc-weekday']}>Sat</span></div>
-            <div></div>
+        <h2>{year}年{month + 1}月</h2>
+        <div className={calendarStyles['fc-calendar-container']}>
+          <div className={`${calendarStyles['fc-calendar']} ${calendarStyles[rowClass]}`}>
+            <div className={calendarStyles['fc-head']}>
+              {WEEKDAY_LABELS.map((label) => (
+                <div key={label}>{label}</div>
+              ))}
+            </div>
+            <div className={calendarStyles['fc-body']}>
+              {rows.map((row, rowIndex) => (
+                <div className={calendarStyles['fc-row']} key={rowIndex}>
+                  {row.map((day, columnIndex) => {
+                    if (day === null) {
+                      return <div key={columnIndex} />;
+                    }
+
+                    const event = CALENDAR_EVENTS[`${month}-${day}`];
+
+                    return (
+                      <div key={columnIndex}>
+                        <span className={calendarStyles['fc-date']}>{day}</span>
+                        <span className={calendarStyles['fc-weekday']}>
+                          {WEEKDAY_LABELS[columnIndex]}
+                        </span>
+                        {event && (
+                          <div className={calendarStyles['fc-event']}>{event}</div>
+                        )}
+                      </div>
+                    );
+                  })}
+                </div>
+              ))}
+            </div>
           </div>
         </div>
       </div>
-    </div>
-  </div>
-</>,
-  <>
-  {/* December 2013 */}
-  <img className={calendarStyles['bb-custom-img']} src={calendarImage12} alt="image12"/>
-  <div className={calendarStyles['fc-calendar-wrap']}>
-    <h2>December 2013</h2>
-    <div className={calendarStyles['fc-calendar-container']}>
-      <div className={`${calendarStyles['fc-calendar']} ${calendarStyles['fc-six-rows']}`}>
-        <div className={calendarStyles['fc-head']}>
-          <div>Monday</div>
-          <div>Tuesday</div>
-          <div>Wednesday</div>
-          <div>Thursday</div>
-          <div>Friday</div>
-          <div>Saturday</div>
-          <div>Sunday</div>
-        </div>
-        <div className={calendarStyles['fc-body']}>
-          <div className={calendarStyles['fc-row']}>
-            <div></div>
-            <div></div>
-            <div></div>
-            <div></div>
-            <div></div>
-            <div></div>
-            <div><span className={calendarStyles['fc-date']}>1</span><span className={calendarStyles['fc-weekday']}>Sun</span></div>
-          </div>
-          <div className={calendarStyles['fc-row']}>
-            <div><span className={calendarStyles['fc-date']}>2</span><span className={calendarStyles['fc-weekday']}>Mon</span></div>
-            <div><span className={calendarStyles['fc-date']}>3</span><span className={calendarStyles['fc-weekday']}>Tue</span></div>
-            <div><span className={calendarStyles['fc-date']}>4</span><span className={calendarStyles['fc-weekday']}>Wed</span></div>
-            <div><span className={calendarStyles['fc-date']}>5</span><span className={calendarStyles['fc-weekday']}>Thu</span></div>
-            <div><span className={calendarStyles['fc-date']}>6</span><span className={calendarStyles['fc-weekday']}>Fri</span></div>
-            <div><span className={calendarStyles['fc-date']}>7</span><span className={calendarStyles['fc-weekday']}>Sat</span></div>
-            <div><span className={calendarStyles['fc-date']}>8</span><span className={calendarStyles['fc-weekday']}>Sun</span></div>
-          </div>
-          <div className={calendarStyles['fc-row']}>
-            <div><span className={calendarStyles['fc-date']}>9</span><span className={calendarStyles['fc-weekday']}>Mon</span></div>
-            <div><span className={calendarStyles['fc-date']}>10</span><span className={calendarStyles['fc-weekday']}>Tue</span></div>
-            <div><span className={calendarStyles['fc-date']}>11</span><span className={calendarStyles['fc-weekday']}>Wed</span></div>
-            <div><span className={calendarStyles['fc-date']}>12</span><span className={calendarStyles['fc-weekday']}>Thu</span></div>
-            <div><span className={calendarStyles['fc-date']}>13</span><span className={calendarStyles['fc-weekday']}>Fri</span></div>
-            <div><span className={calendarStyles['fc-date']}>14</span><span className={calendarStyles['fc-weekday']}>Sat</span></div>
-            <div><span className={calendarStyles['fc-date']}>15</span><span className={calendarStyles['fc-weekday']}>Sun</span></div>
-          </div>
-          <div className={calendarStyles['fc-row']}>
-            <div><span className={calendarStyles['fc-date']}>16</span><span className={calendarStyles['fc-weekday']}>Mon</span></div>
-            <div><span className={calendarStyles['fc-date']}>17</span><span className={calendarStyles['fc-weekday']}>Tue</span></div>
-            <div><span className={calendarStyles['fc-date']}>18</span><span className={calendarStyles['fc-weekday']}>Wed</span></div>
-            <div><span className={calendarStyles['fc-date']}>19</span><span className={calendarStyles['fc-weekday']}>Thu</span></div>
-            <div><span className={calendarStyles['fc-date']}>20</span><span className={calendarStyles['fc-weekday']}>Fri</span></div>
-            <div><span className={calendarStyles['fc-date']}>21</span><span className={calendarStyles['fc-weekday']}>Sat</span></div>
-            <div><span className={calendarStyles['fc-date']}>22</span><span className={calendarStyles['fc-weekday']}>Sun</span></div>
-          </div>
-          <div className={calendarStyles['fc-row']}>
-            <div><span className={calendarStyles['fc-date']}>23</span><span className={calendarStyles['fc-weekday']}>Mon</span></div>
-            <div><span className={calendarStyles['fc-date']}>24</span><span className={calendarStyles['fc-weekday']}>Tue</span></div>
-            <div><span className={calendarStyles['fc-date']}>25</span><span className={calendarStyles['fc-weekday']}>Wed</span></div>
-            <div><span className={calendarStyles['fc-date']}>26</span><span className={calendarStyles['fc-weekday']}>Thu</span></div>
-            <div><span className={calendarStyles['fc-date']}>27</span><span className={calendarStyles['fc-weekday']}>Fri</span></div>
-            <div><span className={calendarStyles['fc-date']}>28</span><span className={calendarStyles['fc-weekday']}>Sat</span></div>
-            <div><span className={calendarStyles['fc-date']}>29</span><span className={calendarStyles['fc-weekday']}>Sun</span></div>
-          </div>
-          <div className={calendarStyles['fc-row']}>
-            <div><span className={calendarStyles['fc-date']}>30</span><span className={calendarStyles['fc-weekday']}>Mon</span></div>
-            <div><span className={calendarStyles['fc-date']}>31</span><span className={calendarStyles['fc-weekday']}>Tue</span></div>
-            <div></div>
-            <div></div>
-            <div></div>
-            <div></div>
-            <div></div>
-          </div>
-        </div>
-      </div>
-    </div>
-  </div>
-</>
-]
+    </React.Fragment>
+  );
+}
+
+function buildCalendarPages(year) {
+  return Array.from({ length: 12 }, (_, month) => buildMonthPage(year, month));
+}
 
 function CalendarPage() {
-    const isMobile = useMediaQuery('(max-width: 767px)');
-    return (
-        <div style={{ padding: '20px', border: '1px solid #ddd', borderRadius: '5px' }}>
-            <BookBlock pages={pages1} orientation="horizontal" width={isMobile ? '90%' : '480px'} height={'600px'} />
-        </div>
-    );
+  const isMobile = useMediaQuery('(max-width: 767px)');
+  const [year, setYear] = useState(CURRENT_YEAR);
+  const pages = useMemo(() => buildCalendarPages(year), [year]);
+
+  return (
+    <div className={calendarStyles['calendar-page']}>
+      <div className={calendarStyles['calendar-toolbar']}>
+        <label className={calendarStyles['calendar-year-label']} htmlFor="calendar-year">
+          年份
+        </label>
+        <select
+          id="calendar-year"
+          className={calendarStyles['calendar-select']}
+          value={year}
+          onChange={(event) => setYear(Number(event.target.value))}
+        >
+          {YEAR_OPTIONS.map((option) => (
+            <option key={option} value={option}>
+              {option}年
+            </option>
+          ))}
+        </select>
+        <span className={calendarStyles['calendar-year-hint']}>
+          可选 {YEAR_OPTIONS[0]}–{YEAR_OPTIONS[YEAR_OPTIONS.length - 1]} 年
+        </span>
+      </div>
+
+      <div className={calendarStyles['calendar-book']}>
+        <BookBlock
+          pages={pages}
+          orientation="horizontal"
+          width={isMobile ? '90%' : '480px'}
+          height={'600px'}
+          initialPage={CURRENT_MONTH}
+        />
+      </div>
+    </div>
+  );
 }
 
 export default CalendarPage;
