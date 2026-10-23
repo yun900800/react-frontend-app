@@ -1,0 +1,105 @@
+.layout {
+  display: grid;
+  grid-template-columns: 220px minmax(0, 1fr);
+  gap: 28px;
+  align-items: start;
+}
+
+.covers {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.figure {
+  margin: 0;
+}
+
+.cover {
+  display: block;
+  width: 100%;
+  aspect-ratio: 3 / 4;
+  object-fit: cover;
+  border-radius: 10px;
+  border: 1px solid var(--color-border-input);
+  background: oklch(var(--color-background));
+}
+
+.caption {
+  margin-top: 6px;
+  font-size: 0.75rem;
+  text-align: center;
+  color: oklch(var(--color-foreground) / 0.6);
+}
+
+.info {
+  display: flex;
+  flex-direction: column;
+  gap: 18px;
+  min-width: 0;
+}
+
+.bookTitle {
+  font-size: 1.35rem;
+  font-weight: 650;
+  line-height: 1.35;
+  color: oklch(var(--color-foreground));
+}
+
+.field {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.label {
+  font-size: 0.75rem;
+  font-weight: 600;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  color: oklch(var(--color-foreground) / 0.55);
+}
+
+.value {
+  font-size: 0.95rem;
+  line-height: 1.7;
+  color: oklch(var(--color-foreground) / 0.88);
+}
+
+.text {
+  margin: 0;
+  white-space: pre-wrap;
+  word-break: break-word;
+}
+
+.colorValue {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
+  font-size: 0.85rem;
+}
+
+.swatch {
+  display: inline-block;
+  width: 18px;
+  height: 18px;
+  border-radius: 4px;
+  border: 1px solid var(--color-border-input);
+}
+
+@media (max-width: 640px) {
+  .layout {
+    grid-template-columns: minmax(0, 1fr);
+    gap: 20px;
+  }
+
+  .covers {
+    flex-direction: row;
+  }
+
+  .figure {
+    flex: 1;
+    max-width: 180px;
+  }
+}

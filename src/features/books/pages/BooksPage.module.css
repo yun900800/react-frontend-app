@@ -1,17 +1,139 @@
-.container {
-  max-width: 800px;
+.page {
+  width: 100%;
+  max-width: 1280px;
   margin: 0 auto;
+  padding: 4px 4px 40px;
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  box-sizing: border-box;
+}
+
+.pageHeader {
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+  gap: 16px;
+  flex-wrap: wrap;
+}
+
+.pageTitle {
+  margin: 0;
+  font-size: 1.6rem;
+  font-weight: 700;
+  line-height: 1.25;
+  color: oklch(var(--color-foreground));
+}
+
+.pageSubtitle {
+  margin: 6px 0 0;
+  font-size: 0.9rem;
+  color: oklch(var(--color-foreground) / 0.6);
+}
+
+.card,
+.formCard {
   padding: 20px;
+  background: oklch(var(--color-background2));
+  border: 1px solid var(--color-border-input);
+  border-radius: 16px;
+  box-shadow: 0 1px 2px oklch(var(--color-foreground) / 0.04);
+  box-sizing: border-box;
+}
+
+.formCard {
+  scroll-margin-top: 80px;
+}
+
+.cardHeader {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  margin-bottom: 16px;
+  flex-wrap: wrap;
+}
+
+.cardHeading {
+  display: flex;
+  align-items: baseline;
+  gap: 10px;
+}
+
+.cardTitle {
+  margin: 0;
+  font-size: 1.05rem;
+  font-weight: 650;
+  color: oklch(var(--color-foreground));
+}
+
+.count {
+  font-size: 0.82rem;
+  color: oklch(var(--color-foreground) / 0.55);
+}
+
+.listBody {
+  padding-top: 2px;
 }
 
 .pagination {
   display: flex;
   justify-content: center;
-  align-items: center;
   margin-top: 16px;
-  gap: 10px;
 }
 
-.btnSpace {
-  margin-top: 8px;
+.skeletonList {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  padding: 4px;
+}
+
+.skeletonRow {
+  height: 64px;
+  border-radius: 10px;
+  background: linear-gradient(
+    90deg,
+    oklch(var(--color-foreground) / 0.06) 25%,
+    oklch(var(--color-foreground) / 0.11) 37%,
+    oklch(var(--color-foreground) / 0.06) 63%
+  );
+  background-size: 400% 100%;
+  animation: shimmer 1.4s ease infinite;
+}
+
+.errorState {
+  padding: 28px;
+  text-align: center;
+  font-size: 0.92rem;
+  color: oklch(var(--db-red));
+  background: oklch(var(--db-red) / 0.08);
+  border: 1px solid oklch(var(--db-red) / 0.25);
+  border-radius: 12px;
+}
+
+@keyframes shimmer {
+  0% {
+    background-position: 100% 0;
+  }
+  100% {
+    background-position: -100% 0;
+  }
+}
+
+@media (max-width: 640px) {
+  .page {
+    padding: 0 0 32px;
+    gap: 16px;
+  }
+
+  .pageTitle {
+    font-size: 1.3rem;
+  }
+
+  .card,
+  .formCard {
+    padding: 14px;
+    border-radius: 12px;
+  }
 }

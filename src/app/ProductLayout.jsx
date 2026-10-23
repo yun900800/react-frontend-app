@@ -10,6 +10,7 @@ import {
   productMobilePrimary,
   productMobileSecondary,
 } from './navigation';
+import { clearCurrentUser } from '../shared/lib/currentUser.js';
 
 export default function ProductLayout() {
   const { pathname } = useLocation();
@@ -17,6 +18,7 @@ export default function ProductLayout() {
 
   const handleLogout = () => {
     localStorage.removeItem('token');
+    clearCurrentUser();
     navigate('/login', { replace: true });
   };
 

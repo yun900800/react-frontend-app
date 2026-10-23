@@ -3,40 +3,38 @@
   width: 60%;
 }
 
-/* 🌟 新增样式：用于对齐 input 和 loading 提示 */
+/* 用于对齐 input 和 loading 提示 */
 .inputWrapper {
-  display: flex; /* 启用 Flexbox */
-  align-items: center; /* 垂直居中对齐所有子元素（input 和 loading） */
-  gap: 10px; /* 如果需要，在 input 和 loading 之间增加间距 */
+  display: flex;
+  align-items: center;
+  gap: 10px;
 }
 
 .inputWrapper input {
-  /* 确保 input 占据剩余空间，或者设置一个明确的宽度 */
-  flex-grow: 1; 
+  flex-grow: 1;
   padding: 10px;
-  /* ... 其他 input 样式 */
-}
-
-/* loading 提示的样式，可以微调 */
-.loading {
-  /* 确保 loading 提示不会占用太多空间 */
-  flex-shrink: 0;
-  color: #888;
-  font-size: 0.9em;
 }
 
 .selector input {
   width: 100%;
   padding: 8px;
-  border: 1px solid #ddd;
+  border: 1px solid var(--color-border-input);
   border-radius: 6px;
+  background: oklch(var(--color-background));
+  color: oklch(var(--color-foreground));
+  font-size: 16px;
+}
+
+.selector input::placeholder {
+  color: oklch(var(--color-foreground) / 0.55);
 }
 
 .dropdown {
   position: absolute;
   z-index: 1000;
-  background: white;
-  border: 1px solid #ccc;
+  background: oklch(var(--color-background2));
+  color: oklch(var(--color-foreground));
+  border: 1px solid var(--color-border-input);
   border-radius: 6px;
   max-height: 200px;
   overflow-y: auto;
@@ -44,21 +42,28 @@
   margin-top: 4px;
   list-style: none;
   padding: 0;
+  box-shadow: 0 8px 24px rgb(0 0 0 / 0.2);
 }
 
 .dropdown li {
-  padding: 8px;
+  padding: 8px 10px;
   cursor: pointer;
+  color: oklch(var(--color-foreground));
 }
 
 .dropdown li:hover {
-  background: #f3f3f3;
+  background: oklch(var(--color-foreground) / 0.08);
+  color: oklch(var(--color-primary));
 }
 
 .loading {
-  position: absolute;
-  right: 8px;
-  top: 8px;
+  flex-shrink: 0;
   font-size: 12px;
-  color: #666;
+  color: oklch(var(--color-foreground) / 0.6);
+}
+
+@media (max-width: 768px) {
+  .selector {
+    width: 100%;
+  }
 }

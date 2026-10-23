@@ -14,6 +14,7 @@ import {
   CalendarDays, Play, 
   SquarePen } from 'lucide-react';
 import ContentWrapper from './ContentWrapper.jsx';
+import { clearCurrentUser } from '../../lib/currentUser.js';
 
 function MainLayout() {
   // 引入 useNavigate Hook 用于编程导航
@@ -24,6 +25,7 @@ function MainLayout() {
     // 1. 清除客户端存储的身份凭证
     // 假设 Token 存储在 localStorage 的 'token' 键中
     localStorage.removeItem('token');
+    clearCurrentUser();
 
     // [可选的安全步骤]: 如果使用了 Refresh Token，这里应该调用后端 API 进行作废 (Revoke)
     // fetch('/api/auth/logout', { method: 'POST' }); 

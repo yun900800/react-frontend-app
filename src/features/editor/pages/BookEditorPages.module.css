@@ -1,15 +1,39 @@
 .full-page {
-    width: 100%;
-    height: 100vh;
-    min-height: 100vh;
-    background: url(../../../assets/resources/3d-book-images/wood.jpg);
+  width: 100%;
+  min-height: 100vh;
+  background: oklch(var(--color-background));
+  transition: background-color 0.25s ease;
 }
 
+/* 浅色主题保留纸张纹理，深色主题改为纯色，避免亮色木纹刺眼 */
+:global([data-theme="light"]) .full-page {
+  background-color: oklch(var(--color-background));
+  background-image: url(../../../assets/resources/3d-book-images/wood.jpg);
+  background-size: cover;
+  background-position: center;
+  background-attachment: fixed;
+}
+
+:global([data-theme="dark"]) .full-page {
+  background-image: radial-gradient(
+    circle at 50% 0%,
+    oklch(var(--color-background2)) 0%,
+    oklch(var(--color-background)) 60%
+  );
+  background-attachment: fixed;
+}
+
+/*
+ * 这里只负责纵向排列，不再做垂直居中 / 内部滚动。
+ * 之前的 height:100% + justify-content:center + overflow-y:auto
+ * 会在内容超高时把顶部裁掉，并额外产生一条滚动条。
+ */
 .full-main {
-    width: 100%;
-    height: 100%;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    flex-direction: column;
+  width: 100%;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: flex-start;
+  padding: 24px 16px 40px;
 }

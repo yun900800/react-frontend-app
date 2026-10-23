@@ -209,8 +209,9 @@ input, textarea, select {
   padding: var(--size-1);
   border: var(--border-size-2) solid var(--color-border-input);  /* 浅灰色边框 */
   border-radius: var(--size-0);
-  /* background-color: oklch(var(--color-background)); */
-  color: oklch(var(--db-dark)); /* 确保文字颜色也使用语义变量 */
+  background-color: oklch(var(--color-background2)); /* 跟随明暗主题 */
+  color: oklch(var(--color-foreground)); /* 跟随明暗主题 */
+  color-scheme: light dark; /* 原生控件（日期、滚动条）跟随主题 */
   width: 100%;  /* 宽度自适应 */
   box-sizing: border-box;
   transition: border-color 0.3s ease, box-shadow 0.3s ease; /* 过渡效果 */
@@ -225,9 +226,10 @@ input:focus, textarea:focus, select:focus {
 
 /* 输入框禁用时的样式 */
 input:disabled, textarea:disabled, select:disabled {
-  background-color: #f0f0f0;  /* 禁用时的背景色 */
-  color: #aaa;  /* 禁用时的文字颜色 */
-  border-color: #ddd;  /* 禁用时的边框颜色 */
+  background-color: oklch(var(--color-background));  /* 禁用时的背景色 */
+  color: oklch(var(--color-foreground) / 0.45);  /* 禁用时的文字颜色 */
+  border-color: var(--color-border-input);  /* 禁用时的边框颜色 */
+  cursor: not-allowed;
 }
 
 /* 输入框悬停时的样式 */
@@ -237,8 +239,8 @@ input:hover, textarea:hover, select:hover {
 
 /* 输入框的占位符文本样式 */
 input::placeholder, textarea::placeholder {
-  color: var(--secondary-color); /* 悬停时占位符的颜色：绿灰色 */
-  font-style: italic;  /* 斜体 */
+  color: oklch(var(--color-foreground) / 0.55);
+  font-style: italic;
 }
 
 /* 输入框错误状态的样式 */

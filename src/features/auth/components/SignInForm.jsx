@@ -4,6 +4,7 @@ import { useNavigate } from 'react-router-dom';
 import * as styles from '../pages/LoginPage.module.css';
 import { authApi } from '../api';
 import { translations } from '../model/i18n/translations';
+import { saveCurrentUser } from '../../../shared/lib/currentUser.js';
 
 const { login } = authApi;
 
@@ -37,6 +38,7 @@ const SignInForm = ({ toggleForm }) => {
                         // Cookies.set('auth_token', token, { expires: 7, path: '/' });
                     }
                     localStorage.setItem('token', token);
+                    saveCurrentUser(response.data.user);
                     console.log('登录成功，跳转到首页');
                     // 这里的跳转是客户端的路由跳转
                     navigate('/');

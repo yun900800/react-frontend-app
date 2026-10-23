@@ -1,127 +1,207 @@
-import React, { useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
+import { ChevronDown, ChevronUp, Plus } from 'lucide-react';
 import { useBooks } from '../hooks/useBooks';
 import BookForm from '../components/BookForm';
 import BookList from '../components/BookList';
 import ExpandedContainer from '../components/ExpandedContainer';
+import ConfirmDialog from '../components/ConfirmDialog';
+import BookDetailDialog from '../components/BookDetailDialog';
 import styles from './BooksPage.module.css';
+import buttonStyles from '../components/Buttons.module.css';
 import { translations } from '../model/i18n/translations';
-import ThemeToggle from '../../../shared/components/ThemeToggle';
-import SpacerLayout from '../../../shared/components/layout/SpacerLayout';
-import Pagination from '../../../shared/components/pagination/Pagination'; // 假设导入路径
+import Pagination from '../../../shared/components/pagination/Pagination';
 import { styles as paginationStyles } from '../../../shared/css/components/styles.js';
+import { useToast } from '../../../shared/components/Toast';
 
 export default function BooksPage({ lang = 'zh' }) {
-  const { books, total, page, setPage, addBook, updateBook, deleteBook, loading } = useBooks();
+  const {
+    books,
+    total,
+    page,
+    limit,
+    setPage,
+    addBook,
+    updateBook,
+    deleteBook,
+    loading,
+    error,
+  } = useBooks();
+
+  const t = translations[lang].booksPage;
+  const addToast = useToast();
+
   const [editingBook, setEditingBook] = useState(null);
   const [showForm, setShowForm] = useState(false);
-  // ✨ 新增状态：控制 BookList 的展开/折叠
   const [listExpanded, setListExpanded] = useState(true);
-  const t = translations[lang].booksPage;
+  const [submitting, setSubmitting] = useState(false);
+  const [deleteTarget, setDeleteTarget] = useState(null);
+  const [deleting, setDeleting] = useState(false);
+  const [detailBook, setDetailBook] = useState(null);
 
-  const handleSubmit = async (formData) => {
-    if (editingBook) {
-      await updateBook(editingBook.id, formData);
-    } else {
-      await addBook(formData);
-    }
-    setShowForm(false);
-    setEditingBook(null);
-  };
+  const formRef = useRef(null);
 
-  const handleCancel = () => {
-    setShowForm(false);
-    setEditingBook(null);
-  };
+  const totalPages = Math.max(1, Math.ceil(total / limit));
 
-  const handleEdit = (book) => {
+  // 表单展开后滚动到可视区域
+  useEffect(() => {
+    if (!showForm) return undefined;
+    const timer = window.setTimeout(() => {
+      formRef.current?.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    }, 120);
+    return () => window.clearTimeout(timer);
+  }, [showForm, editingBook]);
+
+  const openForm = (book = null) => {
     setEditingBook(book);
     setShowForm(true);
   };
 
-  const handleAddNew = () => {
+  const closeForm = () => {
+    setShowForm(false);
     setEditingBook(null);
-    setShowForm(true);
   };
 
-  // ✨ 新增函数：切换列表的展开状态
-  const toggleListExpanded = () => {
-    setListExpanded(prev => !prev);
+  const handleSubmit = async (data) => {
+    setSubmitting(true);
+    try {
+      if (editingBook) {
+        await updateBook(editingBook.id, data);
+      } else {
+        await addBook(data);
+      }
+      addToast(t.saveSuccess, 'success');
+      closeForm();
+    } catch (err) {
+      addToast(err?.message || t.saveFailed, 'error');
+    } finally {
+      setSubmitting(false);
+    }
   };
-  console.log('total',total);
-  const totalPages = Math.ceil(total / 10);
 
-  const hasBooks = books.length > 0;
+  const handleDelete = async () => {
+    if (!deleteTarget) return;
+    setDeleting(true);
+    try {
+      await deleteBook(deleteTarget.id);
+      addToast(t.deleteSuccess, 'success');
+      setDeleteTarget(null);
+    } catch (err) {
+      addToast(err?.message || t.deleteFailed, 'error');
+    } finally {
+      setDeleting(false);
+    }
+  };
+
+  const handleEditFromDetail = (book) => {
+    setDetailBook(null);
+    openForm(book);
+  };
 
   return (
-    <div className={styles.container}>
-      <div className={styles.header}>
-        <SpacerLayout>{t.title}<ThemeToggle style={{ display: 'flex', marginLeft: 'auto' }} /></SpacerLayout>
-        {!showForm && (
-          <button className={`${styles.addBtn} primary-button`} onClick={handleAddNew}>
-            {t.addNewButton}
-          </button>
-        )}
-        
-      </div>
+    <div className={styles.page}>
+      <header className={styles.pageHeader}>
+        <div>
+          <h1 className={styles.pageTitle}>{t.title}</h1>
+          <p className={styles.pageSubtitle}>{t.totalBooks(total)}</p>
+        </div>
+
+        <button
+          type="button"
+          className={`${buttonStyles.button} ${buttonStyles.primary}`}
+          onClick={() => openForm(null)}
+        >
+          <Plus size={18} />
+          {t.addBook}
+        </button>
+      </header>
 
       <ExpandedContainer expanded={showForm}>
-        <div className={styles.formWrapper}>
+        <div className={styles.formCard} ref={formRef}>
           <BookForm
             onSubmit={handleSubmit}
             editingBook={editingBook}
-            onCancel={handleCancel}
+            onCancel={closeForm}
             lang={lang}
+            submitting={submitting}
           />
         </div>
       </ExpandedContainer>
 
-      {/* 列表折叠的控制按钮 */}
-      <button 
-        className={`${styles.btnSpace} primary-button`}
-        onClick={toggleListExpanded}
-        disabled={loading} // 加载时禁用
-      >
-        {listExpanded ? t.collapseList : t.expandList} {/* 假设 i18n 中有这两个键 */}
-      </button>
+      <section className={styles.card}>
+        <div className={styles.cardHeader}>
+          <div className={styles.cardHeading}>
+            <h2 className={styles.cardTitle}>{t.listTitle}</h2>
+            <span className={styles.count}>{t.totalBooks(total)}</span>
+          </div>
 
-      {/* 📚 BookList 折叠容器 (新的) */}
-      <ExpandedContainer expanded={listExpanded}> 
-        <div className={styles.listWrapper}>
-          {loading ? (
-            <p>{t.loading}</p>
-          ) : !hasBooks ? (
-            <p>{t.empty}</p>
-          ) : (
-            <>
-              <BookList
-                books={books}
-                onEdit={handleEdit}
-                onDelete={(id) => deleteBook(id)}
-                lang={lang}
-              />
-              {/* 分页组件也应该放在 ExpandedContainer 内部，因为它与列表内容相关 */}
-              <Pagination
-                    currentPage={page}
-                    totalPages={totalPages}
-                    onPageChange={setPage}
-                    styles={paginationStyles} // 传递样式 prop
-                />
-              {/* <div className={styles.pagination}>
-                <button disabled={page <= 1} onClick={() => setPage(page - 1)}>
-                  {t.pagination.prev}
-                </button>
-                <span>
-                  {t.pagination.pageLabel} {page} {t.pagination.ofLabel} {totalPages || 1}
-                </span>
-                <button disabled={page >= totalPages} onClick={() => setPage(page + 1)}>
-                  {t.pagination.next}
-                </button>
-              </div> */}
-            </>
-          )}
+          <button
+            type="button"
+            className={`${buttonStyles.button} ${buttonStyles.ghost} ${buttonStyles.small}`}
+            onClick={() => setListExpanded((value) => !value)}
+          >
+            {listExpanded ? <ChevronUp size={16} /> : <ChevronDown size={16} />}
+            {listExpanded ? t.collapseShort : t.expandShort}
+          </button>
         </div>
-      </ExpandedContainer>
+
+        <ExpandedContainer expanded={listExpanded}>
+          <div className={styles.listBody}>
+            {loading ? (
+              <div className={styles.skeletonList}>
+                {[0, 1, 2, 3].map((item) => (
+                  <div key={item} className={styles.skeletonRow} />
+                ))}
+              </div>
+            ) : error ? (
+              <div className={styles.errorState}>{error.message}</div>
+            ) : (
+              <>
+                <BookList
+                  books={books}
+                  onView={setDetailBook}
+                  onEdit={openForm}
+                  onDelete={setDeleteTarget}
+                  lang={lang}
+                />
+
+                {totalPages > 1 ? (
+                  <div className={styles.pagination}>
+                    <Pagination
+                      currentPage={page}
+                      totalPages={totalPages}
+                      onPageChange={setPage}
+                      styles={paginationStyles}
+                    />
+                  </div>
+                ) : null}
+              </>
+            )}
+          </div>
+        </ExpandedContainer>
+      </section>
+
+      <ConfirmDialog
+        open={Boolean(deleteTarget)}
+        title={t.confirmDeleteTitle}
+        message={
+          deleteTarget
+            ? `《${deleteTarget.title || '未命名'}》\n${t.confirmDeleteMessage}`
+            : ''
+        }
+        confirmText={translations[lang].bookList.actions.delete}
+        cancelText={translations[lang].bookForm.buttons.cancel}
+        loading={deleting}
+        onConfirm={handleDelete}
+        onCancel={() => setDeleteTarget(null)}
+      />
+
+      <BookDetailDialog
+        open={Boolean(detailBook)}
+        book={detailBook}
+        lang={lang}
+        onClose={() => setDetailBook(null)}
+        onEdit={handleEditFromDetail}
+      />
     </div>
   );
 }
-

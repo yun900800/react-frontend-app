@@ -3,6 +3,27 @@ export const translations = {
     en: {
         bookForm: {
         title: "Book Form",
+        createTitle: "Add Book",
+        editTitle: "Edit Book",
+        required: "Required",
+        sections: {
+            basic: "Basic Info",
+            cover: "Cover",
+            content: "Content",
+        },
+        labels: {
+            title: "Title",
+            author: "Author",
+            description: "Description",
+            coverUrl: "Cover URL",
+            backCoverUrl: "Back Cover URL",
+            fontColor: "Font Color",
+            preface: "Preface",
+            frontCoverBackText: "Front Cover Back Text",
+            coverPreview: "Cover preview",
+            backCoverPreview: "Back cover preview",
+            imageError: "Image failed to load",
+        },
         fields: {
             titlePlaceholder: "Title",
             authorPlaceholder: "Author",
@@ -22,6 +43,11 @@ export const translations = {
         booksPage: {
             title: "📚 Book Management",
             addNewButton: "➕ Add Book",
+            addBook: "Add Book",
+            listTitle: "Book List",
+            totalBooks: (count) => `${count} book${count === 1 ? '' : 's'}`,
+            collapseShort: "Collapse",
+            expandShort: "Expand",
             loading: "Loading...",
             pagination: {
                 prev: "Previous",
@@ -32,6 +58,12 @@ export const translations = {
             empty: "No books available.",
             collapseList: '➕ Collapse List',
             expandList: '➕ Expand List',
+            confirmDeleteTitle: "Delete Book",
+            confirmDeleteMessage: "This action cannot be undone.",
+            deleteSuccess: "Book deleted.",
+            deleteFailed: "Failed to delete book.",
+            saveSuccess: "Saved successfully.",
+            saveFailed: "Save failed.",
         },
 
         /** --- 📚 BookList 部分 --- **/
@@ -39,20 +71,54 @@ export const translations = {
             empty: "No books available.",
             columns: {
                 id: "ID",
+                cover: "Cover",
+                book: "Title / Author",
                 title: "Title",
                 author: "Author",
                 description: "Description",
                 actions: "Actions",
             },
             actions: {
+                view: "View",
                 edit: "Edit",
                 delete: "Delete",
+            },
+            detail: {
+                title: "Book Details",
+                author: "Author",
+                description: "Description",
+                preface: "Preface",
+                backCover: "Back Cover",
+                frontCoverText: "Front Cover Back Text",
+                fontColor: "Font Color",
+                close: "Close",
             },
         },
     },
     zh: {
         bookForm: {
         title: "书籍表单",
+        createTitle: "新增书籍",
+        editTitle: "编辑书籍",
+        required: "必填",
+        sections: {
+            basic: "基本信息",
+            cover: "封面",
+            content: "内容",
+        },
+        labels: {
+            title: "书名",
+            author: "作者",
+            description: "简介",
+            coverUrl: "封面地址",
+            backCoverUrl: "封底地址",
+            fontColor: "字体颜色",
+            preface: "序言",
+            frontCoverBackText: "封皮背面文字",
+            coverPreview: "封面预览",
+            backCoverPreview: "封底预览",
+            imageError: "图片无法加载",
+        },
         fields: {
             titlePlaceholder: "书名",
             authorPlaceholder: "作者",
@@ -72,6 +138,11 @@ export const translations = {
         booksPage: {
             title: "📚 书籍管理",
             addNewButton: "➕ 新增书籍",
+            addBook: "新增书籍",
+            listTitle: "书籍列表",
+            totalBooks: (count) => `共 ${count} 本`,
+            collapseShort: "收起",
+            expandShort: "展开",
             loading: "加载中...",
             pagination: {
                 prev: "上一页",
@@ -82,6 +153,12 @@ export const translations = {
             empty: "暂无书籍。",
             collapseList: '➕ 收起列表',
             expandList: '➕ 展开列表',
+            confirmDeleteTitle: "删除书籍",
+            confirmDeleteMessage: "删除后无法恢复，确定继续吗？",
+            deleteSuccess: "已删除",
+            deleteFailed: "删除失败",
+            saveSuccess: "保存成功",
+            saveFailed: "保存失败",
         },
 
         /** --- 📚 BookList 部分 --- **/
@@ -89,14 +166,27 @@ export const translations = {
             empty: "暂无书籍",
             columns: {
                 id: "ID",
+                cover: "封面",
+                book: "书名 / 作者",
                 title: "书名",
                 author: "作者",
                 description: "简介",
                 actions: "操作",
             },
             actions: {
+                view: "查看",
                 edit: "编辑",
                 delete: "删除",
+            },
+            detail: {
+                title: "书籍详情",
+                author: "作者",
+                description: "简介",
+                preface: "序言",
+                backCover: "封底",
+                frontCoverText: "封皮背面文字",
+                fontColor: "字体颜色",
+                close: "关闭",
             },
         },
     }
