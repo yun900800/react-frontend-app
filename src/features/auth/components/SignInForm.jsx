@@ -39,9 +39,9 @@ const SignInForm = ({ toggleForm }) => {
                     }
                     localStorage.setItem('token', token);
                     saveCurrentUser(response.data.user);
-                    console.log('登录成功，跳转到首页');
+                    console.log('登录成功，跳转到工作台');
                     // 这里的跳转是客户端的路由跳转
-                    navigate('/');
+                    navigate('/workbench');
                 } else {
                     setError(t.tokenError);
                 }

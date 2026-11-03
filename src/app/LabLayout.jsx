@@ -39,11 +39,11 @@ export default function LabLayout() {
     <AppShell
       brand={{ label: '实验室', to: '/lab', icon: FlaskConical }}
       groups={navGroups}
-      footerItems={[{ id: 'workspace', to: '/', label: '返回工作台', icon: ArrowLeft }]}
+      footerItems={[{ id: 'workspace', to: '/workbench', label: '返回工作台', icon: ArrowLeft }]}
       breadcrumbs={breadcrumbs}
       title={current?.title || '实验室'}
       fullBleed={Boolean(current?.fullBleed)}
-      actions={<Link to="/">返回工作台</Link>}
+      actions={<Link to="/workbench">返回工作台</Link>}
     >
       <Outlet />
     </AppShell>

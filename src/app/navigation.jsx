@@ -13,7 +13,7 @@ import {
  * Items are also reused by the mobile bottom bar and the "more" drawer.
  */
 export const productNavItems = [
-  { id: 'home', to: '/', label: '工作台', icon: House, end: true },
+  { id: 'home', to: '/workbench', label: '工作台', icon: House },
   { id: 'clients', to: '/clients', label: '客户管理', icon: Users },
   { id: 'books', to: '/books', label: '图书', icon: BookOpen },
   { id: 'editor', to: '/editor', label: '评论编辑', icon: SquarePen },
@@ -45,22 +45,22 @@ export const productMobileSecondary = [
 ].filter(Boolean);
 
 const PRODUCT_BREADCRUMBS = {
-  '/': [{ label: '工作台' }],
-  '/clients': [{ label: '工作台', to: '/' }, { label: '客户管理' }],
+  '/workbench': [{ label: '工作台' }],
+  '/clients': [{ label: '工作台', to: '/workbench' }, { label: '客户管理' }],
   '/clients/list': [
-    { label: '工作台', to: '/' },
+    { label: '工作台', to: '/workbench' },
     { label: '客户管理', to: '/clients' },
     { label: '客户列表' },
   ],
   '/clients/create': [
-    { label: '工作台', to: '/' },
+    { label: '工作台', to: '/workbench' },
     { label: '客户管理', to: '/clients' },
     { label: '新建客户' },
   ],
-  '/books': [{ label: '工作台', to: '/' }, { label: '图书' }],
-  '/editor': [{ label: '工作台', to: '/' }, { label: '评论编辑' }],
-  '/ai': [{ label: '工作台', to: '/' }, { label: 'AI 助手' }],
-  '/calendar': [{ label: '工作台', to: '/' }, { label: '日历' }],
+  '/books': [{ label: '工作台', to: '/workbench' }, { label: '图书' }],
+  '/editor': [{ label: '工作台', to: '/workbench' }, { label: '评论编辑' }],
+  '/ai': [{ label: '工作台', to: '/workbench' }, { label: 'AI 助手' }],
+  '/calendar': [{ label: '工作台', to: '/workbench' }, { label: '日历' }],
 };
 
 export function getProductBreadcrumbs(pathname) {
@@ -72,7 +72,7 @@ export function getProductBreadcrumbs(pathname) {
     return PRODUCT_BREADCRUMBS['/clients'];
   }
 
-  return PRODUCT_BREADCRUMBS['/'];
+  return PRODUCT_BREADCRUMBS['/workbench'];
 }
 
 export function getProductTitle(pathname) {

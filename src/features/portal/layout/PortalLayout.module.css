@@ -1,0 +1,115 @@
+.page {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+  color: oklch(var(--color-foreground));
+}
+
+.header {
+  position: sticky;
+  top: 0;
+  z-index: 100;
+  background: oklch(var(--color-background2) / 0.85);
+  backdrop-filter: blur(10px);
+  border-bottom: 1px solid var(--color-border-input);
+}
+
+.headerInner {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 14px 24px;
+}
+
+.brand {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  font-size: 1.15rem;
+  font-weight: 700;
+  text-decoration: none;
+  color: oklch(var(--color-foreground));
+}
+
+.brandIcon {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 34px;
+  height: 34px;
+  color: oklch(var(--color-primary2));
+  background: oklch(var(--color-primary) / 0.15);
+  border: 1px solid oklch(var(--color-primary) / 0.3);
+  border-radius: 10px;
+}
+
+.actions {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.link {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 8px 16px;
+  font-size: 0.9rem;
+  font-weight: 500;
+  line-height: 1.2;
+  text-decoration: none;
+  border-radius: 10px;
+  transition: background-color 0.2s ease, color 0.2s ease,
+    border-color 0.2s ease;
+}
+
+.ghostLink {
+  color: oklch(var(--color-foreground));
+  border: 1px solid var(--color-border-input);
+}
+
+.ghostLink:hover {
+  color: oklch(var(--color-primary));
+  border-color: oklch(var(--color-primary));
+  background: oklch(var(--color-primary) / 0.08);
+}
+
+.primaryLink {
+  color: #fff;
+  background: oklch(var(--color-primary2));
+}
+
+.primaryLink:hover {
+  background: oklch(var(--color-primary));
+}
+
+:global([data-theme='dark']) .primaryLink {
+  color: oklch(var(--db-black));
+  background: oklch(var(--color-primary));
+}
+
+:global([data-theme='dark']) .primaryLink:hover {
+  background: oklch(var(--color-primary2));
+}
+
+.main {
+  flex: 1;
+  width: 100%;
+}
+
+.footer {
+  padding: 22px 24px;
+  font-size: 0.82rem;
+  text-align: center;
+  color: oklch(var(--color-foreground) / 0.5);
+  border-top: 1px solid var(--color-border-input);
+}
+
+@media (max-width: 640px) {
+  .headerInner {
+    padding: 12px 16px;
+  }
+}

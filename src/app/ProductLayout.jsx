@@ -31,7 +31,7 @@ export default function ProductLayout() {
 
   return (
     <AppShell
-      brand={{ label: '投标工作台', to: '/', icon: House }}
+      brand={{ label: '投标工作台', to: '/workbench', icon: House }}
       groups={productGroups}
       footerItems={productFooterItems}
       mobilePrimary={productMobilePrimary}

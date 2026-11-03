@@ -15,7 +15,7 @@ const CalendarPage = lazy(() => import('../../features/home/pages/CalendarPage')
 export const productRoutes = (
   <Route element={<ProtectedRoute />}>
     <Route element={<ProductLayout />}>
-      <Route index element={<HomePage />} />
+      <Route path="workbench" element={<HomePage />} />
 
       <Route path="clients" element={<ClientPages />}>
         <Route path="list" element={<ClientList />} />

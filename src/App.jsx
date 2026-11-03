@@ -10,6 +10,7 @@ import LoginPage from './features/auth/pages/LoginPage';
 import ErrorBoundary from './shared/components/ErrorBoundary.jsx';
 import { productRoutes } from './app/routes/product.jsx';
 import { labRoutes } from './app/routes/lab.jsx';
+import { publicRoutes } from './app/routes/public.jsx';
 
 const PageFallback = () => (
   <div
@@ -38,7 +39,7 @@ function NotFound() {
       }}
     >
       <h2 style={{ margin: 0 }}>404 页面未找到</h2>
-      <Link to="/">返回工作台</Link>
+      <Link to="/workbench">返回工作台</Link>
     </div>
   );
 }
@@ -51,6 +52,7 @@ function App() {
           <Routes>
             <Route path="/login" element={<LoginPage />} />
 
+            {publicRoutes}
             {productRoutes}
             {labRoutes}
 

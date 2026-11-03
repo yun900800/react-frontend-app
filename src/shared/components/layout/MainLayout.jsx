@@ -40,7 +40,7 @@ function MainLayout() {
       gap="12px"
       // 可以在这里传入其他 prop，如 onClick, id 等
     >
-      <Link to="/" style={{ marginLeft: '2px', textDecoration: 'none'}}>
+      <Link to="/workbench" style={{ marginLeft: '2px', textDecoration: 'none'}}>
         <House style={{  display: 'flex',width: 'var(--font-size-1)', height: 'auto' }}/>
       </Link>
       <Link to="/clients" style={{ textDecoration: 'none' }}>
