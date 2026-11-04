@@ -27,6 +27,8 @@
     background: #fff;
     box-shadow: 0 15px 80px rgba(0,0,0,0.1);
     overflow: hidden;
+    /* clip 防止容器被 scrollIntoView 程序化滚动导致表单错位 */
+    overflow: clip;
 }
 
 .container.active {
@@ -181,4 +183,160 @@
     .container.active .signinBx .formBx {
         top: -100%;
     }
+}
+/* ==================
+ * ������֤���¼/ע��
+ * ================== */
+.authTabs {
+    display: flex;
+    position: relative;
+    width: 100%;
+    margin-bottom: 6px;
+    overflow: hidden;
+    border-radius: 6px;
+    background: #f5f5f5;
+}
+
+.authTab {
+    flex: 1;
+    margin: 0;
+    padding: 8px 4px !important;
+    width: auto !important;
+    appearance: none;
+    background: transparent !important;
+    border: none;
+    outline: none;
+    cursor: pointer;
+    font-size: 12px !important;
+    font-weight: 500 !important;
+    letter-spacing: 1px !important;
+    color: #888 !important;
+    text-align: center;
+    text-transform: uppercase;
+    transition: color 0.2s, background-color 0.2s;
+}
+
+.authTabActive {
+    color: #fff !important;
+    background: #677eff !important;
+    font-weight: 600 !important;
+}
+
+.codeRow {
+    display: flex;
+    gap: 8px;
+    width: 100%;
+    align-items: stretch;
+}
+
+.codeRow input {
+    margin: 8px 0;
+    flex: 1;
+    min-width: 0;
+}
+
+.sendCodeBtn {
+    margin: 8px 0 !important;
+    flex: none;
+    width: auto !important;
+    padding: 0 10px;
+    appearance: none;
+    border: none;
+    outline: none;
+    cursor: pointer;
+    background: #28a745;
+    color: #fff;
+    font-size: 12px !important;
+    letter-spacing: 1px;
+    font-weight: 500;
+    white-space: nowrap;
+    border-radius: 0;
+}
+
+.sendCodeBtn:disabled {
+    background: #9dbf8f;
+    cursor: not-allowed;
+}
+
+.formHint {
+    margin: 4px 0 0;
+    font-size: 11px;
+    letter-spacing: 0.5px;
+    color: #999;
+}
+
+@media (max-width: 991px) {
+    .sendCodeBtn {
+        padding: 10px;
+    }
+}
+
+/* ==================
+ * 深色主题覆盖
+ * ================== */
+:global([data-theme='dark']) .section {
+    background: #0d1319;
+}
+
+:global([data-theme='dark']) .container {
+    background: #151d25;
+    box-shadow: 0 15px 80px rgba(0, 0, 0, 0.45);
+}
+
+:global([data-theme='dark']) .formBx {
+    background: #151d25;
+}
+
+:global([data-theme='dark']) .formBx h2 {
+    color: #e6e8ea;
+}
+
+:global([data-theme='dark']) .formBx input {
+    background: #1e2831;
+    color: #e6e8ea;
+}
+
+/* 提交按钮需要在深色下保持品牌色（优先级需高于上面的 input 规则） */
+:global([data-theme='dark']) .formBx input[type='submit'] {
+    background: #6b8cff;
+    color: #0d1319;
+}
+
+:global([data-theme='dark']) .signupBx .formBx input[type='submit'] {
+    background: #e0455a;
+    color: #fff;
+}
+
+:global([data-theme='dark']) .formBx .signup {
+    color: #9aa4ad;
+}
+
+:global([data-theme='dark']) .formBx .signup a {
+    color: #8aa4ff;
+}
+
+:global([data-theme='dark']) .authTabs {
+    background: #1e2831;
+}
+
+:global([data-theme='dark']) .authTab {
+    color: #8b959e !important;
+}
+
+:global([data-theme='dark']) .authTabActive {
+    color: #0d1319 !important;
+    background: #8aa4ff !important;
+}
+
+:global([data-theme='dark']) .sendCodeBtn {
+    background: #2f9e57;
+}
+
+:global([data-theme='dark']) .sendCodeBtn:disabled {
+    background: #3c5a46;
+    color: #96a89c;
+}
+
+:global([data-theme='dark']) .formHint {
+    color: #7d8790;
 }

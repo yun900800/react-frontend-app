@@ -26,11 +26,16 @@ const withTimeout = (promise, timeoutMs) => {
   });
 };
 
-const handleResponse = async (res) => {
+const handleResponse = async (res, { skipAuthRedirect = false } = {}) => {
   const contentType = res.headers.get('content-type');
   const isJson = contentType && contentType.includes('application/json');
   const data = isJson ? await res.json() : await res.text();
   if (res.status === 401) {
+    // 登录/注册等认证接口的 401 是业务校验失败（密码错误、验证码错误），
+    // 需要把错误交给页面提示，不能做全局登出跳转
+    if (skipAuthRedirect) {
+      return { error: { status: 401, data } };
+    }
     localStorage.removeItem('token');
     clearCurrentUser();
     window.location.href = '/login';
@@ -44,7 +49,7 @@ const handleResponse = async (res) => {
   return { data };
 };
 
-const request = async (method, url, body, { headers = {}, timeout = DEFAULT_TIMEOUT } = {}) => {
+const request = async (method, url, body, { headers = {}, timeout = DEFAULT_TIMEOUT, skipAuthRedirect = false } = {}) => {
   try {
     const requestHeaders = {
       'Content-Type': 'application/json',
@@ -87,7 +92,7 @@ const request = async (method, url, body, { headers = {}, timeout = DEFAULT_TIME
     const responsePromise = fetch(BASE_URL + url, options);
     const response = await withTimeout(responsePromise, timeout);
     
-    return await handleResponse(response);
+    return await handleResponse(response, { skipAuthRedirect });
   } catch (err) {
     return { error: { message: err.message, isTimeout: err.message.includes('timed out') } };
   }

@@ -8,6 +8,13 @@ export const translations = {
       loginButton: "Login",
       noAccount: "Don't have an account?",
       signUpLink: "Sign Up.",
+      tabs: { password: "Password", code: "Email Code" },
+      sendCode: "Send Code",
+      resend: "Resend",
+      sending: "Sending...",
+      codePlaceholder: "6-digit code",
+      codeHint: "Code sent to your email, valid for 10 minutes.",
+      emailRequired: "Please enter your email first",
     },
     signUp: {
       title: "Create an account",
@@ -19,6 +26,14 @@ export const translations = {
       haveAccount: "Already have an account?",
       signInLink: "Sign In.",
     },
+    emailCode: {
+      sendCode: "Send Code",
+      resend: "Resend",
+      sending: "Sending...",
+      codePlaceholder: "6-digit code",
+      codeHint: "Code sent to your email, valid for 10 minutes.",
+      emailRequired: "Please enter your email first",
+    },
   },
   zh: {
     signIn: {
@@ -28,6 +43,13 @@ export const translations = {
       loginButton: "登录",
       noAccount: "还没有账号？",
       signUpLink: "注册。",
+      tabs: { password: "密码登录", code: "验证码登录" },
+      sendCode: "发送验证码",
+      resend: "重新发送",
+      sending: "发送中...",
+      codePlaceholder: "6 位验证码",
+      codeHint: "验证码已发送至邮箱，10 分钟内有效。",
+      emailRequired: "请先输入邮箱",
     },
     signUp: {
       title: "创建账号",
@@ -38,6 +60,14 @@ export const translations = {
       signUpButton: "注册",
       haveAccount: "已经有账号？",
       signInLink: "登录。",
+    },
+    emailCode: {
+      sendCode: "发送验证码",
+      resend: "重新发送",
+      sending: "发送中...",
+      codePlaceholder: "6 位验证码",
+      codeHint: "验证码已发送至邮箱，10 分钟内有效。",
+      emailRequired: "请先输入邮箱",
     },
   },
 };
