@@ -1,8 +1,9 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { BookOpen, RefreshCw } from 'lucide-react';
 import { usePagination } from '../../../shared/hooks/usePagination';
 import { publicApi } from '../api';
 import BookCard from '../components/BookCard';
+import ReviewBookOverlay from '../components/ReviewBookOverlay';
 import styles from './PortalHomePage.module.css';
 import Pagination from '../../../shared/components/pagination/Pagination';
 import { styles as paginationStyles } from '../../../shared/css/components/styles.js';
@@ -18,6 +19,7 @@ export default function PortalHomePage() {
     loading,
     error,
   } = usePagination(publicApi.getBooks, 1, PAGE_SIZE);
+  const [activeBook, setActiveBook] = useState(null);
 
   const totalPages = Math.max(1, Math.ceil(total / PAGE_SIZE));
 
@@ -66,7 +68,11 @@ export default function PortalHomePage() {
           <>
             <div className={styles.grid}>
               {books.map((book) => (
-                <BookCard key={book.id} book={book} />
+                <BookCard
+                  key={book.id}
+                  book={book}
+                  onOpenReviews={setActiveBook}
+                />
               ))}
             </div>
 
@@ -83,6 +89,13 @@ export default function PortalHomePage() {
           </>
         )}
       </section>
+
+      {activeBook ? (
+        <ReviewBookOverlay
+          book={activeBook}
+          onClose={() => setActiveBook(null)}
+        />
+      ) : null}
     </div>
   );
 }

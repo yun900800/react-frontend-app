@@ -124,7 +124,6 @@ export function BookBlock({ pages, orientation='vertical', direction='ltr',
 
         // 1. 计算目标页码 (已考虑 LTR/RTL 影响)
         let targetPage = calculateTargetPage(dir, itemsCount, current, direction);
-        console.log('Calculated Target Page:', targetPage, 'current:', current);
 
         // 【指定页码跳转逻辑】: 允许 page 参数覆盖计算结果
         const isDirectJump = page !== undefined;
@@ -167,9 +166,15 @@ export function BookBlock({ pages, orientation='vertical', direction='ltr',
             setFlipDirection(effectiveFlipDirection);
         }
     }
+    // 只有宽高都是具体数值时 aspectRatio 才有意义；百分比会算出 NaN
+    const hasNumericSize = !String(width).includes('%') && !String(height).includes('%');
+    const aspectRatio = hasNumericSize
+        ? Number.parseFloat(width) / Number.parseFloat(height)
+        : undefined;
+
     return (
         <>
-        <div id="bb-bookblock"  
+        <div
           className={`${styles['bb-bookblock']} ${styles['bb-'+orientation]}`}
           onTouchStart={handleTouchStart}
           onTouchMove={handleTouchMove}
@@ -179,7 +184,7 @@ export function BookBlock({ pages, orientation='vertical', direction='ltr',
             '--bb-bookblock-height': height,
             '--bb-bookblock-max-width': maxWidth,
             maxWidth: maxWidth,
-            aspectRatio: `${width / height}`,
+            ...(aspectRatio ? { aspectRatio } : {}),
           }}
           >
           <div className={`${isAnimating ? styles.hide : styles.show }`}>
@@ -210,18 +215,30 @@ export function BookBlock({ pages, orientation='vertical', direction='ltr',
         </div>
         
         <nav className={navStyles.nav}>
-            <a id="bb-nav-first" href="#" className="bb-custom-icon bb-custom-icon-first" onClick={()=>{
-                navigate('first')
-            }}>First page</a>
-            <a id="bb-nav-prev" href="#" className="bb-custom-icon bb-custom-icon-arrow-left" onClick={()=>{
-                navigate('prev')
-            }}>Previous</a>
-            <a id="bb-nav-next" href="#" className="bb-custom-icon bb-custom-icon-arrow-right"onClick={()=>{
-                navigate('next')
-            }}>Next</a>
-            <a id="bb-nav-last" href="#" className="bb-custom-icon bb-custom-icon-last" onClick={()=>{
-                navigate('last')
-            }}>Last page</a>
+            <button
+              type="button"
+              className={`${navStyles.navButton} ${navStyles.first}`}
+              onClick={() => navigate('first')}
+              aria-label="第一页"
+            />
+            <button
+              type="button"
+              className={`${navStyles.navButton} ${navStyles.prev}`}
+              onClick={() => navigate('prev')}
+              aria-label="上一页"
+            />
+            <button
+              type="button"
+              className={`${navStyles.navButton} ${navStyles.next}`}
+              onClick={() => navigate('next')}
+              aria-label="下一页"
+            />
+            <button
+              type="button"
+              className={`${navStyles.navButton} ${navStyles.last}`}
+              onClick={() => navigate('last')}
+              aria-label="最后一页"
+            />
         </nav>
         </>
     )

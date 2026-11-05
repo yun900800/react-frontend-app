@@ -1,0 +1,471 @@
+.backdrop {
+  position: fixed;
+  inset: 0;
+  z-index: 3000;
+  overflow: hidden;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: oklch(var(--color-foreground));
+  background: url("../../../assets/resources/3d-book-images/wood.jpg") center / cover
+    no-repeat;
+  background-color: oklch(var(--color-background));
+}
+
+.closeButton {
+  position: fixed;
+  top: 16px;
+  right: 16px;
+  z-index: 120;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 40px;
+  height: 40px;
+  padding: 0;
+  color: #fff;
+  background: rgb(0 0 0 / 0.45);
+  border: 1px solid rgb(255 255 255 / 0.3);
+  border-radius: 50%;
+  cursor: pointer;
+  transition: background-color 0.2s ease, transform 0.2s ease;
+}
+
+.closeButton:hover {
+  background: rgb(0 0 0 / 0.68);
+}
+
+.closeButton:focus-visible {
+  outline: 2px solid #fff;
+  outline-offset: 3px;
+}
+
+/* ---------- 中央的小书（开合动画） ---------- */
+.perspective {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  perspective: 1800px;
+}
+
+.book {
+  position: relative;
+  width: 180px;
+  height: 260px;
+  z-index: 50;
+  transform-style: preserve-3d;
+  transform-origin: 0% 50%;
+  transition: transform 0.5s, opacity 0.3s 0.3s;
+}
+
+.bookOpen {
+  animation: scaleUpSmallBook 0.5s forwards;
+}
+
+.bookClosing {
+  animation: scaleDownSmallBook 0.5s forwards;
+}
+
+.book > div {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  backface-visibility: hidden;
+}
+
+.cover {
+  z-index: 10;
+  transform-origin: 0% 50%;
+  transform-style: preserve-3d;
+}
+
+.coverOpen {
+  animation: openSmallBook 0.5s forwards;
+}
+
+.coverClosing {
+  animation: closeSmallBook 0.5s forwards;
+}
+
+.front {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+  background-color: #2f2a24;
+  background-position: center center;
+  background-size: cover;
+  background-repeat: no-repeat;
+  border-radius: 2px 7px 7px 2px;
+  box-shadow: 0 18px 40px rgb(0 0 0 / 0.45);
+}
+
+.front img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.innerLeft,
+.innerRight {
+  background: #f7f5ee;
+  border: 3px solid #e4e0d4;
+}
+
+.innerLeft {
+  transform: rotateY(180deg);
+  border-right: none;
+}
+
+.innerRight {
+  border-left: none;
+  border-radius: 0 7px 7px 0;
+}
+
+.coverChar {
+  color: #fff;
+  font-size: 3rem;
+  font-weight: 700;
+  text-shadow: 0 2px 12px rgb(0 0 0 / 0.35);
+}
+
+/* ---------- 全屏书页 ---------- */
+.bigBook {
+  position: absolute;
+  inset: 0;
+  z-index: 100;
+  display: flex;
+  flex-direction: column;
+  padding: clamp(20px, 5vh, 56px) clamp(16px, 5vw, 72px) 0;
+  opacity: 0;
+  transform: scale(0.95);
+}
+
+.bigBookShown {
+  animation: openBigBook 0.5s forwards;
+}
+
+.bigBookClosing {
+  animation: closeBigBook 0.5s forwards;
+}
+
+.bookBlockArea {
+  display: flex;
+  flex: 1 1 auto;
+  flex-direction: column;
+  min-height: 0;
+}
+
+/* ---------- 跨页与单页 ---------- */
+.spread {
+  display: flex;
+  width: 100%;
+  height: 100%;
+  background: #fdfdf8;
+}
+
+.side {
+  display: flex;
+  flex: 1 1 50%;
+  flex-direction: column;
+  gap: 12px;
+  min-width: 0;
+  height: 100%;
+  padding: clamp(18px, 3vw, 38px);
+  overflow: hidden;
+  color: #2b2620;
+  background: #fdfdf8;
+}
+
+.side + .side {
+  border-left: 1px solid rgb(0 0 0 / 0.08);
+  box-shadow: inset 12px 0 20px -16px rgb(0 0 0 / 0.35);
+}
+
+.side:first-child {
+  box-shadow: inset -14px 0 22px -18px rgb(0 0 0 / 0.3);
+}
+
+.blankPage {
+  background: #f5f2e9;
+}
+
+.reviewHeader {
+  display: flex;
+  align-items: baseline;
+  flex-wrap: wrap;
+  gap: 8px;
+  padding-bottom: 10px;
+  border-bottom: 1px solid rgb(0 0 0 / 0.08);
+}
+
+.reviewer {
+  font-size: 0.95rem;
+  font-weight: 650;
+}
+
+.chapter {
+  padding: 2px 9px;
+  font-size: 0.7rem;
+  color: oklch(var(--color-primary2));
+  background: oklch(var(--color-primary) / 0.12);
+  border: 1px solid oklch(var(--color-primary) / 0.3);
+  border-radius: 999px;
+}
+
+.date {
+  margin-left: auto;
+  font-size: 0.72rem;
+  color: rgb(43 38 32 / 0.5);
+}
+
+.reviewBody {
+  flex: 1 1 auto;
+  min-height: 0;
+  overflow-y: auto;
+  font-size: clamp(0.85rem, 1.05vw, 1rem);
+  line-height: 1.8;
+  overflow-wrap: anywhere;
+}
+
+.reviewBody :global(p) {
+  margin: 0 0 0.7em;
+}
+
+.reviewBody :global(h1),
+.reviewBody :global(h2),
+.reviewBody :global(h3) {
+  margin: 0.6em 0 0.4em;
+  line-height: 1.3;
+}
+
+.reviewBody :global(h1) {
+  font-size: 1.5em;
+}
+
+.reviewBody :global(h2) {
+  font-size: 1.3em;
+}
+
+.reviewBody :global(h3) {
+  font-size: 1.12em;
+}
+
+.reviewBody :global(blockquote) {
+  margin: 0.6em 0;
+  padding-left: 12px;
+  color: rgb(43 38 32 / 0.8);
+  border-left: 3px solid oklch(var(--color-primary));
+}
+
+.reviewBody :global(pre),
+.reviewBody :global(code) {
+  padding: 2px 6px;
+  font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
+  background: rgb(0 0 0 / 0.06);
+  border-radius: 6px;
+}
+
+.reviewBody :global(a) {
+  color: oklch(var(--color-link));
+  text-decoration: underline;
+}
+
+.reviewBody :global(ul),
+.reviewBody :global(ol) {
+  padding-left: 1.4em;
+  margin: 0 0 0.7em;
+}
+
+/* ---------- 封面跨页 ---------- */
+.coverPage {
+  display: flex;
+  flex: 1 1 50%;
+  align-items: center;
+  justify-content: center;
+  height: 100%;
+  overflow: hidden;
+  background: linear-gradient(
+    155deg,
+    oklch(var(--color-primary) / 0.35) 0%,
+    oklch(var(--color-primary) / 0.1) 130%
+  );
+}
+
+.coverPage {
+  background-color: #efe9dc;
+}
+
+.coverPage img {
+  width: 100%;
+  height: 100%;
+  padding: 6% 8%;
+  box-sizing: border-box;
+  object-fit: contain;
+  object-position: center;
+}
+
+.coverPage .coverChar {
+  font-size: clamp(3rem, 8vw, 6rem);
+}
+
+.titlePage {
+  display: flex;
+  flex: 1 1 50%;
+  flex-direction: column;
+  justify-content: center;
+  gap: 14px;
+  min-height: 0;
+  height: 100%;
+  padding: clamp(24px, 4vw, 52px);
+  overflow-y: auto;
+  text-align: center;
+}
+
+.bookTitle {
+  margin: 0;
+  font-size: clamp(1.3rem, 2.6vw, 2rem);
+  line-height: 1.35;
+  color: #241f1a;
+}
+
+.bookAuthor {
+  margin: 0;
+  font-size: 0.95rem;
+  color: rgb(43 38 32 / 0.6);
+}
+
+.preface {
+  margin: 12px 0 0;
+  padding-top: 14px;
+  font-size: 0.85rem;
+  line-height: 1.8;
+  color: rgb(43 38 32 / 0.72);
+  border-top: 1px solid rgb(0 0 0 / 0.1);
+}
+
+/* ---------- 动画 ---------- */
+@keyframes openSmallBook {
+  0% {
+    transform: rotateY(0deg);
+  }
+  55%,
+  100% {
+    transform: rotateY(-180deg);
+  }
+}
+
+@keyframes closeSmallBook {
+  0%,
+  45% {
+    transform: rotateY(-180deg);
+  }
+  100% {
+    transform: rotateY(0deg);
+  }
+}
+
+@keyframes scaleUpSmallBook {
+  0% {
+    transform: scale(1);
+  }
+  85%,
+  100% {
+    transform: scale(1.4);
+  }
+}
+
+@keyframes scaleDownSmallBook {
+  0%,
+  15% {
+    transform: scale(1.4);
+  }
+  100% {
+    transform: scale(1);
+  }
+}
+
+@keyframes openBigBook {
+  0% {
+    opacity: 0;
+    transform: scale(0.95);
+  }
+  45% {
+    opacity: 0;
+    transform: scale(0.95);
+  }
+  85% {
+    opacity: 1;
+  }
+  100% {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+@keyframes closeBigBook {
+  0%,
+  15% {
+    opacity: 1;
+    transform: scale(1);
+  }
+  55%,
+  100% {
+    opacity: 0;
+    transform: scale(0.95);
+  }
+}
+
+/* ---------- 移动端：左右页改为上下排列 ---------- */
+@media (max-width: 768px) {
+  .book {
+    width: 132px;
+    height: 190px;
+  }
+
+  .bigBook {
+    padding: 12px 10px 0;
+  }
+
+  .spread {
+    flex-direction: column;
+  }
+
+  .side {
+    flex: 1 1 50%;
+    width: 100%;
+    height: 50%;
+    padding: 18px 16px;
+  }
+
+  .side + .side {
+    border-top: 1px solid rgb(0 0 0 / 0.08);
+    border-left: none;
+    box-shadow: inset 0 12px 20px -16px rgb(0 0 0 / 0.35);
+  }
+
+  .side:first-child {
+    box-shadow: inset 0 -14px 22px -18px rgb(0 0 0 / 0.3);
+  }
+
+  .coverPage,
+  .titlePage {
+    flex: 1 1 50%;
+    width: 100%;
+    height: 50%;
+  }
+}
+
+/* ---------- 减少动效 ---------- */
+@media (prefers-reduced-motion: reduce) {
+  .book,
+  .cover,
+  .bigBook {
+    transition: none !important;
+    animation: none !important;
+    transform: none !important;
+    opacity: 1;
+  }
+}
