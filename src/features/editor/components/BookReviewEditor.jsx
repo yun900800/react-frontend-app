@@ -5,43 +5,15 @@ import "react-quill-new/dist/quill.snow.css";
 import styles from "./BookReviewEditor.module.css";
 import { BookSelector } from "./BookSelector";
 import { useBookReview  } from "../hooks/useBookReview.js";
-import { sanitizeHtml } from "../utils/sanitizeHtml.js";
 import { getReviewerName } from "../../../shared/lib/currentUser.js";
+import ReviewCard from "./ReviewCard.jsx";
+import { QUILL_MODULES, QUILL_FORMATS } from "../quillConfig.js";
 // 引入新的 Hook
 import { useAutoDraft } from "../hooks/useAutoDraft.js"; // 假设路径正确
 import { useToast } from '../../../shared/components/Toast'; 
 
 // --- 辅助函数：生成唯一的草稿键 ---
 const getDraftKey = (bookId) => `review_draft_book_${bookId}`;
-
-// --- Quill 配置：必须放在组件外，避免每次渲染重建工具栏 ---
-const QUILL_MODULES = {
-  toolbar: [
-    [{ header: [1, 2, 3, false] }],
-    ["bold", "italic", "underline", "strike"],
-    [{ color: [] }, { background: [] }],
-    [{ list: "ordered" }, { list: "bullet" }],
-    ["blockquote", "code-block"],
-    ["link"],
-    ["clean"],
-  ],
-  history: { delay: 800, maxStack: 100, userOnly: true },
-};
-
-// 白名单格式：粘贴进来的无关样式（字体、图片、内联样式）会被自动丢弃
-const QUILL_FORMATS = [
-  "header",
-  "bold",
-  "italic",
-  "underline",
-  "strike",
-  "color",
-  "background",
-  "list",
-  "blockquote",
-  "code-block",
-  "link",
-];
 
 // 工具栏中文提示：Quill 默认只有英文 aria-label，这里在挂载后统一补上
 const TOOLBAR_LABELS = [
@@ -63,45 +35,16 @@ const PICKER_LABELS = [
   [".ql-picker.ql-background", "背景色"],
 ];
 
-const ReviewCard = ({ review }) => {
-  const safeContent = useMemo(
-    () => sanitizeHtml(review.content),
-    [review.content]
-  );
-
-  // 1. 定义格式化函数
-  const formatTime = (isoString) => {
-    if (!isoString) return '时间未知';
-    
-    // 使用 Intl.DateTimeFormat 进行本地化格式化
-    // 选项：显示年份、月份、日期和时间（小时/分钟）
-    const options = {
-      year: 'numeric',
-      month: 'long',
-      day: 'numeric',
-      hour: '2-digit',
-      minute: '2-digit',
-      hour12: false, // 使用24小时制
-    };
-    
-    // 注意：默认会使用运行环境（用户浏览器）的 locale
-    return new Date(isoString).toLocaleDateString(undefined, options);
-  };
-  return (
-    <div key={review.id} className={styles.reviewCard}>
-      <h3>{review.bookTitle} - {review.chapter_title}</h3>
-      <p><strong>作者：</strong>{review.reviewer || "佚名"}</p>
-      <div
-        className={styles.reviewContent}
-        dangerouslySetInnerHTML={{ __html: safeContent }}
-      />
-      <p className={styles.time}>创建于：{formatTime(review.created_at)}</p>
-    </div>
-  );
-} 
-
 export const BookReviewEditor = () => {
-  const { reviews, addReview, loadReviews , isLoading, error} = useBookReview();
+  const {
+    reviews,
+    addReview,
+    updateReview,
+    removeReview,
+    loadReviews,
+    isLoading,
+    error,
+  } = useBookReview();
 
   const [book, setBook] = useState(null);
   // *** 关键修改 1: 将 book 相关的草稿键放在 useEffect 中处理 ***
@@ -359,7 +302,12 @@ export const BookReviewEditor = () => {
 
           {/* 渲染评论列表 */}
           {!isLoading && !error && reviews.map((r) => (
-            <ReviewCard key={r.id} review={r} />
+            <ReviewCard
+              key={r.id}
+              review={r}
+              onUpdate={updateReview}
+              onDelete={removeReview}
+            />
           ))}
         </div>
       </div>

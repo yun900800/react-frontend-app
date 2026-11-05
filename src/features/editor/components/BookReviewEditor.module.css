@@ -236,6 +236,131 @@
   color: oklch(var(--color-foreground));
 }
 
+/* ---------- 评论卡片操作 ---------- */
+.reviewCardHeader {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 12px;
+}
+
+.reviewCardHeader h3 {
+  flex: 1;
+  min-width: 0;
+}
+
+.reviewActions {
+  display: flex;
+  flex-shrink: 0;
+  gap: 6px;
+}
+
+.iconButton {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 30px;
+  height: 30px;
+  padding: 0;
+  color: oklch(var(--color-foreground) / 0.7);
+  background: transparent;
+  border: 1px solid var(--color-border-input);
+  border-radius: 8px;
+  cursor: pointer;
+  transition: color 0.2s ease, border-color 0.2s ease,
+    background-color 0.2s ease;
+}
+
+.iconButton:hover {
+  color: oklch(var(--color-primary));
+  border-color: oklch(var(--color-primary));
+  background: oklch(var(--color-primary) / 0.08);
+}
+
+.dangerIconButton:hover {
+  color: oklch(var(--db-red));
+  border-color: oklch(var(--db-red));
+  background: oklch(var(--db-red) / 0.08);
+}
+
+/* ---------- 评论编辑态 ---------- */
+.editForm {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  margin-top: 10px;
+}
+
+.editForm > input {
+  padding: 8px 10px;
+  border: 1px solid var(--color-border-input);
+  border-radius: 8px;
+  background: oklch(var(--color-background));
+  color: oklch(var(--color-foreground));
+  font-size: 16px;
+}
+
+.editForm > input::placeholder {
+  color: oklch(var(--color-foreground) / 0.55);
+}
+
+/* 卡片内的编辑区比新建区矮一些，避免列表被撑得过长 */
+.editForm .quillEditor :global(.ql-container.ql-snow),
+.editForm .quillEditor :global(.ql-editor) {
+  min-height: 160px;
+}
+
+.editActions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 8px;
+}
+
+.editActions button {
+  padding: 8px 18px;
+  border-radius: 8px;
+  font-size: 0.95rem;
+  font-weight: 500;
+  cursor: pointer;
+  transition: color 0.2s ease, border-color 0.2s ease,
+    background-color 0.2s ease, opacity 0.2s ease;
+}
+
+.editActions button:disabled {
+  opacity: 0.55;
+  cursor: not-allowed;
+}
+
+.cancelButton {
+  color: oklch(var(--color-foreground));
+  background: transparent;
+  border: 1px solid var(--color-border-input);
+}
+
+.cancelButton:not(:disabled):hover {
+  color: oklch(var(--color-primary));
+  border-color: oklch(var(--color-primary));
+}
+
+.saveButton {
+  color: #fff;
+  background: oklch(var(--color-primary2));
+  border: none;
+}
+
+.saveButton:not(:disabled):hover {
+  background: oklch(var(--color-primary));
+}
+
+:global([data-theme="dark"]) .saveButton {
+  color: oklch(var(--db-black));
+  background: oklch(var(--color-primary));
+}
+
+:global([data-theme="dark"]) .saveButton:not(:disabled):hover {
+  background: oklch(var(--color-primary2));
+}
+
 /* 让预览内容复用 Quill 的排版，编辑区与预览区保持一致 */
 .reviewContent {
   margin-top: 10px;

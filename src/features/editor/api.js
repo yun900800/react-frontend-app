@@ -15,5 +15,20 @@ export const booksApi = {
    * @param {number} bookId
    */
   getReviews: (bookId) =>
-    fetcher.get(`/api/reviews/${bookId}`)
+    fetcher.get(`/api/reviews/${bookId}`),
+
+  /**
+   * 更新评论
+   * @param {number} id
+   * @param {object} data { chapter_title, content }
+   */
+  updateReview: (id, data) =>
+    fetcher.put(`/api/reviews/${id}`, data),
+
+  /**
+   * 删除评论
+   * @param {number} id
+   */
+  removeReview: (id) =>
+    fetcher.delete(`/api/reviews/${id}`)
 }

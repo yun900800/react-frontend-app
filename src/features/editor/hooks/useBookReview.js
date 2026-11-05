@@ -36,11 +36,34 @@ export const useBookReview = () => {
     return created;
   };
 
+  const updateReview = useCallback(async (id, payload) => {
+    const result = await booksApi.updateReview(id, payload);
+    if (result.error) {
+      throw new Error(result.error.data?.error || result.error.message || '更新评论失败');
+    }
+    // 用后端返回的最新记录替换本地记录，避免整页重新加载
+    setReviews((prev) =>
+      prev.map((review) => (review.id === id ? result.data : review))
+    );
+    return result.data;
+  }, []);
+
+  const removeReview = useCallback(async (id) => {
+    const result = await booksApi.removeReview(id);
+    if (result.error) {
+      throw new Error(result.error.data?.error || result.error.message || '删除评论失败');
+    }
+    setReviews((prev) => prev.filter((review) => review.id !== id));
+    return result.data;
+  }, []);
+
   // 暴露新的状态
   return { 
     reviews, 
     loadReviews, 
     addReview,
+    updateReview,
+    removeReview,
     isLoading, // 暴露给组件使用
     error      // 暴露给组件使用
   };
