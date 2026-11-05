@@ -2,6 +2,7 @@ import React from 'react';
 import { MessageSquare } from 'lucide-react';
 import styles from './ReviewList.module.css';
 import { formatDate } from '../utils/formatDate';
+import { htmlToText } from '../utils/htmlToText';
 
 export default function ReviewList({ reviews = [] }) {
   if (!reviews || reviews.length === 0) {
@@ -32,7 +33,7 @@ export default function ReviewList({ reviews = [] }) {
               ) : null}
             </div>
 
-            <div className={styles.body}>{review.content}</div>
+            <div className={styles.body}>{htmlToText(review.content)}</div>
           </div>
         </li>
       ))}
