@@ -1,0 +1,119 @@
+/* 四叶草 —— 叶长以 --hb-leaf-len 为半径派生，n 片叶等分旋转 */
+
+.clover {
+  position: absolute;
+  bottom: 6%;
+  width: calc(var(--hb-leaf-len) * 2);
+  height: calc(var(--hb-leaf-len) * 2);
+}
+
+.leaves {
+  position: relative;
+  z-index: 1;
+  width: 100%;
+  height: 100%;
+}
+
+.leave {
+  display: block;
+  position: absolute;
+  left: 50%;
+  bottom: calc(50% - var(--hb-leaf-len) * 0.1);
+  width: calc(var(--hb-leaf-len) * 0.625);
+  height: var(--hb-leaf-len);
+  margin-left: calc(var(--hb-leaf-len) * -0.3125);
+  background: rgb(var(--hb-leaf-main));
+  border-radius: calc(var(--hb-leaf-len) * 0.3125) calc(var(--hb-leaf-len) * 0.3125) 0
+    calc(var(--hb-leaf-len) * 0.1875);
+  transform-origin: 50% 100%;
+  transform: rotate(var(--hb-leaf-rot));
+}
+
+/* 叶右瓣（原版的心形双瓣结构，颜色同叶身） */
+.leave::after {
+  content: '';
+  display: block;
+  position: absolute;
+  bottom: 0;
+  width: 100%;
+  height: 100%;
+  background: rgb(var(--hb-leaf-main));
+  border-radius: calc(var(--hb-leaf-len) * 0.3125) calc(var(--hb-leaf-len) * 0.3125)
+    calc(var(--hb-leaf-len) * 0.1875) 0;
+  transform-origin: 50% 100%;
+  transform: rotate(90deg) translate(
+      calc(var(--hb-leaf-len) * -0.3125),
+      calc(var(--hb-leaf-len) * 0.3125)
+    );
+}
+
+.branch {
+  display: block;
+  position: absolute;
+  width: calc(var(--hb-leaf-len) * 2.5);
+  height: calc(var(--hb-leaf-len) * 3.125);
+  left: calc(var(--hb-leaf-len) * 0.9375);
+  top: calc(var(--hb-leaf-len) * -0.25);
+  animation: branchSway 4s linear infinite alternate;
+  transform-origin: 0% 0%;
+}
+
+.branch::after {
+  content: '';
+  display: block;
+  position: absolute;
+  height: calc(var(--hb-leaf-len) * 3.125);
+  width: calc(var(--hb-leaf-len) * 2.5);
+  left: 0;
+  top: calc(var(--hb-leaf-len) * -0.5);
+  border-bottom: calc(var(--hb-leaf-len) * 0.125) solid rgb(var(--hb-leaf-0-back-c));
+  border-radius: calc(var(--hb-leaf-len) * 3.125) calc(var(--hb-leaf-len) * 3.125)
+    calc(var(--hb-leaf-len) * 1.5625) calc(var(--hb-leaf-len) * 9.375);
+}
+
+.clover {
+  animation: cloverDrift 4s linear infinite alternate;
+}
+
+@keyframes cloverDrift {
+  0% {
+    transform: translate(0, 0);
+  }
+  25% {
+    transform: translate(calc(var(--hb-leaf-len) * -0.19), calc(var(--hb-leaf-len) * 0.06));
+  }
+  50% {
+    transform: translate(0, calc(var(--hb-leaf-len) * -0.06));
+  }
+  75% {
+    transform: translate(calc(var(--hb-leaf-len) * 0.25), calc(var(--hb-leaf-len) * 0.06));
+  }
+  100% {
+    transform: translate(0, 0);
+  }
+}
+
+@keyframes branchSway {
+  0% {
+    transform: rotate(0deg);
+  }
+  25% {
+    transform: rotate(3deg);
+  }
+  50% {
+    transform: rotate(-2deg);
+  }
+  75% {
+    transform: rotate(4deg);
+  }
+  100% {
+    transform: rotate(0deg);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .clover,
+  .branch {
+    animation: none;
+  }
+}

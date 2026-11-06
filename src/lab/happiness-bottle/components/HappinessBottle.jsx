@@ -1,6 +1,7 @@
 import { useMemo } from 'react';
 import { deriveWaterPalette } from '../utils/palette.js';
 import styles from './HappinessBottle.module.css';
+import Clover from './Clover.jsx';
 
 export default function HappinessBottle({
   size = 'md',
@@ -27,7 +28,18 @@ export default function HappinessBottle({
       </div>
       <div className={styles.main}>
         <div className={styles.inner}>
-          <div className={styles.water}>{/* 生物层（Task 5/6） */}</div>
+          <div className={styles.water}>
+            {clovers.map((clover, i) => (
+              <Clover
+                key={i}
+                index={i}
+                count={clovers.length}
+                leaves={clover.leaves ?? 4}
+                leafColors={clover.leafColors ?? []}
+                swayDelay={i * 0.6}
+              />
+            ))}
+          </div>
         </div>
         <i className={styles.highlight} />
       </div>
