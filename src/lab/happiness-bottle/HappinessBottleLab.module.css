@@ -241,6 +241,53 @@
   }
 }
 
+/* 预设陈列（静态、不可点） */
+.showcase {
+  margin-top: 32px;
+}
+
+.showcaseTitle {
+  margin: 0 0 4px;
+  font-size: 13px;
+  font-weight: 600;
+  letter-spacing: 0.04em;
+  opacity: 0.65;
+}
+
+.shelf {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px 24px;
+  justify-content: center;
+  overflow-x: auto;
+  padding: 8px 0 16px;
+}
+
+.preset {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin: 0;
+}
+
+.presetLabel {
+  margin-top: 4px;
+  font-size: 12px;
+  opacity: 0.6;
+}
+
+@media (max-width: 767.98px) {
+  .shelf {
+    flex-wrap: nowrap;
+    justify-content: flex-start;
+    gap: 16px;
+  }
+
+  .preset:nth-child(n + 4) {
+    display: none;
+  }
+}
+
 /* 局部主题预览容器（跟随全局时无 data-theme 属性） */
 .lab[data-theme='dark'] {
   background: #0f1115;

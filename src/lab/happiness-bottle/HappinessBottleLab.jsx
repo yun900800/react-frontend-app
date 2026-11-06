@@ -22,6 +22,55 @@ const DEFAULT_CONFIG = {
   bubbles: true,
 };
 
+const PRESETS = [
+  {
+    label: '原版蓝',
+    waterColor: '#00ccff',
+    clovers: [{ leaves: 4 }],
+    jellyfish: true,
+    bubbles: true,
+  },
+  {
+    label: '樱花粉',
+    waterColor: '#ff00cc',
+    clovers: [{ leaves: 3 }],
+    jellyfish: true,
+    bubbles: true,
+  },
+  {
+    label: '柠檬黄',
+    waterColor: '#fff014',
+    clovers: [
+      { leaves: 5, leafColors: ['#ff3b30', '#ff9500', '#ffcc00', '#34c759', '#007aff'] },
+    ],
+    jellyfish: false,
+    bubbles: true,
+  },
+  {
+    label: '青草绿',
+    waterColor: '#5ae600',
+    clovers: [{ leaves: 2 }],
+    jellyfish: true,
+    bubbles: true,
+  },
+  {
+    label: '深海',
+    waterColor: '#007aff',
+    clovers: [
+      { leaves: 6, leafColors: ['#64d2ff', '#30d158', '#ffd60a', '#ff9f0a', '#ff375f', '#bf5af2'] },
+    ],
+    jellyfish: true,
+    bubbles: false,
+  },
+  {
+    label: '四色叶',
+    waterColor: '#00ccff',
+    clovers: [{ leaves: 4, leafColors: ['#ff3b30', '#ffcc00', '#34c759', '#007aff'] }],
+    jellyfish: false,
+    bubbles: true,
+  },
+];
+
 function clamp(value, min, max) {
   return Math.min(max, Math.max(min, value));
 }
@@ -231,6 +280,24 @@ export default function HappinessBottleLab() {
           </button>
         </aside>
       </div>
+
+      <section className={styles.showcase} aria-label="预设陈列">
+        <h2 className={styles.showcaseTitle}>灵感陈列</h2>
+        <div className={styles.shelf}>
+          {PRESETS.map((preset) => (
+            <figure key={preset.label} className={styles.preset}>
+              <HappinessBottle
+                size="sm"
+                waterColor={preset.waterColor}
+                clovers={preset.clovers}
+                jellyfish={preset.jellyfish}
+                bubbles={preset.bubbles}
+              />
+              <figcaption className={styles.presetLabel}>{preset.label}</figcaption>
+            </figure>
+          ))}
+        </div>
+      </section>
     </div>
   );
 }
