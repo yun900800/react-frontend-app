@@ -1,27 +1,247 @@
 .lab {
   min-height: 100%;
-  padding: 32px 16px;
+  padding: 24px;
   background: var(--color-background);
   color: var(--color-foreground);
 }
 
 .title {
-  margin: 0 0 8px;
+  margin: 0 0 16px;
   font-size: 28px;
   font-weight: 700;
 }
 
-.note {
-  margin: 0;
-  opacity: 0.7;
+.layout {
+  display: grid;
+  gap: 24px;
+}
+
+@media (min-width: 1024px) {
+  .layout {
+    grid-template-columns: minmax(0, 1fr) 320px;
+    align-items: start;
+  }
 }
 
 .stage {
   display: flex;
+  align-items: center;
   justify-content: center;
+  min-height: 420px;
+  border-radius: 16px;
+  background: radial-gradient(
+    circle at 50% 35%,
+    rgba(0, 204, 255, 0.08),
+    transparent 65%
+  );
 }
 
-/* 局部主题预览容器（Task 7 的按钮会切换 data-theme；未设置时跟随全局） */
+.panel {
+  display: flex;
+  flex-direction: column;
+  gap: 18px;
+  padding: 18px;
+  border: 1px solid rgba(128, 128, 128, 0.3);
+  border-radius: 16px;
+  background: rgba(128, 128, 128, 0.04);
+}
+
+.section {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.section + .section {
+  padding-top: 14px;
+  border-top: 1px solid rgba(128, 128, 128, 0.2);
+}
+
+.sectionTitle {
+  margin: 0;
+  font-size: 13px;
+  font-weight: 600;
+  letter-spacing: 0.04em;
+  opacity: 0.65;
+}
+
+.row {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  justify-content: space-between;
+}
+
+.colorInput {
+  width: 44px;
+  height: 32px;
+  padding: 0;
+  border: 1px solid rgba(128, 128, 128, 0.4);
+  border-radius: 8px;
+  background: none;
+  cursor: pointer;
+}
+
+.hex {
+  font-size: 12px;
+  opacity: 0.7;
+}
+
+.swatches {
+  display: flex;
+  gap: 8px;
+}
+
+.swatch {
+  width: 30px;
+  height: 30px;
+  border: 2px solid rgba(255, 255, 255, 0.7);
+  border-radius: 50%;
+  cursor: pointer;
+  box-shadow: 0 0 0 1px rgba(0, 0, 0, 0.15);
+}
+
+.swatch[aria-pressed='true'] {
+  box-shadow:
+    0 0 0 2px var(--color-primary, #0a84ff),
+    0 0 0 4px rgba(0, 0, 0, 0.12);
+}
+
+.stepper {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.stepper button {
+  width: 28px;
+  height: 28px;
+  border: 1px solid rgba(128, 128, 128, 0.4);
+  border-radius: 8px;
+  background: none;
+  color: inherit;
+  font-size: 16px;
+  line-height: 1;
+  cursor: pointer;
+}
+
+.stepper button:disabled {
+  opacity: 0.35;
+  cursor: not-allowed;
+}
+
+.count {
+  min-width: 18px;
+  text-align: center;
+  font-variant-numeric: tabular-nums;
+}
+
+.cloverCard {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  padding: 10px;
+  border: 1px dashed rgba(128, 128, 128, 0.35);
+  border-radius: 10px;
+}
+
+.cardTitle {
+  font-size: 13px;
+  font-weight: 600;
+}
+
+.number {
+  width: 64px;
+  padding: 4px 8px;
+  border: 1px solid rgba(128, 128, 128, 0.4);
+  border-radius: 8px;
+  background: none;
+  color: inherit;
+}
+
+.leafColors {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(64px, 1fr));
+  gap: 6px;
+}
+
+.leafColor {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 12px;
+  opacity: 0.85;
+}
+
+.leafColor input {
+  width: 30px;
+  height: 24px;
+  padding: 0;
+  border: 1px solid rgba(128, 128, 128, 0.4);
+  border-radius: 6px;
+  background: none;
+  cursor: pointer;
+}
+
+.check {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 14px;
+}
+
+/* 覆盖项目全局 input{width:100%}，否则复选框被拉到整行宽 */
+.check input[type='checkbox'] {
+  width: 16px;
+  height: 16px;
+  flex: none;
+  accent-color: var(--color-primary, #0a84ff);
+}
+
+.segmented {
+  display: inline-flex;
+  border: 1px solid rgba(128, 128, 128, 0.4);
+  border-radius: 10px;
+  overflow: hidden;
+}
+
+.segment,
+.segmentActive {
+  padding: 6px 12px;
+  border: none;
+  background: none;
+  color: inherit;
+  font-size: 13px;
+  cursor: pointer;
+}
+
+.segmentActive {
+  background: rgba(128, 128, 128, 0.18);
+  font-weight: 600;
+}
+
+.reset {
+  align-self: flex-start;
+  padding: 8px 16px;
+  border: 1px solid rgba(128, 128, 128, 0.4);
+  border-radius: 10px;
+  background: none;
+  color: inherit;
+  font-size: 14px;
+  cursor: pointer;
+}
+
+@media (max-width: 767.98px) {
+  .lab {
+    padding: 16px;
+  }
+
+  .stage {
+    min-height: 340px;
+  }
+}
+
+/* 局部主题预览容器（跟随全局时无 data-theme 属性） */
 .lab[data-theme='dark'] {
   background: #0f1115;
   color: #e8e8e9;
