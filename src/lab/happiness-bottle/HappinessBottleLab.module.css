@@ -1,8 +1,14 @@
 .lab {
   min-height: 100%;
   padding: 24px;
-  background: oklch(var(--color-background));
+  /* 浅色底对齐参考原型（#ddd）：白玻璃需要有中灰底才显轮廓 */
+  background: #ddd;
   color: oklch(var(--color-foreground));
+}
+
+/* 全局深色时用深色令牌；放在局部主题规则之前，让局部浅色预览可覆盖它 */
+:global([data-theme='dark']) .lab {
+  background: oklch(var(--color-background));
 }
 
 .title {
@@ -295,6 +301,6 @@
 }
 
 .lab[data-theme='light'] {
-  background: oklch(var(--db-light));
+  background: #ddd;
   color: oklch(var(--db-dark));
 }
