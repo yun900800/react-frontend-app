@@ -1,4 +1,4 @@
-import { Boxes, LayoutGrid, Sparkles, Wrench } from 'lucide-react';
+import { Boxes, GlassWater, LayoutGrid, Sparkles, Wrench } from 'lucide-react';
 
 /**
  * The lab is a registry, not a route list.
@@ -88,6 +88,21 @@ export const labGroups = [
         description: '多状态智能菜单的动效实现。',
         path: 'motion/smart-menu',
         load: () => import('../features/animation/pages/SmartMenuPage'),
+      },
+    ],
+  },
+  {
+    id: 'visual',
+    label: '视觉实验',
+    icon: GlassWater,
+    items: [
+      {
+        id: 'happiness-bottle',
+        title: '幸福瓶',
+        description: '可配置水色与四叶草的玻璃瓶视觉实验。',
+        path: 'visual/happiness-bottle',
+        fullBleed: true,
+        load: () => import('./happiness-bottle/HappinessBottleLab'),
       },
     ],
   },
