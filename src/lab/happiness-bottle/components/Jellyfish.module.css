@@ -1,0 +1,184 @@
+/* 水母 —— 1 单位 = 水高的 1%（md 水高 100px 时即原版像素值） */
+
+.jellyfish {
+  --jf: calc(var(--hb-water-h) * 0.01);
+  position: absolute;
+  left: calc(var(--jf) * 40);
+  top: calc(var(--jf) * 30);
+  animation: jellyfishSwimming 4s linear infinite alternate;
+}
+
+.head {
+  position: absolute;
+  left: 0;
+  top: 0;
+  display: block;
+  height: calc(var(--jf) * 15);
+  width: calc(var(--jf) * 20);
+  background: rgba(255, 255, 255, 0.15);
+  border: 1px solid rgba(255, 255, 255, 0.5);
+  border-radius: calc(var(--jf) * 20) calc(var(--jf) * 20) calc(var(--jf) * 10)
+    calc(var(--jf) * 10) / calc(var(--jf) * 20) calc(var(--jf) * 20) calc(var(--jf) * 16)
+    calc(var(--jf) * 16);
+  box-shadow:
+    0 0 calc(var(--jf) * 4) rgba(255, 255, 255, 0.5) inset,
+    calc(var(--jf) * 1) calc(var(--jf) * 1) calc(var(--jf) * 2) rgba(255, 255, 255, 0.2) inset,
+    calc(var(--jf) * 3) calc(var(--jf) * 3) calc(var(--jf) * 1) rgba(255, 255, 255, 0.2) inset,
+    calc(var(--jf) * -1) calc(var(--jf) * -1) calc(var(--jf) * 1) rgba(255, 255, 255, 0.1) inset;
+  animation: jellyfishHeadChange 4s linear infinite alternate;
+}
+
+.head::after {
+  content: '';
+  display: block;
+  height: calc(var(--jf) * 3);
+  width: calc(var(--jf) * 5);
+  background: rgba(255, 255, 255, 0.4);
+  position: absolute;
+  left: calc(var(--jf) * 3);
+  top: calc(var(--jf) * 2);
+  border-radius: calc(var(--jf) * 5) / calc(var(--jf) * 3);
+  transform: rotate(-15deg);
+  box-shadow: 0 0 calc(var(--jf) * 1) rgba(255, 255, 255, 0.8) inset;
+}
+
+.tail {
+  position: absolute;
+  left: calc(var(--jf) * 2);
+  top: calc(var(--jf) * 15);
+  display: block;
+  height: calc(var(--jf) * 20);
+  width: calc(var(--jf) * 18);
+  border: 1px solid rgba(255, 255, 255, 0.4);
+  border-top: none;
+  border-bottom: none;
+  border-radius: calc(var(--jf) * 10) calc(var(--jf) * 10) calc(var(--jf) * 16) calc(var(--jf) * 6) /
+    calc(var(--jf) * 20) calc(var(--jf) * 20) calc(var(--jf) * 6) calc(var(--jf) * 6);
+  box-shadow:
+    0 0 calc(var(--jf) * 3) rgba(255, 255, 255, 0.3) inset,
+    0 calc(var(--jf) * 4) calc(var(--jf) * 3) rgba(255, 255, 255, 0.1) inset;
+  transform-origin: 50% 0%;
+  animation: jellyfishTailChange 4s linear infinite alternate;
+}
+
+.tail::after {
+  content: '';
+  position: absolute;
+  left: 1px;
+  top: 1px;
+  display: block;
+  height: calc(var(--jf) * 21);
+  width: calc(var(--jf) * 15.5);
+  border: 1px solid rgba(255, 255, 255, 0.3);
+  border-right-color: rgba(255, 255, 255, 0.4);
+  border-top: none;
+  border-bottom: none;
+  border-radius: calc(var(--jf) * 10) / calc(var(--jf) * 10) calc(var(--jf) * 20) calc(var(--jf) * 16)
+    calc(var(--jf) * 16);
+  box-shadow:
+    0 0 calc(var(--jf) * 3) rgba(255, 255, 255, 0.3) inset,
+    0 calc(var(--jf) * 3) calc(var(--jf) * 3) rgba(255, 255, 255, 0.2) inset;
+}
+
+.tail::before {
+  content: '';
+  position: absolute;
+  left: calc(var(--jf) * 1.5);
+  top: 1px;
+  display: block;
+  height: calc(var(--jf) * 17);
+  width: calc(var(--jf) * 17);
+  border-right: 1px solid rgba(255, 255, 255, 0.4);
+  border-radius: calc(var(--jf) * 15) calc(var(--jf) * 10) calc(var(--jf) * 16) calc(var(--jf) * 16) /
+    calc(var(--jf) * 30) calc(var(--jf) * 30) calc(var(--jf) * 8) calc(var(--jf) * 8);
+  box-shadow: 0 0 calc(var(--jf) * 3) rgba(255, 255, 255, 0.3) inset;
+  transform: rotate(-6deg);
+}
+
+.tailIn {
+  position: absolute;
+  left: -0.5px;
+  top: 0;
+  display: block;
+  height: calc(var(--jf) * 16);
+  width: calc(var(--jf) * 10);
+  border-left: 1px solid rgba(255, 255, 255, 0.4);
+  border-radius: calc(var(--jf) * 10) calc(var(--jf) * 20) calc(var(--jf) * 16) calc(var(--jf) * 10) /
+    calc(var(--jf) * 20) calc(var(--jf) * 20) calc(var(--jf) * 6) calc(var(--jf) * 20);
+  box-shadow: calc(var(--jf) * 3) 0 calc(var(--jf) * 3) rgba(255, 255, 255, 0.2) inset;
+  transform: rotate(14deg);
+}
+
+@keyframes jellyfishSwimming {
+  0% {
+    transform: translate(0, 0) rotate(-4deg) scale(0.8);
+  }
+  20% {
+    transform: translate(calc(var(--jf) * -1), calc(var(--jf) * -3)) rotate(-6deg) scale(0.8);
+  }
+  50% {
+    transform: translate(calc(var(--jf) * -2), calc(var(--jf) * -1)) rotate(-3deg) scale(1);
+  }
+  70% {
+    transform: translate(calc(var(--jf) * -1), calc(var(--jf) * -3)) rotate(-6deg) scale(0.8);
+  }
+  100% {
+    transform: translate(0, 0) rotate(-4deg) scale(0.8);
+  }
+}
+
+@keyframes jellyfishHeadChange {
+  0% {
+    transform: scale(1);
+  }
+  5% {
+    transform: scale(1.1, 0.95);
+  }
+  20% {
+    transform: scale(0.95, 1.1);
+  }
+  50% {
+    transform: scale(1);
+  }
+  55% {
+    transform: scale(1.1, 0.95);
+  }
+  70% {
+    transform: scale(0.95, 1.1);
+  }
+  100% {
+    transform: scale(1);
+  }
+}
+
+@keyframes jellyfishTailChange {
+  0% {
+    transform: scale(0.8);
+  }
+  5% {
+    transform: scale(0.9, 0.75);
+  }
+  20% {
+    transform: scale(0.7, 1);
+  }
+  50% {
+    transform: scale(0.8);
+  }
+  55% {
+    transform: scale(0.9, 0.75);
+  }
+  70% {
+    transform: scale(0.7, 1);
+  }
+  100% {
+    transform: scale(0.8);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .jellyfish,
+  .head,
+  .tail {
+    animation: none;
+  }
+}

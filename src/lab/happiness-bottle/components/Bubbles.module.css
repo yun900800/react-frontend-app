@@ -1,0 +1,97 @@
+/* 气泡 —— 1 单位 = 水高的 1% */
+
+.bubble {
+  --jf: calc(var(--hb-water-h) * 0.01);
+  display: block;
+  border: 0.5px solid rgba(255, 255, 255, 0.7);
+  position: absolute;
+  z-index: 1;
+  border-radius: calc(var(--jf) * 6) / calc(var(--jf) * 3);
+  transform: skew(0deg, 2deg);
+  box-shadow:
+    0 0 calc(var(--jf) * 2) rgba(255, 255, 255, 0.6) inset,
+    calc(var(--jf) * -1) calc(var(--jf) * 1) calc(var(--jf) * 2)
+      rgba(var(--hb-water-rgb), 0.1);
+}
+
+.bubble1 {
+  height: calc(var(--jf) * 3);
+  width: calc(var(--jf) * 6);
+  left: calc(var(--jf) * 6);
+  top: calc(var(--jf) * 7.2);
+  animation: bubbleMove 4s linear infinite alternate;
+}
+
+.bubble2 {
+  height: calc(var(--jf) * 2);
+  width: calc(var(--jf) * 4);
+  left: calc(var(--jf) * 14);
+  top: calc(var(--jf) * 8.4);
+  animation: bubbleMove 4s linear infinite alternate;
+}
+
+.bubble3 {
+  height: 0.5px;
+  width: 0.5px;
+  left: calc(var(--jf) * 14);
+  bottom: calc(var(--jf) * 2);
+  border: 0.5px solid rgba(255, 255, 255, 0.1);
+  box-shadow: none;
+  animation: bubbleRise 4s linear infinite;
+}
+
+@keyframes bubbleRise {
+  0% {
+    transform: translate(0, 0);
+    opacity: 0;
+    border-color: rgba(255, 255, 255, 0.1);
+  }
+  10% {
+    transform: translate(0, 0);
+    opacity: 1;
+  }
+  30% {
+    transform: translate(calc(var(--jf) * -1), calc(var(--jf) * -15));
+  }
+  50% {
+    transform: translate(calc(var(--jf) * 1), calc(var(--jf) * -30));
+  }
+  75% {
+    transform: translate(calc(var(--jf) * -1), calc(var(--jf) * -50)) scale(1.2);
+  }
+  98% {
+    opacity: 1;
+    border-color: rgba(255, 255, 255, 0.25);
+  }
+  100% {
+    transform: translate(0, calc(var(--jf) * 13 - var(--hb-water-h))) scale(1.4);
+    opacity: 0;
+    border-color: rgba(255, 255, 255, 0.1);
+  }
+}
+
+@keyframes bubbleMove {
+  0% {
+    transform: translate(0, 0) skew(0deg, 2deg);
+  }
+  25% {
+    transform: translate(calc(var(--jf) * -2), calc(var(--jf) * 0.5)) skew(0deg, 5deg);
+  }
+  50% {
+    transform: translate(0, calc(var(--jf) * -0.5)) skew(0deg, 2deg);
+  }
+  75% {
+    transform: translate(calc(var(--jf) * 2), calc(var(--jf) * 0.5)) skew(0deg, 0deg);
+  }
+  100% {
+    transform: translate(0, 0) skew(0deg, 2deg);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .bubble1,
+  .bubble2,
+  .bubble3 {
+    animation: none;
+  }
+}

@@ -375,3 +375,63 @@
   display: block;
   position: absolute;
 }
+
+/* dark 主题：白玻璃描线减半透明度（0.5 → 0.2 档），保留水色光晕 */
+:global([data-theme='dark']) .top,
+:global([data-theme='dark']) .neck,
+:global([data-theme='dark']) .main {
+  border-color: rgba(255, 255, 255, 0.22);
+}
+
+:global([data-theme='dark']) .top::before,
+:global([data-theme='dark']) .top::after,
+:global([data-theme='dark']) .neck::before,
+:global([data-theme='dark']) .neck::after,
+:global([data-theme='dark']) .main::before,
+:global([data-theme='dark']) .main::after {
+  border-color: rgba(255, 255, 255, 0.2);
+  border-bottom-color: rgba(255, 255, 255, 0.26);
+  box-shadow: 0 0 4px rgba(255, 255, 255, 0.25) inset;
+}
+
+:global([data-theme='dark']) .mouth {
+  background: linear-gradient(
+    to left,
+    rgba(255, 255, 255, 0.16),
+    rgba(255, 255, 255, 0) 5%,
+    rgba(255, 255, 255, 0) 95%,
+    rgba(255, 255, 255, 0.16)
+  );
+  box-shadow: 0 0 6px rgba(255, 255, 255, 0.12);
+}
+
+:global([data-theme='dark']) .mouth::after {
+  border-color: rgba(255, 255, 255, 0.18);
+  box-shadow: 0 0 3px rgba(255, 255, 255, 0.14);
+}
+
+:global([data-theme='dark']) .highlight {
+  opacity: 0.55;
+}
+
+:global([data-theme='dark']) .inner {
+  box-shadow:
+    0 0 2px rgba(255, 255, 255, 0.25) inset,
+    0 0 8px rgba(255, 255, 255, 0.3) inset,
+    0 0 5px rgba(255, 255, 255, 0.22);
+}
+
+:global([data-theme='dark']) .root::after {
+  box-shadow:
+    0 1px 4px -2px rgba(0, 0, 0, 0.5),
+    0 2px 10px -3px rgba(0, 0, 0, 0.4);
+}
+
+/* 深色下给水色一个统一的最小可见度提升（B4） */
+:global([data-theme='dark']) .water {
+  filter: brightness(1.08) saturate(1.05);
+}
+
+:global([data-theme='dark']) .water::after {
+  opacity: 0.6;
+}

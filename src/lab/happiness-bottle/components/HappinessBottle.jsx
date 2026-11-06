@@ -2,6 +2,8 @@ import { useMemo } from 'react';
 import { deriveWaterPalette } from '../utils/palette.js';
 import styles from './HappinessBottle.module.css';
 import Clover from './Clover.jsx';
+import Jellyfish from './Jellyfish.jsx';
+import Bubbles from './Bubbles.jsx';
 
 export default function HappinessBottle({
   size = 'md',
@@ -39,6 +41,8 @@ export default function HappinessBottle({
                 swayDelay={i * 0.6}
               />
             ))}
+            {jellyfish && <Jellyfish />}
+            {bubbles && <Bubbles />}
           </div>
         </div>
         <i className={styles.highlight} />

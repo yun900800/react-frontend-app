@@ -20,3 +20,14 @@
   display: flex;
   justify-content: center;
 }
+
+/* 局部主题预览容器（Task 7 的按钮会切换 data-theme；未设置时跟随全局） */
+.lab[data-theme='dark'] {
+  background: #0f1115;
+  color: #e8e8e9;
+}
+
+.lab[data-theme='light'] {
+  background: var(--color-background);
+  color: var(--color-foreground);
+}
