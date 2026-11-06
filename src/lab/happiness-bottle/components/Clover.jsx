@@ -15,8 +15,13 @@ function leafRatio(n) {
   if (n <= 2) return BASE_LEAF_RATIO * 1.25;
   if (n <= 3) return BASE_LEAF_RATIO * 1.15;
   if (n === 4) return BASE_LEAF_RATIO;
-  // n>4：按 (4/n)^0.7 收缩，视觉验证值 —— 保证 6/8/10 叶不挤成圆饼
-  return BASE_LEAF_RATIO * Math.max(0.34, Math.pow(4 / n, 0.7));
+  // n>4：叶长按计划公式微缩；重叠问题由叶宽预算解决（见 widthFactor）
+  return BASE_LEAF_RATIO * Math.max(0.62, Math.sin((Math.PI * 4) / n));
+}
+
+// 叶宽预算：n 片叶共享叶柄圆周，n 越大单瓣越窄，避免挤成圆饼
+function widthFactor(n) {
+  return Math.min(0.625, 2.59 / n);
 }
 
 // 确定性伪随机：株 index → -1..1，每次渲染稳定
@@ -35,8 +40,11 @@ export default function Clover({ index = 0, count = 1, leaves = 4, leafColors = 
     leafVars[`--hb-leaf-${i}-back-c`] = back;
   }
 
-  const len = `calc(var(--hb-water-h) * ${leafRatio(leafCount)})`;
+  const crowd = count > 2 ? Math.max(0.75, 1 - (count - 1) * 0.08) : 1;
+  const len = `calc(var(--hb-water-h) * ${leafRatio(leafCount) * crowd})`;
+  const width = `calc(var(--hb-leaf-len) * ${widthFactor(leafCount)})`;
   const spread = count > 1 ? ((index + 1) / (count + 1)) * 100 + jitter(index) * 2 : 40 + jitter(index) * 2;
+  const depth = 4 + ((index * 7) % 18);
 
   return (
     <div
@@ -44,7 +52,9 @@ export default function Clover({ index = 0, count = 1, leaves = 4, leafColors = 
       style={{
         ...leafVars,
         '--hb-leaf-len': len,
+        '--hb-leaf-w': width,
         left: `${spread}%`,
+        bottom: `${depth}%`,
         zIndex: index % 2 === 0 ? 1 : 0,
         animationDelay: `${swayDelay}s`,
       }}

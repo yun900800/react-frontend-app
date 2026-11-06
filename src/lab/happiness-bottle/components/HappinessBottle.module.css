@@ -1,4 +1,4 @@
-/* 幸福瓶瓶壳 —— 数值从原版 bottle-style.css 迁移，定位均改为 calc(--hb-* 比例) */
+﻿/* 幸福瓶瓶壳 —— 数值从原版 bottle-style.css 迁移，定位均改为 calc(--hb-* 比例) */
 
 .root {
   --hb-s: 1; /* 断点缩放系数 */
@@ -73,7 +73,7 @@
   height: var(--hb-top-h);
   width: calc(var(--hb-main-w) - 40px);
   position: relative;
-  border: 1px solid rgba(255, 255, 255, 0.5);
+  border: 1px solid var(--hb-line);
   border-top: none;
   border-bottom: none;
   margin: 0 auto;
@@ -86,23 +86,23 @@
   height: calc(10px * var(--hb-s));
   width: calc(var(--hb-main-w) - 42px);
   border-radius: 46px / 10px;
-  border: 2px solid rgba(255, 255, 255, 0.5);
-  border-bottom: 2px solid rgba(255, 255, 255, 0.6);
-  border-top: 1px solid rgba(255, 255, 255, 0.4);
+  border: 2px solid var(--hb-line);
+  border-bottom: 2px solid var(--hb-white-60);
+  border-top: 1px solid var(--hb-white-40);
   left: -1px;
-  box-shadow: 0 0 6px rgba(255, 255, 255, 0.6) inset;
+  box-shadow: 0 0 6px var(--hb-white-60) inset;
 }
 
 .top::after {
   top: calc(-6px * var(--hb-s));
   box-shadow:
-    0 0 6px rgba(255, 255, 255, 0.6) inset,
-    0 3px 3px -1px rgba(255, 255, 255, 0.3);
+    0 0 6px var(--hb-white-60) inset,
+    0 3px 3px -1px var(--hb-white-30);
 }
 
 .top::before {
   top: calc(var(--hb-top-h) - 6px);
-  box-shadow: 0 0 6px rgba(255, 255, 255, 0.4) inset;
+  box-shadow: 0 0 6px var(--hb-white-40) inset;
 }
 
 .top .highlight {
@@ -113,9 +113,9 @@
   transform: skew(0deg, 5deg);
   background: linear-gradient(
     to left,
-    rgba(255, 255, 255, 0.1),
-    rgba(255, 255, 255, 0.6) 4%,
-    rgba(255, 255, 255, 0.2) 98%,
+    var(--hb-white-10),
+    var(--hb-white-60) 4%,
+    var(--hb-white-20) 98%,
     rgba(255, 255, 255, 0)
   );
 }
@@ -126,7 +126,7 @@
   left: calc(-3px * var(--hb-s));
   top: -1px;
   transform: skew(0deg, 5deg);
-  background: rgba(255, 255, 255, 0.3);
+  background: var(--hb-white-30);
 }
 
 /* 瓶口 */
@@ -140,12 +140,12 @@
   border-bottom: none;
   background: linear-gradient(
     to left,
-    rgba(255, 255, 255, 0.3),
+    var(--hb-white-30),
     rgba(255, 255, 255, 0) 5%,
     rgba(255, 255, 255, 0) 95%,
-    rgba(255, 255, 255, 0.3)
+    var(--hb-white-30)
   );
-  box-shadow: 0 0 6px rgba(255, 255, 255, 0.3);
+  box-shadow: 0 0 6px var(--hb-white-30);
 }
 
 .mouth::after {
@@ -154,11 +154,11 @@
   height: calc(6px * var(--hb-s));
   width: calc(var(--hb-main-w) - 76px);
   border-radius: 25px / 6px;
-  border: 1px solid rgba(255, 255, 255, 0.4);
+  border: 1px solid var(--hb-white-40);
   position: absolute;
   left: -1px;
   top: calc(-4px * var(--hb-s));
-  box-shadow: 0 0 3px rgba(255, 255, 255, 0.3);
+  box-shadow: 0 0 3px var(--hb-white-30);
 }
 
 /* 瓶颈 */
@@ -167,7 +167,7 @@
   width: calc(var(--hb-main-w) - 58px);
   position: relative;
   background: none;
-  border: 1px solid rgba(255, 255, 255, 0.5);
+  border: 1px solid var(--hb-line);
   border-top: none;
   border-bottom: none;
   margin: 0 auto;
@@ -180,7 +180,7 @@
   height: calc(8px * var(--hb-s));
   width: calc(var(--hb-main-w) - 58px);
   border-radius: 30px / 8px;
-  border: 1px solid rgba(255, 255, 255, 0.5);
+  border: 1px solid var(--hb-line);
   border-top: none;
   position: absolute;
   left: -1px;
@@ -188,7 +188,7 @@
 
 .neck::after {
   top: calc(-4px * var(--hb-s));
-  border: 1px solid rgba(255, 255, 255, 0.2);
+  border: 1px solid var(--hb-white-20);
   box-shadow: 0 5px 3px -2px rgba(0, 0, 0, 0.05);
 }
 
@@ -204,9 +204,9 @@
   transform: skew(0deg, 6deg);
   background: linear-gradient(
     to left,
-    rgba(255, 255, 255, 0.1),
-    rgba(255, 255, 255, 0.3) 4%,
-    rgba(255, 255, 255, 0.1) 98%,
+    var(--hb-white-10),
+    var(--hb-white-30) 4%,
+    var(--hb-white-10) 98%,
     rgba(255, 255, 255, 0)
   );
 }
@@ -217,7 +217,7 @@
   position: relative;
   width: calc(var(--hb-main-w) - 2px);
   background: none;
-  border: 1px solid rgba(255, 255, 255, 0.5);
+  border: 1px solid var(--hb-line);
   border-top: none;
   border-bottom: none;
   margin: 0 auto;
@@ -230,9 +230,9 @@
   height: calc(12px * var(--hb-s));
   width: calc(var(--hb-main-w) - 4px);
   border-radius: 46px / 10px;
-  border: 2px solid rgba(255, 255, 255, 0.5);
-  border-bottom: 2px solid rgba(255, 255, 255, 0.7);
-  border-top: 1px solid rgba(255, 255, 255, 0.3);
+  border: 2px solid var(--hb-line);
+  border-bottom: 2px solid var(--hb-line-strong);
+  border-top: 1px solid var(--hb-white-30);
   position: absolute;
   left: -1px;
 }
@@ -240,17 +240,17 @@
 .main::after {
   top: calc(-7px * var(--hb-s));
   box-shadow:
-    0 0 6px rgba(255, 255, 255, 0.6) inset,
-    0 3px 3px -1px rgba(255, 255, 255, 0.4),
+    0 0 6px var(--hb-white-60) inset,
+    0 3px 3px -1px var(--hb-white-40),
     0 0 3px rgba(0, 0, 0, 0.05) inset,
-    0 0 6px rgba(255, 255, 255, 0.7) inset,
+    0 0 6px var(--hb-line-strong) inset,
     0 0 3px rgba(0, 0, 0, 0.15) inset;
 }
 
 .main::before {
   top: calc(var(--hb-main-h) - 7px);
   box-shadow:
-    0 0 6px rgba(255, 255, 255, 0.7) inset,
+    0 0 6px var(--hb-line-strong) inset,
     0 0 3px rgba(0, 0, 0, 0.15) inset;
 }
 
@@ -262,9 +262,9 @@
   transform: skew(0deg, 6deg);
   background: linear-gradient(
     to left,
-    rgba(255, 255, 255, 0.2),
-    rgba(255, 255, 255, 0.5) 4%,
-    rgba(255, 255, 255, 0.2) 98%,
+    var(--hb-white-20),
+    var(--hb-line) 4%,
+    var(--hb-white-20) 98%,
     rgba(255, 255, 255, 0)
   );
   z-index: 2;
@@ -276,7 +276,7 @@
   left: calc(-6px * var(--hb-s));
   top: 0;
   transform: skew(0deg, 3deg);
-  background: linear-gradient(to top, rgba(255, 255, 255, 0.3), rgba(255, 255, 255, 0) 80%);
+  background: linear-gradient(to top, var(--hb-white-30), rgba(255, 255, 255, 0) 80%);
 }
 
 /* 内壁 */
@@ -286,13 +286,13 @@
   margin: 0 auto;
   border-radius: 10px 10px 20px 20px / 10px;
   border: 1px solid rgba(0, 0, 0, 0.01);
-  border-top: 1px solid rgba(255, 255, 255, 0.3);
+  border-top: 1px solid var(--hb-white-30);
   border-bottom-width: 0.5px;
   position: relative;
   box-shadow:
-    0 0 2px rgba(255, 255, 255, 0.5) inset,
-    0 0 8px rgba(255, 255, 255, 0.6) inset,
-    0 0 5px rgba(255, 255, 255, 0.5);
+    0 0 2px var(--hb-line) inset,
+    0 0 8px var(--hb-white-60) inset,
+    0 0 5px var(--hb-line);
   top: 1px;
 }
 
@@ -339,14 +339,14 @@
   top: 0;
   background: linear-gradient(
     to left,
-    rgba(255, 255, 255, 0.4),
+    var(--hb-white-40),
     rgba(var(--hb-water-rgb), 0.05) 50%,
     rgba(var(--hb-water-rgb), 0.1) 80%,
-    rgba(255, 255, 255, 0.3)
+    var(--hb-white-30)
   );
   border-radius: 50px / 8px;
-  border: 1px solid rgba(255, 255, 255, 0.2);
-  border-bottom-color: rgba(255, 255, 255, 0.4);
+  border: 1px solid var(--hb-white-20);
+  border-bottom-color: var(--hb-white-40);
   box-shadow: 0 1px 2px -1px rgba(var(--hb-water-rgb), 0.35);
 }
 
@@ -366,7 +366,7 @@
     rgba(var(--hb-water-deep-rgb), 0.3)
   );
   border-radius: 50px / 10px;
-  border: 1px solid rgba(255, 255, 255, 0.1);
+  border: 1px solid var(--hb-white-10);
   border-bottom: none;
   box-shadow: 0 -2px 3px -1px rgba(var(--hb-water-rgb), 0.25);
 }
@@ -374,64 +374,38 @@
 .highlight {
   display: block;
   position: absolute;
+  opacity: var(--hb-highlight-opacity, 1);
 }
 
-/* dark 主题：白玻璃描线减半透明度（0.5 → 0.2 档），保留水色光晕 */
-:global([data-theme='dark']) .top,
-:global([data-theme='dark']) .neck,
-:global([data-theme='dark']) .main {
-  border-color: rgba(255, 255, 255, 0.22);
+/* 主题变量：玻璃件白色描边/高光按「最近的主题作用域」取值。
+   浅/深两套变量都声明在带 data-theme 的元素自身上，因此页面局部主题预览
+   可以覆盖外层全局主题（嵌套主题生效）。 */
+:global(:root),
+:global([data-theme='light']) {
+  --hb-line: rgba(255, 255, 255, 0.5);
+  --hb-line-strong: rgba(255, 255, 255, 0.7);
+  --hb-white-60: rgba(255, 255, 255, 0.6);
+  --hb-white-40: rgba(255, 255, 255, 0.4);
+  --hb-white-30: rgba(255, 255, 255, 0.3);
+  --hb-white-20: rgba(255, 255, 255, 0.2);
+  --hb-white-10: rgba(255, 255, 255, 0.1);
+  --hb-highlight-opacity: 1;
 }
 
-:global([data-theme='dark']) .top::before,
-:global([data-theme='dark']) .top::after,
-:global([data-theme='dark']) .neck::before,
-:global([data-theme='dark']) .neck::after,
-:global([data-theme='dark']) .main::before,
-:global([data-theme='dark']) .main::after {
-  border-color: rgba(255, 255, 255, 0.2);
-  border-bottom-color: rgba(255, 255, 255, 0.26);
-  box-shadow: 0 0 4px rgba(255, 255, 255, 0.25) inset;
+:global([data-theme='dark']) {
+  --hb-line: rgba(255, 255, 255, 0.22);
+  --hb-line-strong: rgba(255, 255, 255, 0.26);
+  --hb-white-60: rgba(255, 255, 255, 0.25);
+  --hb-white-40: rgba(255, 255, 255, 0.17);
+  --hb-white-30: rgba(255, 255, 255, 0.13);
+  --hb-white-20: rgba(255, 255, 255, 0.09);
+  --hb-white-10: rgba(255, 255, 255, 0.05);
+  --hb-highlight-opacity: 0.55;
 }
 
-:global([data-theme='dark']) .mouth {
-  background: linear-gradient(
-    to left,
-    rgba(255, 255, 255, 0.16),
-    rgba(255, 255, 255, 0) 5%,
-    rgba(255, 255, 255, 0) 95%,
-    rgba(255, 255, 255, 0.16)
-  );
-  box-shadow: 0 0 6px rgba(255, 255, 255, 0.12);
-}
-
-:global([data-theme='dark']) .mouth::after {
-  border-color: rgba(255, 255, 255, 0.18);
-  box-shadow: 0 0 3px rgba(255, 255, 255, 0.14);
-}
-
-:global([data-theme='dark']) .highlight {
-  opacity: 0.55;
-}
-
-:global([data-theme='dark']) .inner {
-  box-shadow:
-    0 0 2px rgba(255, 255, 255, 0.25) inset,
-    0 0 8px rgba(255, 255, 255, 0.3) inset,
-    0 0 5px rgba(255, 255, 255, 0.22);
-}
-
-:global([data-theme='dark']) .root::after {
-  box-shadow:
-    0 1px 4px -2px rgba(0, 0, 0, 0.5),
-    0 2px 10px -3px rgba(0, 0, 0, 0.4);
-}
-
-/* 深色下给水色一个统一的最小可见度提升（B4） */
-:global([data-theme='dark']) .water {
+/* 深色下给水色一个统一的最小可见度提升（B4）；
+   最近主题作用域为浅色时（局部预览）不提升 */
+.root[data-theme='dark'] .water,
+:global(html[data-theme='dark']) .root:not([data-theme='light']) .water {
   filter: brightness(1.08) saturate(1.05);
-}
-
-:global([data-theme='dark']) .water::after {
-  opacity: 0.6;
 }

@@ -7,6 +7,7 @@ import Bubbles from './Bubbles.jsx';
 
 export default function HappinessBottle({
   size = 'md',
+  theme,
   waterColor = '#00ccff',
   clovers = [{ leaves: 4, leafColors: [] }], // Task 5 渲染
   jellyfish = true, // Task 6 渲染
@@ -20,7 +21,14 @@ export default function HappinessBottle({
   };
 
   return (
-    <div className={styles.root} data-size={size} role="img" aria-label="幸福瓶装饰" style={styleVars}>
+    <div
+      className={styles.root}
+      data-size={size}
+      data-theme={theme}
+      role="img"
+      aria-label="幸福瓶装饰"
+      style={styleVars}
+    >
       <div className={styles.top}>
         <div className={styles.mouth} />
         <i className={styles.highlight} />

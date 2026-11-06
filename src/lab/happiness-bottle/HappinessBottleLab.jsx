@@ -1,4 +1,5 @@
 import { useState } from 'react';
+import { deriveWaterPalette } from './utils/palette.js';
 import HappinessBottle from './components/HappinessBottle.jsx';
 import styles from './HappinessBottleLab.module.css';
 
@@ -75,6 +76,13 @@ function clamp(value, min, max) {
   return Math.min(max, Math.max(min, value));
 }
 
+// 与 Clover 渲染一致的有效叶色（不足时循环），用于面板显示与叶数变化时物化
+function effectiveLeafColors(clover) {
+  return Array.from({ length: clover.leaves }, (_, i) =>
+    clover.leafColors.length ? clover.leafColors[i % clover.leafColors.length] : DEFAULT_LEAF_COLOR
+  );
+}
+
 export default function HappinessBottleLab() {
   const [config, setConfig] = useState(DEFAULT_CONFIG);
   const [previewTheme, setPreviewTheme] = useState('follow');
@@ -126,9 +134,13 @@ export default function HappinessBottleLab() {
     <div className={styles.lab} data-theme={previewTheme === 'follow' ? undefined : previewTheme}>
       <h1 className={styles.title}>幸福瓶</h1>
       <div className={styles.layout}>
-        <div className={styles.stage}>
+        <div
+          className={styles.stage}
+          style={{ '--hb-stage-rgb': deriveWaterPalette(config.waterColor).base }}
+        >
           <HappinessBottle
             size="lg"
+            theme={previewTheme === 'follow' ? undefined : previewTheme}
             waterColor={config.waterColor}
             clovers={config.clovers}
             jellyfish={config.jellyfish}
@@ -190,9 +202,7 @@ export default function HappinessBottleLab() {
             </div>
 
             {config.clovers.map((clover, index) => {
-              const colors = Array.from({ length: clover.leaves }, (_, n) =>
-                clover.leafColors[n] ?? DEFAULT_LEAF_COLOR
-              );
+              const colors = effectiveLeafColors(clover);
               return (
                 <div className={styles.cloverCard} key={index}>
                   <div className={styles.cardTitle}>第 {index + 1} 株</div>
@@ -204,11 +214,17 @@ export default function HappinessBottleLab() {
                       min={MIN_LEAVES}
                       max={MAX_LEAVES}
                       value={clover.leaves}
-                      onChange={(event) =>
+                      onChange={(event) => {
+                        const leaves = clamp(
+                          Number(event.target.value) || MIN_LEAVES,
+                          MIN_LEAVES,
+                          MAX_LEAVES
+                        );
                         updateClover(index, {
-                          leaves: clamp(Number(event.target.value) || MIN_LEAVES, MIN_LEAVES, MAX_LEAVES),
-                        })
-                      }
+                          leaves,
+                          leafColors: effectiveLeafColors({ ...clover, leaves }),
+                        });
+                      }}
                       aria-label={`第 ${index + 1} 株叶片数`}
                     />
                   </div>

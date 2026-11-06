@@ -1,8 +1,8 @@
 .lab {
   min-height: 100%;
   padding: 24px;
-  background: var(--color-background);
-  color: var(--color-foreground);
+  background: oklch(var(--color-background));
+  color: oklch(var(--color-foreground));
 }
 
 .title {
@@ -31,7 +31,7 @@
   border-radius: 16px;
   background: radial-gradient(
     circle at 50% 35%,
-    rgba(0, 204, 255, 0.08),
+    rgba(var(--hb-stage-rgb), 0.08),
     transparent 65%
   );
 }
@@ -103,7 +103,7 @@
 
 .swatch[aria-pressed='true'] {
   box-shadow:
-    0 0 0 2px var(--color-primary, #0a84ff),
+    0 0 0 2px oklch(var(--color-primary)),
     0 0 0 4px rgba(0, 0, 0, 0.12);
 }
 
@@ -195,7 +195,7 @@
   width: 16px;
   height: 16px;
   flex: none;
-  accent-color: var(--color-primary, #0a84ff);
+  accent-color: oklch(var(--color-primary));
 }
 
 .segmented {
@@ -295,6 +295,6 @@
 }
 
 .lab[data-theme='light'] {
-  background: var(--color-background);
-  color: var(--color-foreground);
+  background: oklch(var(--db-light));
+  color: oklch(var(--db-dark));
 }

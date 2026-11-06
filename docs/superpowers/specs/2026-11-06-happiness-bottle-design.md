@@ -185,3 +185,15 @@ pm run build 通过（vite 5.4.20，5.31s）。
 - 375×812：doc scrollWidth 360 < 375，无横向滚动；面板纵排；陈列行 3 只。
 - prefers-reduced-motion: reduce 下 clover/jellyfish/bubble 动画均为 none；正常态动画生效。
 - 控制台 0 error / 0 warning。
+
+## 终审修复记录（2026-11-06）
+
+审查（1 Critical + 5 Important + 14 Minor）后的唯一修复轮，全部验证：
+
+- 修复 C1：Clover 深度错落/稀疏系数此前未提交，已随本提交入库（工作树=HEAD）。
+- 修复 I2/I3：玻璃件白色系收敛为主题变量（`--hb-line/-strong/--hb-white-*`），按「最近 data-theme 作用域」取值；瓶子接受 `theme` prop。已验证叉乘：全局 dark + 局部 light → 描边 0.5 / lab 底 oklch 浅色 / 无 water filter；全局 light + 局部 dark → 描边 0.22 / lab 底 #0f1115 / filter 生效。同时把 `--color-*` 令牌改为 `oklch(var(--...))` 正确用法，激活色环恢复。
+- 修复 I4：舞台光晕改用 `rgba(var(--hb-stage-rgb), .08)`，随水色联动（粉 preset 后 computed 为 rgba(255,0,204,0.08)）。
+- 修复 I5：改为「周长预算」叶宽 `--hb-leaf-w = len × min(0.625, 2.59/n)`，恢复计划叶长公式；5 株×10 叶由圆点变为可辨叶盘（叶宽 4.1px）。
+- 修复 I6：叶数变化时物化 `leafColors`（与 Clover 循环规则一致），面板与瓶内一致（4→6 叶后 input[5]=#ff3b30 对应 --hb-leaf-4-c=255,59,48）。
+- `npm run build` 通过（6.33s）；控制台 0 error / 0 warning；375 宽无横向滚动（回归）。
+- 审阅的 Minor（定位右偏、数字输入逐键夹取、非法 hex 兜底、陈旧的 Task 注释、水母未取水色、茎色随叶 0、陈列 aria 标签）按规则记录为 deferred minors，不在本轮修复。
