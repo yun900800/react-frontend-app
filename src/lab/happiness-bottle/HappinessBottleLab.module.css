@@ -15,3 +15,8 @@
   margin: 0;
   opacity: 0.7;
 }
+
+.stage {
+  display: flex;
+  justify-content: center;
+}

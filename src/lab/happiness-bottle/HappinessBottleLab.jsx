@@ -1,3 +1,4 @@
+import HappinessBottle from './components/HappinessBottle.jsx';
 import styles from './HappinessBottleLab.module.css';
 
 /**
@@ -7,7 +8,9 @@ export default function HappinessBottleLab() {
   return (
     <div className={styles.lab}>
       <h1 className={styles.title}>幸福瓶</h1>
-      <p className={styles.note}>实验页面骨架：瓶子与控制面板将在后续任务中填充。</p>
+      <div className={styles.stage}>
+        <HappinessBottle />
+      </div>
     </div>
   );
 }
