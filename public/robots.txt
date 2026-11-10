@@ -1,0 +1,11 @@
+User-agent: *
+Allow: /
+Disallow: /workbench
+Disallow: /clients
+Disallow: /editor
+Disallow: /ai
+Disallow: /calendar
+Disallow: /lab
+Disallow: /login
+
+Sitemap: https://home.bayh.pp.ua/sitemap.xml

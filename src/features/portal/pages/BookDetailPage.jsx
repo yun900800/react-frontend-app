@@ -5,6 +5,7 @@ import { useBookDetail } from '../hooks/useBookDetail';
 import ReviewList from '../components/ReviewList';
 import styles from './BookDetailPage.module.css';
 import { formatDate } from '../utils/formatDate';
+import { usePageMeta } from '../../../shared/lib/seo';
 
 function isHexColor(value) {
   return /^#[0-9a-f]{3}([0-9a-f]{3})?$/i.test(value || '');
@@ -32,6 +33,16 @@ function BookCover({ book }) {
 export default function BookDetailPage() {
   const { bookId } = useParams();
   const { book, loading, error } = useBookDetail(bookId);
+
+  usePageMeta({
+    title: book?.title,
+    description:
+      book?.description ||
+      (book?.title ? `《${book.title}》的书评与阅读笔记。` : undefined),
+    path: `/books/${bookId}`,
+    type: 'article',
+    image: book?.cover_url,
+  });
 
   if (loading) {
     return (

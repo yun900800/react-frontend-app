@@ -11,6 +11,7 @@ import ErrorBoundary from './shared/components/ErrorBoundary.jsx';
 import { productRoutes } from './app/routes/product.jsx';
 import { labRoutes } from './app/routes/lab.jsx';
 import { publicRoutes } from './app/routes/public.jsx';
+import { usePageMeta } from './shared/lib/seo';
 
 const PageFallback = () => (
   <div
@@ -27,6 +28,13 @@ const PageFallback = () => (
 );
 
 function NotFound() {
+  usePageMeta({
+    title: '页面未找到',
+    description: '页面不存在或已被移动。',
+    path: window.location.pathname,
+    noindex: true,
+  });
+
   return (
     <div
       style={{
@@ -39,7 +47,7 @@ function NotFound() {
       }}
     >
       <h2 style={{ margin: 0 }}>404 页面未找到</h2>
-      <Link to="/workbench">返回工作台</Link>
+      <Link to="/">返回书评集</Link>
     </div>
   );
 }

@@ -7,10 +7,13 @@ import ReviewBookOverlay from '../components/ReviewBookOverlay';
 import styles from './PortalHomePage.module.css';
 import Pagination from '../../../shared/components/pagination/Pagination';
 import { styles as paginationStyles } from '../../../shared/css/components/styles.js';
+import { usePageMeta } from '../../../shared/lib/seo';
 
 const PAGE_SIZE = 12;
 
 export default function PortalHomePage() {
+  usePageMeta({ path: '/' });
+
   const {
     data: books,
     total,
