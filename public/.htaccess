@@ -1,6 +1,9 @@
 <IfModule mod_rewrite.c>
   RewriteEngine On
 
+  # BEGIN BOOK ID REDIRECTS
+  # END BOOK ID REDIRECTS
+
   # Avoid duplicate /books/<id>.html URLs; the canonical URL has no suffix.
   RewriteCond %{THE_REQUEST} \s/+books/([^/]+)\.html[\s?] [NC]
   RewriteRule ^books/([^/]+)\.html$ /books/$1 [R=301,L]

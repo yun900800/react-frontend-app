@@ -17,7 +17,7 @@ export default function BookCard({ book, onOpenReviews }) {
 
   return (
     <div className={styles.card}>
-      <Link to={`/books/${book.id}`} className={styles.cardLink}>
+      <Link to={`/books/${book.slug || book.id}`} className={styles.cardLink}>
         <div className={styles.cover}>
           {book.cover_url ? (
             <img

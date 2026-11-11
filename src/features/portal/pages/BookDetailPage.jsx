@@ -42,7 +42,7 @@ export default function BookDetailPage() {
       book?.seo_description ||
       book?.description ||
       (book?.title ? `《${book.title}》的书评与阅读笔记。` : undefined),
-    path: `/books/${bookId}`,
+    path: `/books/${book?.slug || bookId}`,
     type: 'article',
     image: book?.cover_url,
   });

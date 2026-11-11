@@ -71,8 +71,8 @@ async function writeSitemap(books) {
     }),
     ...books.map((book) =>
       urlEntry({
-        loc: `${SITE_URL}/books/${book.id}`,
-        lastmod: toDate(book.created_at),
+        loc: `${SITE_URL}/books/${book.slug || book.id}`,
+        lastmod: toDate(book.published_at || book.created_at),
       })
     ),
   ];

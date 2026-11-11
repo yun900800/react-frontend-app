@@ -1,6 +1,17 @@
 import { useEffect, useState } from 'react';
 import { publicApi } from '../api';
 
+const normalizeBookKey = (value) => String(value ?? '').trim().toLowerCase();
+
+const matchesBookKey = (book, key) => {
+  if (!book) return false;
+  const normalizedKey = normalizeBookKey(key);
+  return (
+    String(book.id) === normalizedKey ||
+    normalizeBookKey(book.slug) === normalizedKey
+  );
+};
+
 export function useBookDetail(bookId, initialBook = null) {
   const [book, setBook] = useState(initialBook);
   const [loading, setLoading] = useState(!initialBook);
@@ -15,7 +26,7 @@ export function useBookDetail(bookId, initialBook = null) {
 
     // The prerender pass already fetched this book. Use that payload instead
     // of immediately replacing the prerendered content with a loading state.
-    if (initialBook && String(initialBook.id) === String(bookId)) {
+    if (initialBook && matchesBookKey(initialBook, bookId)) {
       setBook(initialBook);
       setLoading(false);
       setError(null);
@@ -49,7 +60,7 @@ export function useBookDetail(bookId, initialBook = null) {
 
   // Avoid briefly showing the previous book while a client-side navigation is
   // fetching the next one.
-  const isStaleBook = Boolean(book) && String(book.id) !== String(bookId);
+  const isStaleBook = Boolean(book) && !matchesBookKey(book, bookId);
 
   return {
     book: isStaleBook ? null : book,

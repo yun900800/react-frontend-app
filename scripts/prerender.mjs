@@ -108,6 +108,30 @@ async function writeOutput(relativePath, html) {
   return outputPath;
 }
 
+async function updateBookRedirects(books) {
+  const htaccessPath = path.join(DIST, '.htaccess');
+  const source = await readFile(htaccessPath, 'utf8');
+  const marker = /  # BEGIN BOOK ID REDIRECTS[\s\S]*?  # END BOOK ID REDIRECTS/;
+
+  if (!marker.test(source)) {
+    throw new Error('dist/.htaccess is missing the book redirect markers');
+  }
+
+  const rules = books
+    .filter((book) => book.slug && String(book.slug) !== String(book.id))
+    .map(
+      (book) =>
+        `  RewriteRule ^books/${book.id}/?$ /books/${book.slug} [R=301,L]`
+    )
+    .join('\n');
+
+  const block = `  # BEGIN BOOK ID REDIRECTS\n${rules}\n  # END BOOK ID REDIRECTS`;
+  const next = source.replace(marker, block);
+  if (next !== source) {
+    await writeFile(htaccessPath, next, 'utf8');
+  }
+}
+
 async function main() {
   const homeData = await fetchJson(
     `${API_URL}/api/public/books?page=1&limit=${PAGE_SIZE}`
@@ -161,16 +185,17 @@ async function main() {
       books,
       PAGE_CONCURRENCY,
       async (book) => {
+        const routeKey = book.slug || book.id;
         const detail = await fetchJson(
           `${API_URL}/api/public/books/${book.id}`
         );
         const html = await renderRoute(
           context,
           baseUrl,
-          `/books/${book.id}`,
+          `/books/${routeKey}`,
           { book: detail }
         );
-        return { book, html };
+        return { routeKey, html };
       }
     );
 
@@ -179,9 +204,11 @@ async function main() {
     const written = [];
     written.push(await writeOutput('index.html', homeHtml));
 
-    for (const { book, html } of detailHtmls) {
-      written.push(await writeOutput(`books/${book.id}.html`, html));
+    for (const { routeKey, html } of detailHtmls) {
+      written.push(await writeOutput(`books/${routeKey}.html`, html));
     }
+
+    await updateBookRedirects(books);
 
     const homeOutput = await readFile(path.join(DIST, 'index.html'), 'utf8');
     if (!homeOutput.includes('<h1')) {
