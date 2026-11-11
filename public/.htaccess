@@ -8,7 +8,10 @@
   # Serve prerendered book pages: /books/15 -> /books/15.html
   RewriteCond %{REQUEST_FILENAME} !-f
   RewriteCond %{REQUEST_FILENAME} !-d
-  RewriteRule ^books/([^/]+)/?$ books/$1.html [L]
+  RewriteRule ^books/([A-Za-z0-9_-]+)/?$ books/$1.html [L]
+
+  # Missing book files must return 404 instead of falling through to the SPA.
+  RewriteRule ^books/ - [L]
 
   # SPA fallback for all other client-side routes.
   RewriteCond %{REQUEST_FILENAME} !-f
