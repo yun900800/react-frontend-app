@@ -83,6 +83,42 @@
   word-break: break-word;
 }
 
+.bookSlug {
+  margin-top: 3px;
+  font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
+  font-size: 0.7rem;
+  color: oklch(var(--color-foreground) / 0.42);
+  word-break: break-all;
+}
+
+.statusCell {
+  width: 1%;
+  white-space: nowrap;
+}
+
+.statusBadge {
+  display: inline-flex;
+  align-items: center;
+  padding: 3px 9px;
+  font-size: 0.72rem;
+  font-weight: 600;
+  line-height: 1.2;
+  border-radius: 999px;
+  white-space: nowrap;
+}
+
+.statusPublished {
+  color: oklch(var(--color-primary));
+  background: oklch(var(--color-primary) / 0.12);
+  border: 1px solid oklch(var(--color-primary) / 0.3);
+}
+
+.statusDraft {
+  color: oklch(var(--color-foreground) / 0.7);
+  background: oklch(var(--color-foreground) / 0.06);
+  border: 1px solid oklch(var(--color-foreground) / 0.18);
+}
+
 .descriptionCell {
   width: 38%;
 }

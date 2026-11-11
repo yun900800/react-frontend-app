@@ -13,10 +13,56 @@ const initialBookState = {
   font_color: '',
   preface: '',
   front_cover_back_text: '',
+  slug: '',
+  category: '',
+  tags: '',
+  series_name: '',
+  series_order: '',
+  status: 'draft',
+  seo_title: '',
+  seo_description: '',
 };
 
 const normalizeColor = (value) =>
   /^#[0-9a-f]{6}$/i.test(value || '') ? value : '#333333';
+
+const toFormState = (book) => {
+  if (!book) return initialBookState;
+
+  return {
+    ...initialBookState,
+    ...book,
+    slug: book.slug ?? '',
+    category: book.category ?? '',
+    tags: Array.isArray(book.tags) ? book.tags.join(', ') : book.tags ?? '',
+    series_name: book.series_name ?? '',
+    series_order: book.series_order ?? '',
+    status: book.status || 'draft',
+    seo_title: book.seo_title ?? '',
+    seo_description: book.seo_description ?? '',
+  };
+};
+
+const parseTags = (value) => {
+  if (Array.isArray(value)) {
+    return [...new Set(value.map((tag) => String(tag).trim()).filter(Boolean))];
+  }
+
+  return [
+    ...new Set(
+      String(value ?? '')
+        .split(/[,，]/)
+        .map((tag) => tag.trim())
+        .filter(Boolean)
+    ),
+  ];
+};
+
+const parseSeriesOrder = (value) => {
+  if (value === '' || value === null || value === undefined) return null;
+  const parsed = Number.parseInt(value, 10);
+  return Number.isInteger(parsed) && parsed > 0 ? parsed : null;
+};
 
 function CoverPreview({ url, placeholder, errorText }) {
   const [broken, setBroken] = useState(false);
@@ -74,12 +120,10 @@ export default function BookForm({
 }) {
   const t = translations[lang].bookForm;
 
-  const [formData, setFormData] = useState(() =>
-    editingBook ? { ...initialBookState, ...editingBook } : initialBookState
-  );
+  const [formData, setFormData] = useState(() => toFormState(editingBook));
 
   useEffect(() => {
-    setFormData(editingBook ? { ...initialBookState, ...editingBook } : initialBookState);
+    setFormData(toFormState(editingBook));
   }, [editingBook]);
 
   const handleChange = (event) => {
@@ -93,7 +137,20 @@ export default function BookForm({
 
   const handleSubmit = (event) => {
     event.preventDefault();
-    onSubmit?.(formData);
+
+    const payload = {
+      ...formData,
+      tags: parseTags(formData.tags),
+      series_order: parseSeriesOrder(formData.series_order),
+    };
+
+    if (String(payload.slug ?? '').trim() === '') {
+      delete payload.slug;
+    } else {
+      payload.slug = String(payload.slug).trim();
+    }
+
+    onSubmit?.(payload);
   };
 
   const title = editingBook
@@ -148,6 +205,79 @@ export default function BookForm({
                 placeholder="#333333"
               />
             </div>
+          </Field>
+        </div>
+      </section>
+
+      <section className={styles.section}>
+        <h3 className={styles.sectionTitle}>{t.sections.publishing}</h3>
+        <div className={styles.grid}>
+          <Field label={t.labels.status}>
+            <select
+              className={styles.input}
+              name="status"
+              value={formData.status}
+              onChange={handleChange}
+            >
+              <option value="draft">{t.statusOptions.draft}</option>
+              <option value="published">{t.statusOptions.published}</option>
+            </select>
+            <span className={styles.hint}>{t.hints.status}</span>
+          </Field>
+
+          <Field label={t.labels.slug}>
+            <input
+              className={styles.input}
+              name="slug"
+              value={formData.slug}
+              onChange={handleChange}
+              placeholder={t.fields.slugPlaceholder}
+            />
+            <span className={styles.hint}>{t.hints.slug}</span>
+          </Field>
+
+          <Field label={t.labels.category}>
+            <input
+              className={styles.input}
+              name="category"
+              value={formData.category}
+              onChange={handleChange}
+              placeholder={t.fields.categoryPlaceholder}
+            />
+          </Field>
+
+          <Field label={t.labels.tags}>
+            <input
+              className={styles.input}
+              name="tags"
+              value={formData.tags}
+              onChange={handleChange}
+              placeholder={t.fields.tagsPlaceholder}
+            />
+            <span className={styles.hint}>{t.hints.tags}</span>
+          </Field>
+
+          <Field label={t.labels.seriesName}>
+            <input
+              className={styles.input}
+              name="series_name"
+              value={formData.series_name}
+              onChange={handleChange}
+              placeholder={t.fields.seriesNamePlaceholder}
+            />
+          </Field>
+
+          <Field label={t.labels.seriesOrder}>
+            <input
+              className={styles.input}
+              type="number"
+              min="1"
+              step="1"
+              name="series_order"
+              value={formData.series_order}
+              onChange={handleChange}
+              placeholder={t.fields.seriesOrderPlaceholder}
+            />
           </Field>
         </div>
       </section>
@@ -223,6 +353,32 @@ export default function BookForm({
               value={formData.front_cover_back_text}
               onChange={handleChange}
               placeholder={t.fields.frontCoverBackTextPlaceholder}
+            />
+          </Field>
+        </div>
+      </section>
+
+      <section className={styles.section}>
+        <h3 className={styles.sectionTitle}>{t.sections.seo}</h3>
+        <div className={styles.grid}>
+          <Field label={t.labels.seoTitle} full>
+            <input
+              className={styles.input}
+              name="seo_title"
+              value={formData.seo_title}
+              onChange={handleChange}
+              placeholder={t.fields.seoTitlePlaceholder}
+            />
+          </Field>
+
+          <Field label={t.labels.seoDescription} full>
+            <textarea
+              className={styles.textarea}
+              name="seo_description"
+              rows={3}
+              value={formData.seo_description}
+              onChange={handleChange}
+              placeholder={t.fields.seoDescriptionPlaceholder}
             />
           </Field>
         </div>

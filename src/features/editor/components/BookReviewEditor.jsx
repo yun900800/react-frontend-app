@@ -65,6 +65,7 @@ export const BookReviewEditor = () => {
   );
 
   const [isSaving, setIsSaving] = useState(false);
+  const [status, setStatus] = useState('draft');
   const [charCount, setCharCount] = useState(0);
   const [isFocusMode, setIsFocusMode] = useState(false);
   const quillRef = useRef(null);
@@ -124,12 +125,14 @@ export const BookReviewEditor = () => {
         book_id: book.id,
         reviewer: reviewerName,
         chapter_title: chapterTitle.trim() || "无章节标题", // 保证至少有一个值
-        content
+        content,
+        status,
       });
 
       // 成功后清空状态
       setChapterTitle("");
       setContent("");
+      setStatus("draft");
       // 2. ✅ 提交成功：清空两个草稿和本地状态 (Hook 内部会自动清空状态)
       clearTitleDraft();
       clearContentDraft();
@@ -263,6 +266,22 @@ export const BookReviewEditor = () => {
             onChange={(e) => setChapterTitle(e.target.value)}
           />
           </div>
+        </div>
+
+        <div className={styles.publishRow}>
+          <label className={styles.publishLabel}>
+            <span>发布状态</span>
+            <select
+              className={styles.publishSelect}
+              value={status}
+              onChange={(e) => setStatus(e.target.value)}
+              disabled={isSaving}
+            >
+              <option value="draft">草稿</option>
+              <option value="published">已发布</option>
+            </select>
+          </label>
+          <span className={styles.publishHint}>草稿不会显示在公开站点</span>
         </div>
 
         <ReactQuill

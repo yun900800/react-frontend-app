@@ -5,7 +5,7 @@ export const booksApi = {
 
     /**
    * 添加评论
-   * @param {object} data { book_id, reviewer, chapter_title, content }
+   * @param {object} data { book_id, reviewer, chapter_title, content, status }
    */
   addReview: (data) =>
     fetcher.post('/api/reviews', data),
@@ -20,7 +20,7 @@ export const booksApi = {
   /**
    * 更新评论
    * @param {number} id
-   * @param {object} data { chapter_title, content }
+   * @param {object} data { chapter_title, content, status }
    */
   updateReview: (id, data) =>
     fetcher.put(`/api/reviews/${id}`, data),

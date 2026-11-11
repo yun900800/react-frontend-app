@@ -87,6 +87,16 @@
   color: oklch(var(--db-red));
 }
 
+.hint {
+  font-size: 0.74rem;
+  line-height: 1.45;
+  color: oklch(var(--color-foreground) / 0.5);
+}
+
+select.input {
+  cursor: pointer;
+}
+
 .input,
 .textarea {
   display: block;

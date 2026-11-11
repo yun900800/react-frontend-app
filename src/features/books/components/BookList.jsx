@@ -5,6 +5,7 @@ import { translations } from '../model/i18n/translations';
 
 export default function BookList({ books, onView, onEdit, onDelete, lang = 'zh' }) {
   const t = translations[lang].bookList;
+  const statusLabels = translations[lang].statusLabels;
 
   if (!books || books.length === 0) {
     return (
@@ -25,6 +26,7 @@ export default function BookList({ books, onView, onEdit, onDelete, lang = 'zh' 
             <th className={styles.coverCell}>{t.columns.cover}</th>
             <th>{t.columns.book}</th>
             <th className={styles.descriptionCell}>{t.columns.description}</th>
+            <th className={styles.statusCell}>{t.columns.status}</th>
             <th className={styles.actionsCell}>{t.columns.actions}</th>
           </tr>
         </thead>
@@ -49,10 +51,25 @@ export default function BookList({ books, onView, onEdit, onDelete, lang = 'zh' 
               <td>
                 <div className={styles.bookTitle}>{book.title || '未命名'}</div>
                 <div className={styles.bookAuthor}>{book.author || '佚名'}</div>
+                {book.slug ? (
+                  <div className={styles.bookSlug}>{book.slug}</div>
+                ) : null}
               </td>
 
               <td className={styles.descriptionCell}>
                 <p className={styles.description}>{book.description || '—'}</p>
+              </td>
+
+              <td className={styles.statusCell}>
+                <span
+                  className={`${styles.statusBadge} ${
+                    book.status === 'published'
+                      ? styles.statusPublished
+                      : styles.statusDraft
+                  }`}
+                >
+                  {statusLabels[book.status] || book.status || '—'}
+                </span>
               </td>
 
               <td className={styles.actionsCell}>

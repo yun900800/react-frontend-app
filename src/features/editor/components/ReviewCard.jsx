@@ -1,6 +1,6 @@
 import React, { useMemo, useState } from "react";
 import ReactQuill from "react-quill-new";
-import { Pencil, Trash2 } from "lucide-react";
+import { Eye, EyeOff, Pencil, Trash2 } from "lucide-react";
 import styles from "./BookReviewEditor.module.css";
 import { sanitizeHtml } from "../utils/sanitizeHtml.js";
 import { QUILL_MODULES, QUILL_FORMATS } from "../quillConfig.js";
@@ -8,6 +8,11 @@ import { useToast } from "../../../shared/components/Toast";
 import ConfirmDialog from "../../books/components/ConfirmDialog";
 
 const EMPTY_QUILL_CONTENT = "<p><br></p>";
+
+const STATUS_LABELS = {
+  draft: "草稿",
+  published: "已发布",
+};
 
 const isBlankContent = (value) =>
   !value || value.trim() === "" || value === EMPTY_QUILL_CONTENT;
@@ -33,7 +38,9 @@ export default function ReviewCard({ review, onUpdate, onDelete }) {
   const [isEditing, setIsEditing] = useState(false);
   const [chapterTitle, setChapterTitle] = useState(review.chapter_title ?? "");
   const [content, setContent] = useState(review.content ?? "");
+  const [status, setStatus] = useState(review.status || "published");
   const [isSaving, setIsSaving] = useState(false);
+  const [isToggling, setIsToggling] = useState(false);
   const [isConfirmOpen, setIsConfirmOpen] = useState(false);
   const [isDeleting, setIsDeleting] = useState(false);
 
@@ -45,7 +52,32 @@ export default function ReviewCard({ review, onUpdate, onDelete }) {
   const beginEdit = () => {
     setChapterTitle(review.chapter_title ?? "");
     setContent(review.content ?? "");
+    setStatus(review.status || "published");
     setIsEditing(true);
+  };
+
+  const handleToggleStatus = async () => {
+    const currentStatus = review.status || "published";
+    const nextStatus = currentStatus === "published" ? "draft" : "published";
+
+    if (nextStatus === "published" && isBlankContent(review.content)) {
+      addToast("评论内容不能为空，无法发布！", "warning");
+      return;
+    }
+
+    setIsToggling(true);
+    try {
+      await onUpdate(review.id, {
+        chapter_title: review.chapter_title || "无章节标题",
+        content: review.content,
+        status: nextStatus,
+      });
+      addToast(nextStatus === "published" ? "评论已发布!" : "评论已转为草稿!", "success");
+    } catch (e) {
+      addToast(e.message || "操作失败！", "error");
+    } finally {
+      setIsToggling(false);
+    }
   };
 
   const handleSave = async () => {
@@ -59,6 +91,7 @@ export default function ReviewCard({ review, onUpdate, onDelete }) {
       await onUpdate(review.id, {
         chapter_title: chapterTitle.trim() || "无章节标题",
         content,
+        status,
       });
       addToast("评论已更新!", "success");
       setIsEditing(false);
@@ -82,38 +115,77 @@ export default function ReviewCard({ review, onUpdate, onDelete }) {
     }
   };
 
+  const currentStatus = review.status || "published";
+  const displayStatus = isEditing ? status : currentStatus;
+
   return (
     <div className={styles.reviewCard}>
       <div className={styles.reviewCardHeader}>
         <h3>
           {review.bookTitle} - {review.chapter_title}
         </h3>
-        {!isEditing && (
-          <div className={styles.reviewActions}>
-            <button
-              type="button"
-              className={styles.iconButton}
-              onClick={beginEdit}
-              title="编辑评论"
-              aria-label="编辑评论"
-            >
-              <Pencil size={15} />
-            </button>
-            <button
-              type="button"
-              className={`${styles.iconButton} ${styles.dangerIconButton}`}
-              onClick={() => setIsConfirmOpen(true)}
-              title="删除评论"
-              aria-label="删除评论"
-            >
-              <Trash2 size={15} />
-            </button>
-          </div>
-        )}
+        <div className={styles.reviewActions}>
+          <span
+            className={`${styles.statusBadge} ${
+              displayStatus === "published"
+                ? styles.statusPublished
+                : styles.statusDraft
+            }`}
+          >
+            {STATUS_LABELS[displayStatus] || displayStatus}
+          </span>
+          {!isEditing && (
+            <>
+              <button
+                type="button"
+                className={styles.iconButton}
+                onClick={handleToggleStatus}
+                disabled={isToggling}
+                title={currentStatus === "published" ? "转为草稿" : "发布评论"}
+                aria-label={currentStatus === "published" ? "转为草稿" : "发布评论"}
+              >
+                {currentStatus === "published" ? (
+                  <EyeOff size={15} />
+                ) : (
+                  <Eye size={15} />
+                )}
+              </button>
+              <button
+                type="button"
+                className={styles.iconButton}
+                onClick={beginEdit}
+                title="编辑评论"
+                aria-label="编辑评论"
+              >
+                <Pencil size={15} />
+              </button>
+              <button
+                type="button"
+                className={`${styles.iconButton} ${styles.dangerIconButton}`}
+                onClick={() => setIsConfirmOpen(true)}
+                title="删除评论"
+                aria-label="删除评论"
+              >
+                <Trash2 size={15} />
+              </button>
+            </>
+          )}
+        </div>
       </div>
 
       {isEditing ? (
         <div className={styles.editForm}>
+          <label className={styles.statusField}>
+            <span>发布状态</span>
+            <select
+              className={styles.statusSelect}
+              value={status}
+              onChange={(e) => setStatus(e.target.value)}
+            >
+              <option value="draft">草稿</option>
+              <option value="published">已发布</option>
+            </select>
+          </label>
           <input
             type="text"
             placeholder="章节标题"

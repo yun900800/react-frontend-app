@@ -14,10 +14,24 @@ const Field = ({ label, children }) => {
   );
 };
 
+const formatDateTime = (value, lang) => {
+  if (!value) return '';
+  const date = new Date(value);
+  if (Number.isNaN(date.getTime())) return '';
+  return date.toLocaleString(lang === 'zh' ? 'zh-CN' : 'en-US');
+};
+
 export default function BookDetailDialog({ open, book, lang = 'zh', onClose, onEdit }) {
   if (!book) return null;
 
   const t = translations[lang].bookList.detail;
+  const statusLabels = translations[lang].statusLabels;
+  const statusLabel = statusLabels[book.status] || book.status || '—';
+  const tags = Array.isArray(book.tags) ? book.tags : [];
+  const series = book.series_name
+    ? `${book.series_name}${book.series_order ? ` · 第 ${book.series_order} 部` : ''}`
+    : '';
+  const publishedAt = formatDateTime(book.published_at, lang);
   const hasCover = Boolean(book.cover_url);
   const hasBackCover = Boolean(book.back_cover_url);
 
@@ -68,6 +82,42 @@ export default function BookDetailDialog({ open, book, lang = 'zh', onClose, onE
 
           <Field label={t.author}>{book.author || '—'}</Field>
 
+          <Field label={t.status}>
+            <span
+              className={`${styles.statusBadge} ${
+                book.status === 'published'
+                  ? styles.statusPublished
+                  : styles.statusDraft
+              }`}
+            >
+              {statusLabel}
+            </span>
+          </Field>
+
+          <Field label={t.slug}>
+            <code className={styles.code}>{book.slug || '—'}</code>
+          </Field>
+
+          <Field label={t.category}>{book.category || '—'}</Field>
+
+          <Field label={t.tags}>
+            {tags.length ? (
+              <div className={styles.tags}>
+                {tags.map((tag) => (
+                  <span key={tag} className={styles.tag}>
+                    {tag}
+                  </span>
+                ))}
+              </div>
+            ) : (
+              '—'
+            )}
+          </Field>
+
+          <Field label={t.series}>{series || '—'}</Field>
+
+          <Field label={t.publishedAt}>{publishedAt || '—'}</Field>
+
           <Field label={t.fontColor}>
             <span className={styles.colorValue}>
               <span
@@ -88,6 +138,12 @@ export default function BookDetailDialog({ open, book, lang = 'zh', onClose, onE
 
           <Field label={t.frontCoverText}>
             <p className={styles.text}>{book.front_cover_back_text || '—'}</p>
+          </Field>
+
+          <Field label={t.seoTitle}>{book.seo_title || '—'}</Field>
+
+          <Field label={t.seoDescription}>
+            <p className={styles.text}>{book.seo_description || '—'}</p>
           </Field>
         </div>
       </div>

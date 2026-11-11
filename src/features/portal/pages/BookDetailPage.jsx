@@ -35,8 +35,9 @@ export default function BookDetailPage() {
   const { book, loading, error } = useBookDetail(bookId);
 
   usePageMeta({
-    title: book?.title,
+    title: book?.seo_title || book?.title,
     description:
+      book?.seo_description ||
       book?.description ||
       (book?.title ? `《${book.title}》的书评与阅读笔记。` : undefined),
     path: `/books/${bookId}`,
@@ -85,8 +86,10 @@ export default function BookDetailPage() {
             <p className={styles.author}>{book.author || '佚名'}</p>
 
             <div className={styles.meta}>
-              {book.created_at ? (
-                <span>发布于 {formatDate(book.created_at)}</span>
+              {book.published_at || book.created_at ? (
+                <span>
+                  发布于 {formatDate(book.published_at || book.created_at)}
+                </span>
               ) : null}
               <span>·</span>
               <span>{reviews.length} 条评论</span>

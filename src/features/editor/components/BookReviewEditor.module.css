@@ -50,6 +50,72 @@
   color: oklch(var(--color-foreground) / 0.55);
 }
 
+/* ---------- 发布状态 ---------- */
+.publishRow {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  flex-wrap: wrap;
+  margin-bottom: 12px;
+}
+
+.publishLabel {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 0.9rem;
+  color: oklch(var(--color-foreground) / 0.75);
+}
+
+.publishSelect,
+.statusSelect {
+  padding: 7px 10px;
+  font: inherit;
+  font-size: 0.9rem;
+  color: oklch(var(--color-foreground));
+  background: oklch(var(--color-background));
+  border: 1px solid var(--color-border-input);
+  border-radius: 8px;
+  cursor: pointer;
+}
+
+.publishHint {
+  font-size: 0.78rem;
+  color: oklch(var(--color-foreground) / 0.55);
+}
+
+.statusField {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 0.9rem;
+  color: oklch(var(--color-foreground) / 0.75);
+}
+
+.statusBadge {
+  display: inline-flex;
+  align-items: center;
+  flex: none;
+  padding: 3px 9px;
+  font-size: 0.72rem;
+  font-weight: 600;
+  line-height: 1.2;
+  border-radius: 999px;
+  white-space: nowrap;
+}
+
+.statusPublished {
+  color: oklch(var(--color-primary));
+  background: oklch(var(--color-primary) / 0.12);
+  border: 1px solid oklch(var(--color-primary) / 0.3);
+}
+
+.statusDraft {
+  color: oklch(var(--color-foreground) / 0.7);
+  background: oklch(var(--color-foreground) / 0.06);
+  border: 1px solid oklch(var(--color-foreground) / 0.18);
+}
+
 /* =========================================================
    Quill —— 高度修正
    height 必须给 .ql-container，而不是外层 wrapper。
@@ -252,6 +318,7 @@
 .reviewActions {
   display: flex;
   flex-shrink: 0;
+  align-items: center;
   gap: 6px;
 }
 
@@ -275,6 +342,11 @@
   color: oklch(var(--color-primary));
   border-color: oklch(var(--color-primary));
   background: oklch(var(--color-primary) / 0.08);
+}
+
+.iconButton:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
 }
 
 .dangerIconButton:hover {
