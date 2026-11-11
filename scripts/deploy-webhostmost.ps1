@@ -129,8 +129,8 @@ $tar = Get-RequiredCommand -Name 'tar.exe' -Fallback 'tar'
 $ssh = Get-RequiredCommand -Name 'ssh.exe' -Fallback 'ssh'
 $scp = Get-RequiredCommand -Name 'scp.exe' -Fallback 'scp'
 
-$sshArgs = @('-o', 'BatchMode=yes', '-o', 'ConnectTimeout=15')
-$scpArgs = @('-o', 'BatchMode=yes', '-o', 'ConnectTimeout=15')
+$sshArgs = @('-o', 'BatchMode=yes', '-o', 'ConnectTimeout=30')
+$scpArgs = @('-o', 'BatchMode=yes', '-o', 'ConnectTimeout=30')
 if ($Port -gt 0) {
     $sshArgs += @('-p', "$Port")
     $scpArgs += @('-P', "$Port")
