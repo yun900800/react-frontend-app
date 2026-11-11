@@ -1,15 +1,24 @@
 import { useEffect, useState } from 'react';
 import { publicApi } from '../api';
 
-export function useBookDetail(bookId) {
-  const [book, setBook] = useState(null);
-  const [loading, setLoading] = useState(true);
+export function useBookDetail(bookId, initialBook = null) {
+  const [book, setBook] = useState(initialBook);
+  const [loading, setLoading] = useState(!initialBook);
   const [error, setError] = useState(null);
 
   useEffect(() => {
     if (!bookId) {
       setLoading(false);
       setBook(null);
+      return undefined;
+    }
+
+    // The prerender pass already fetched this book. Use that payload instead
+    // of immediately replacing the prerendered content with a loading state.
+    if (initialBook && String(initialBook.id) === String(bookId)) {
+      setBook(initialBook);
+      setLoading(false);
+      setError(null);
       return undefined;
     }
 
@@ -36,7 +45,15 @@ export function useBookDetail(bookId) {
     return () => {
       alive = false;
     };
-  }, [bookId]);
+  }, [bookId, initialBook]);
 
-  return { book, loading, error };
+  // Avoid briefly showing the previous book while a client-side navigation is
+  // fetching the next one.
+  const isStaleBook = Boolean(book) && String(book.id) !== String(bookId);
+
+  return {
+    book: isStaleBook ? null : book,
+    loading: loading || isStaleBook,
+    error,
+  };
 }

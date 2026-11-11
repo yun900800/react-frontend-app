@@ -13,10 +13,16 @@ console.warn = (...args) => {
   originalWarn(...args);
 };
 
-ReactDOM.createRoot(document.getElementById('root')).render(
+const rootElement = document.getElementById('root');
+const app = (
   <React.StrictMode>
     <ToastProvider>
       <App />
     </ToastProvider>
-  </React.StrictMode>,
+  </React.StrictMode>
 );
+
+// Prerendered HTML is a crawler-friendly snapshot. React takes over with the
+// same initial data and replaces it on the client; it is not hydrated because
+// the snapshot is produced by a browser, not by renderToString.
+ReactDOM.createRoot(rootElement).render(app);

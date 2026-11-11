@@ -1,13 +1,14 @@
 // shared/hooks/usePagination.js
-import { useState, useEffect, useCallback } from "react";
+import { useState, useEffect, useCallback, useRef } from "react";
 
-export function usePagination(fetchFn, initialPage = 1, pageSize = 10) {
+export function usePagination(fetchFn, initialPage = 1, pageSize = 10, initialResult = null) {
   const [page, setPage] = useState(initialPage);
   const [limit] = useState(pageSize);
-  const [data, setData] = useState([]);
-  const [total, setTotal] = useState(0);
-  const [loading, setLoading] = useState(false);
+  const [data, setData] = useState(initialResult?.data || []);
+  const [total, setTotal] = useState(initialResult?.total || 0);
+  const [loading, setLoading] = useState(!initialResult);
   const [error, setError] = useState(null);
+  const hasConsumedInitialResult = useRef(false);
 
   const refresh = useCallback(async () => {
     setLoading(true);
@@ -26,8 +27,20 @@ export function usePagination(fetchFn, initialPage = 1, pageSize = 10) {
   }, [page, limit, fetchFn]);
 
   useEffect(() => {
+    // The prerendered first page already carries the data; skip only the very
+    // first fetch. Returning to page 1 later still needs a refresh.
+    if (
+      !hasConsumedInitialResult.current &&
+      initialResult &&
+      page === initialPage
+    ) {
+      hasConsumedInitialResult.current = true;
+      return;
+    }
+
+    hasConsumedInitialResult.current = true;
     refresh();
-  }, [page, refresh]);
+  }, [page, refresh, initialResult, initialPage]);
 
   return {
     data,

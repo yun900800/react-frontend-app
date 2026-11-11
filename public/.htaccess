@@ -1,14 +1,25 @@
 <IfModule mod_rewrite.c>
   RewriteEngine On
+
+  # Avoid duplicate /books/<id>.html URLs; the canonical URL has no suffix.
+  RewriteCond %{THE_REQUEST} \s/+books/([^/]+)\.html[\s?] [NC]
+  RewriteRule ^books/([^/]+)\.html$ /books/$1 [R=301,L]
+
+  # Serve prerendered book pages: /books/15 -> /books/15.html
+  RewriteCond %{REQUEST_FILENAME} !-f
+  RewriteCond %{REQUEST_FILENAME} !-d
+  RewriteRule ^books/([^/]+)/?$ books/$1.html [L]
+
+  # SPA fallback for all other client-side routes.
   RewriteCond %{REQUEST_FILENAME} !-f
   RewriteCond %{REQUEST_FILENAME} !-d
   RewriteRule ^(.*)$ index.html [L]
 </IfModule>
 
 <IfModule mod_headers.c>
-  <Files "index.html">
+  <FilesMatch "\.html$">
     Header set Cache-Control "no-cache, must-revalidate"
-  </Files>
+  </FilesMatch>
   <Files "robots.txt">
     Header set Cache-Control "public, max-age=300"
   </Files>

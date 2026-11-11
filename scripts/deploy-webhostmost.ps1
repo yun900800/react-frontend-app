@@ -28,6 +28,9 @@
 .PARAMETER SkipBuild
   Reuse the existing dist/ directory.
 
+.PARAMETER SkipPrerender
+  Do not regenerate the static prerendered HTML pages.
+
 .PARAMETER SkipBackup
   Do not create a remote public_html backup before uploading.
 
@@ -50,6 +53,7 @@ param(
     [int]$Port = 0,
     [switch]$InstallDeps,
     [switch]$SkipBuild,
+    [switch]$SkipPrerender,
     [switch]$SkipBackup,
     [switch]$SkipVerify,
     [switch]$KeepLocalArchive
@@ -144,6 +148,11 @@ try {
     if (-not $SkipBuild) {
         Write-Step 'Building frontend (npm run build)'
         Invoke-Native -FilePath $npm -Arguments @('run', 'build')
+    }
+
+    if (-not $SkipPrerender) {
+        Write-Step 'Prerendering public pages (npm run prerender)'
+        Invoke-Native -FilePath $npm -Arguments @('run', 'prerender')
     }
 
     $indexPath = Join-Path $distDir 'index.html'

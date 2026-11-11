@@ -8,12 +8,14 @@ import styles from './PortalHomePage.module.css';
 import Pagination from '../../../shared/components/pagination/Pagination';
 import { styles as paginationStyles } from '../../../shared/css/components/styles.js';
 import { usePageMeta } from '../../../shared/lib/seo';
+import { getPrerenderData } from '../../../shared/lib/prerenderData';
 
 const PAGE_SIZE = 12;
 
 export default function PortalHomePage() {
   usePageMeta({ path: '/' });
 
+  const initialHome = getPrerenderData()?.home;
   const {
     data: books,
     total,
@@ -21,7 +23,7 @@ export default function PortalHomePage() {
     setPage,
     loading,
     error,
-  } = usePagination(publicApi.getBooks, 1, PAGE_SIZE);
+  } = usePagination(publicApi.getBooks, 1, PAGE_SIZE, initialHome);
   const [activeBook, setActiveBook] = useState(null);
 
   const totalPages = Math.max(1, Math.ceil(total / PAGE_SIZE));

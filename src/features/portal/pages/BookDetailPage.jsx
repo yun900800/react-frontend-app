@@ -6,6 +6,7 @@ import ReviewList from '../components/ReviewList';
 import styles from './BookDetailPage.module.css';
 import { formatDate } from '../utils/formatDate';
 import { usePageMeta } from '../../../shared/lib/seo';
+import { getPrerenderData } from '../../../shared/lib/prerenderData';
 
 function isHexColor(value) {
   return /^#[0-9a-f]{3}([0-9a-f]{3})?$/i.test(value || '');
@@ -32,7 +33,8 @@ function BookCover({ book }) {
 
 export default function BookDetailPage() {
   const { bookId } = useParams();
-  const { book, loading, error } = useBookDetail(bookId);
+  const initialBook = getPrerenderData()?.book;
+  const { book, loading, error } = useBookDetail(bookId, initialBook);
 
   usePageMeta({
     title: book?.seo_title || book?.title,

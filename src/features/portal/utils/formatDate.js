@@ -9,5 +9,6 @@ export function formatDate(value) {
     year: 'numeric',
     month: 'long',
     day: 'numeric',
+    timeZone: 'Asia/Shanghai',
   });
 }

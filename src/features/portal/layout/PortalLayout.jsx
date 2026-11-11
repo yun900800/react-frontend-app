@@ -1,11 +1,17 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { Link, Outlet } from 'react-router-dom';
 import { BookOpen } from 'lucide-react';
 import ThemeToggle from '../../../shared/components/ThemeToggle';
 import styles from './PortalLayout.module.css';
 
 export default function PortalLayout() {
-  const hasToken = Boolean(localStorage.getItem('token'));
+  // Keep the first render deterministic for prerendered HTML; the token check
+  // runs after the first render so logged-in users still see the workbench link.
+  const [hasToken, setHasToken] = useState(false);
+
+  useEffect(() => {
+    setHasToken(Boolean(localStorage.getItem('token')));
+  }, []);
 
   return (
     <div className={styles.page}>

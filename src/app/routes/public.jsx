@@ -1,15 +1,14 @@
-import React, { lazy } from 'react';
+import React from 'react';
 import { Route } from 'react-router-dom';
 import PortalLayout from '../../features/portal/layout/PortalLayout';
+import PortalHomePage from '../../features/portal/pages/PortalHomePage';
+import BookDetailPage from '../../features/portal/pages/BookDetailPage';
 
 /**
  * 公开门户路由：不需要登录即可访问
  * - /            门户首页（书籍列表）
  * - /books/:id   书籍详情（经典评论）
  */
-const PortalHomePage = lazy(() => import('../../features/portal/pages/PortalHomePage'));
-const BookDetailPage = lazy(() => import('../../features/portal/pages/BookDetailPage'));
-
 export const publicRoutes = (
   <Route element={<PortalLayout />}>
     <Route index element={<PortalHomePage />} />

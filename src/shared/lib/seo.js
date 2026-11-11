@@ -65,7 +65,9 @@ export function usePageMeta({
   useEffect(() => {
     const pageTitle =
       title && title !== SITE_NAME
-        ? `${title} | ${SITE_NAME}`
+        ? title.includes(SITE_NAME)
+          ? title
+          : `${title} | ${SITE_NAME}`
         : `${SITE_NAME} · 用书评记录每一次阅读`;
     const pageDescription = normalizeDescription(description);
     const canonical = toAbsoluteUrl(path.split('?')[0] || '/');

@@ -8,6 +8,8 @@
     "seo:sitemap": "node scripts/generate-sitemap.mjs",
     "prebuild": "node scripts/generate-sitemap.mjs",
     "build": "vite build",
+    "prerender": "node scripts/prerender.mjs",
+    "build:seo": "npm run build && npm run prerender",
     "lint": "eslint . --ext js,jsx --report-unused-disable-directives --max-warnings 0",
     "preview": "vite preview"
   },
@@ -34,6 +36,7 @@
     "eslint-plugin-react-refresh": "^0.4.6",
     "lucide": "^0.525.0",
     "lucide-react": "^0.525.0",
+    "playwright": "^1.65.0",
     "vite": "^5.2.0"
   }
 }
