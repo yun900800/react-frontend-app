@@ -26,6 +26,15 @@ export function usePagination(fetchFn, initialPage = 1, pageSize = 10, initialRe
     }
   }, [page, limit, fetchFn]);
 
+  const changePage = useCallback(
+    (nextPage) => {
+      if (nextPage === page || loading) return;
+      setLoading(true);
+      setPage(nextPage);
+    },
+    [page, loading]
+  );
+
   useEffect(() => {
     // The prerendered first page already carries the data; skip only the very
     // first fetch. Returning to page 1 later still needs a refresh.
@@ -49,7 +58,7 @@ export function usePagination(fetchFn, initialPage = 1, pageSize = 10, initialRe
     limit,
     loading,
     error,
-    setPage,
+    setPage: changePage,
     refresh,
   };
 }
