@@ -8,6 +8,8 @@
  * 如果后续要支持图片、表格等更复杂的富文本，建议换成 DOMPurify。
  */
 
+import { sanitizeColorStyle } from "./sanitizeColorStyle.js";
+
 const ALLOWED_TAGS = new Set([
   "P",
   "BR",
@@ -75,6 +77,13 @@ const sanitizeChildren = (node) => {
           .filter((token) => SAFE_CLASS.test(token));
         if (safeClasses.length) {
           element.setAttribute("class", safeClasses.join(" "));
+        }
+      }
+
+      if (name === "style") {
+        const safeStyle = sanitizeColorStyle(value);
+        if (safeStyle) {
+          element.setAttribute("style", safeStyle);
         }
       }
     });
