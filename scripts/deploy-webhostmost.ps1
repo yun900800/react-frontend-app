@@ -10,8 +10,9 @@
     4. injects Cloudflare Web Analytics into every generated HTML file
     5. creates a timestamped tar of dist/
     6. backs up the remote public_html
-    7. uploads and extracts the tar
-    8. verifies the remote index.html references the new main JS asset
+    7. removes stale prerendered book/taxonomy directories
+    8. uploads and extracts the tar
+    9. verifies the remote index.html references the new main JS asset
 
   The remote host defaults to the SSH config alias "webhostmost".
 
@@ -191,6 +192,13 @@ try {
     } else {
         Write-Step 'Skipping remote backup'
     }
+
+    # tar extraction overwrites files but does not delete pages removed from
+    # dist/ (unpublished books, deleted tags, renamed taxonomies). Remove the
+    # prerendered directories before extracting the fresh build.
+    Write-Step 'Removing stale prerendered directories on remote'
+    $cleanupCommand = "cd '$RemotePath' && rm -rf books categories tags series about"
+    Invoke-Native -FilePath $ssh -Arguments ($sshArgs + @($SshHost, $cleanupCommand))
 
     Write-Step "Uploading archive to ${SshHost}:${remoteParent}/"
     Invoke-Native -FilePath $scp -Arguments ($scpArgs + @($localArchive, "${SshHost}:${remoteParent}/"))

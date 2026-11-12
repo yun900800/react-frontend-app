@@ -18,6 +18,12 @@ DirectoryIndex index.html
   # Missing book files must return 404 instead of falling through to the SPA.
   RewriteRule ^books/ - [L]
 
+  # Unknown taxonomy paths (removed tags, renamed categories, etc.) must return
+  # 404 instead of serving the SPA homepage as a soft 404.
+  RewriteCond %{REQUEST_FILENAME} !-f
+  RewriteCond %{REQUEST_FILENAME} !-d
+  RewriteRule ^(categories|tags|series)(/.*)?$ - [R=404,L]
+
   # SPA fallback for all other client-side routes.
   RewriteCond %{REQUEST_FILENAME} !-f
   RewriteCond %{REQUEST_FILENAME} !-d

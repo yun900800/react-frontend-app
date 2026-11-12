@@ -70,6 +70,9 @@ export default function TaxonomyPage({ kind }) {
     title: page > 1 ? `${name}书评 - 第 ${page} 页` : `${name}书评`,
     description: `浏览「${name}」相关的书籍与书评，共 ${total} 本。${meta.description}。`,
     path: pagePath,
+    // A tag with only one book is a thin page. Keep it browsable, but let it
+    // become indexable automatically once more books share the tag.
+    noindex: kind === 'tags' && total < 2,
   });
 
   useEffect(() => {

@@ -111,14 +111,17 @@ async function writeSitemap(books, taxonomies) {
       changefreq: 'weekly',
       priority: '0.7',
     }),
-    ...(taxonomies[kind] || []).map((item) =>
-      urlEntry({
-        loc: `${SITE_URL}/${kind}/${encodeURIComponent(item.name)}/`,
-        lastmod: today,
-        changefreq: 'weekly',
-        priority: '0.6',
-      })
-    ),
+    ...(taxonomies[kind] || [])
+      // One-book tag pages are marked noindex, so keep them out of the sitemap.
+      .filter((item) => kind !== 'tags' || Number(item.count) >= 2)
+      .map((item) =>
+        urlEntry({
+          loc: `${SITE_URL}/${kind}/${encodeURIComponent(item.name)}/`,
+          lastmod: today,
+          changefreq: 'weekly',
+          priority: '0.6',
+        })
+      ),
   ]);
 
   const entries = [

@@ -1,7 +1,7 @@
 # 书评站流量增长里程碑
 
 日期：2026-11-10
-状态：进行中（M0）
+状态：M0 收尾，M2/M3 主体进行中（2026-11-12 更新）
 目标：把 `home.bayh.pp.ua` 从书评展示页变成可持续获取自然搜索流量的公开书评站。
 
 ## 总体判断
@@ -39,7 +39,7 @@
 ### 需要账号/人工完成
 
 - [ ] Google Search Console 验证 `home.bayh.pp.ua`，提交 `sitemap.xml`
-- [ ] Bing Webmaster Tools 验证并提交 sitemap
+- [x] Bing Webmaster Tools 验证并提交 sitemap（2026-11-12）
 - [x] 选择并接入轻量统计（Cloudflare Web Analytics，2026-11-12 上线）
 - [x] 验证线上 beacon：28 个 HTML 均注入，RUM POST 返回 204
 - [ ] 确认 canonical 域名：短期保持 `https://home.bayh.pp.ua`，后续再评估是否迁到主域

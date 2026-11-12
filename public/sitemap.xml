@@ -25,6 +25,30 @@
     <priority>0.6</priority>
   </url>
   <url>
+    <loc>https://home.bayh.pp.ua/categories/%E5%95%86%E4%B8%9A%E8%B4%A2%E7%BB%8F/</loc>
+    <lastmod>2026-11-12</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  <url>
+    <loc>https://home.bayh.pp.ua/categories/%E9%9A%8F%E7%AC%94/</loc>
+    <lastmod>2026-11-12</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  <url>
+    <loc>https://home.bayh.pp.ua/categories/%E5%8E%86%E5%8F%B2/</loc>
+    <lastmod>2026-11-12</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  <url>
+    <loc>https://home.bayh.pp.ua/categories/%E8%AE%A1%E7%AE%97%E6%9C%BA/</loc>
+    <lastmod>2026-11-12</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  <url>
     <loc>https://home.bayh.pp.ua/tags/</loc>
     <lastmod>2026-11-12</lastmod>
     <changefreq>weekly</changefreq>
@@ -37,19 +61,43 @@
     <priority>0.6</priority>
   </url>
   <url>
-    <loc>https://home.bayh.pp.ua/tags/%E6%A0%BC%E8%A8%80/</loc>
+    <loc>https://home.bayh.pp.ua/tags/%E7%BB%8F%E5%85%B8/</loc>
     <lastmod>2026-11-12</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.6</priority>
   </url>
   <url>
-    <loc>https://home.bayh.pp.ua/tags/%E7%AB%A5%E8%AF%9D/</loc>
+    <loc>https://home.bayh.pp.ua/tags/%E7%88%B1%E6%83%85/</loc>
     <lastmod>2026-11-12</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.6</priority>
   </url>
   <url>
-    <loc>https://home.bayh.pp.ua/tags/%E8%8A%B1%E9%92%B1/</loc>
+    <loc>https://home.bayh.pp.ua/tags/%E4%B8%AD%E5%9B%BD%E6%96%87%E5%AD%A6/</loc>
+    <lastmod>2026-11-12</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  <url>
+    <loc>https://home.bayh.pp.ua/tags/%E6%88%90%E9%95%BF/</loc>
+    <lastmod>2026-11-12</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  <url>
+    <loc>https://home.bayh.pp.ua/tags/%E6%8A%95%E8%B5%84/</loc>
+    <lastmod>2026-11-12</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  <url>
+    <loc>https://home.bayh.pp.ua/tags/%E6%95%99%E6%9D%90/</loc>
+    <lastmod>2026-11-12</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  <url>
+    <loc>https://home.bayh.pp.ua/tags/%E8%A1%8C%E4%B8%BA%E9%87%91%E8%9E%8D/</loc>
     <lastmod>2026-11-12</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.6</priority>
@@ -61,19 +109,31 @@
     <priority>0.6</priority>
   </url>
   <url>
+    <loc>https://home.bayh.pp.ua/tags/%E9%9A%8F%E7%AC%94/</loc>
+    <lastmod>2026-11-12</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  <url>
     <loc>https://home.bayh.pp.ua/series/</loc>
     <lastmod>2026-11-12</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
-    <loc>https://home.bayh.pp.ua/series/%E6%88%90%E4%BA%BA%E7%AB%A5%E8%AF%9D%E7%B3%BB%E5%88%97/</loc>
+    <loc>https://home.bayh.pp.ua/series/%E6%95%B2%E7%A2%8E%E6%97%B6%E9%97%B4%E7%9A%84%E4%BA%BA%E4%BD%9C%E5%93%81/</loc>
     <lastmod>2026-11-12</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.6</priority>
   </url>
   <url>
     <loc>https://home.bayh.pp.ua/series/%E8%B4%A2%E7%BB%8F%E7%B3%BB%E5%88%97/</loc>
+    <lastmod>2026-11-12</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  <url>
+    <loc>https://home.bayh.pp.ua/series/%E6%88%90%E4%BA%BA%E7%AB%A5%E8%AF%9D%E7%B3%BB%E5%88%97/</loc>
     <lastmod>2026-11-12</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.6</priority>
@@ -99,18 +159,6 @@
   <url>
     <loc>https://home.bayh.pp.ua/books/wo-de-shou-ji</loc>
     <lastmod>2026-11-07</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.8</priority>
-  </url>
-  <url>
-    <loc>https://home.bayh.pp.ua/books/yi-ben-wu-ming-de-shu-ji</loc>
-    <lastmod>2025-11-22</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.8</priority>
-  </url>
-  <url>
-    <loc>https://home.bayh.pp.ua/books/wo-de-shu-ji</loc>
-    <lastmod>2025-11-22</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
@@ -159,12 +207,6 @@
   <url>
     <loc>https://home.bayh.pp.ua/books/quan-qiu-tong-shi</loc>
     <lastmod>2025-11-07</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.8</priority>
-  </url>
-  <url>
-    <loc>https://home.bayh.pp.ua/books/bai-nian-gu-du-jing-zhuang-ban</loc>
-    <lastmod>2025-11-03</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
