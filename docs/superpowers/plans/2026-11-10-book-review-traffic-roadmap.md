@@ -40,7 +40,8 @@
 
 - [ ] Google Search Console 验证 `home.bayh.pp.ua`，提交 `sitemap.xml`
 - [ ] Bing Webmaster Tools 验证并提交 sitemap
-- [ ] 选择并接入轻量统计（推荐 Plausible/Umami；也可先用 GA4）
+- [x] 选择并接入轻量统计（Cloudflare Web Analytics，2026-11-12 上线）
+- [x] 验证线上 beacon：28 个 HTML 均注入，RUM POST 返回 204
 - [ ] 确认 canonical 域名：短期保持 `https://home.bayh.pp.ua`，后续再评估是否迁到主域
 - [ ] 在 GSC 记录当前索引页数、impressions、平均排名作为基线
 

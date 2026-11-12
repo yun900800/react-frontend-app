@@ -54,13 +54,15 @@ API：https://bayh.pp.ua
 | 项目 | 状态 |
 |---|---|
 | 接入方式 | 手动接入（构建后注入 beacon） |
-| 代码状态 | 已完成，等待 `CLOUDFLARE_ANALYTICS_TOKEN` |
-| 首次数据 | 部署后 24–48 小时 |
+| 代码状态 | 已上线（2026-11-12） |
+| 线上验证 | 首页、书籍详情、分类/标签/系列页、About 均含 beacon |
+| Beacon 请求 | `beacon.min.js` 200；RUM POST 返回 204 |
+| 首次数据 | 预计部署后 24–48 小时 |
 | 当前 Page views / Visits | 待首次数据 |
 
 查看位置：Cloudflare Dashboard → Analytics & Logs → Web Analytics → `home.bayh.pp.ua`。
 
-接入步骤见 `docs/analytics-setup.md`。
+接入步骤见 `docs/analytics-setup.md`。token 保存在本地 `.env.production.local`（已被 git 忽略）。
 
 ## 已知限制
 
@@ -71,7 +73,7 @@ API：https://bayh.pp.ua
 
 ## 下一步
 
-1. 在 Cloudflare 获取 Web Analytics token，写入 `.env.production.local` 并部署。
+1. ~~在 Cloudflare 获取 Web Analytics token，写入 `.env.production.local` 并部署。~~ 已完成（2026-11-12）。
 2. 登录 GSC/Bing，把上表“待填”替换为实际数字。
 3. 部署 24–48 小时后补记 Cloudflare Web Analytics 首次 Page views / Visits。
 4. 之后每周五更新一次 GSC/Bing 的 impressions、平均排名和索引页数。
