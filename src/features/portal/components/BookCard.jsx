@@ -8,8 +8,12 @@ function isHexColor(value) {
   return /^#[0-9a-f]{3}([0-9a-f]{3})?$/i.test(value || '');
 }
 
-export default function BookCard({ book, onOpenReviews }) {
-  const reviewCount = book.reviews?.length || 0;
+export default function BookCard({
+  book,
+  onOpenReviews,
+  showReviewAction = true,
+}) {
+  const reviewCount = book.review_count ?? book.reviews?.length ?? 0;
   const firstChar = (book.title || '书').trim().charAt(0) || '书';
   const excerpt = toExcerpt(
     book.description || book.seo_description,
@@ -54,7 +58,7 @@ export default function BookCard({ book, onOpenReviews }) {
           <ArrowRight size={16} className={styles.arrow} />
         </div>
 
-        {reviewCount > 0 ? (
+        {showReviewAction && reviewCount > 0 ? (
           <button
             type="button"
             className={styles.bookButton}

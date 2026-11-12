@@ -226,6 +226,56 @@
   border-radius: 999px;
 }
 
+/* ---------- 相关书评 ---------- */
+.relatedSection {
+  margin-top: 36px;
+}
+
+.relatedHeader {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 12px;
+  margin-bottom: 16px;
+}
+
+.relatedTitle {
+  margin: 0;
+  font-size: 1.25rem;
+  font-weight: 680;
+  color: oklch(var(--color-foreground));
+}
+
+.relatedHint {
+  margin: 0;
+  font-size: 0.82rem;
+  color: oklch(var(--color-foreground) / 0.5);
+}
+
+.relatedGrid {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 20px;
+}
+
+@media (max-width: 980px) {
+  .relatedGrid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+@media (max-width: 560px) {
+  .relatedGrid {
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  .relatedHeader {
+    align-items: flex-start;
+    flex-direction: column;
+    gap: 4px;
+  }
+}
+
 /* ---------- 状态 ---------- */
 .state {
   display: flex;

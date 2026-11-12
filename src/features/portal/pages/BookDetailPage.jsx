@@ -2,6 +2,7 @@ import React from 'react';
 import { Link, useParams } from 'react-router-dom';
 import { RefreshCw } from 'lucide-react';
 import { useBookDetail } from '../hooks/useBookDetail';
+import BookCard from '../components/BookCard';
 import ReviewList from '../components/ReviewList';
 import styles from './BookDetailPage.module.css';
 import { formatDate } from '../utils/formatDate';
@@ -153,6 +154,7 @@ export default function BookDetailPage() {
   if (!book) return null;
 
   const reviews = book.reviews || [];
+  const related = Array.isArray(book.related) ? book.related : [];
   const tags = Array.isArray(book.tags) ? book.tags : [];
   const bookUrl = `${SITE_URL}/books/${book.slug || bookId}`;
   const jsonLd = [
@@ -249,6 +251,31 @@ export default function BookDetailPage() {
           </h2>
           <ReviewList reviews={reviews} />
         </section>
+
+        {related.length > 0 ? (
+          <section
+            className={styles.relatedSection}
+            aria-labelledby="related-books-title"
+          >
+            <div className={styles.relatedHeader}>
+              <h2 id="related-books-title" className={styles.relatedTitle}>
+                相关书评
+              </h2>
+              <p className={styles.relatedHint}>
+                同一系列、作者或标签下的书
+              </p>
+            </div>
+            <div className={styles.relatedGrid}>
+              {related.map((item) => (
+                <BookCard
+                  key={item.id}
+                  book={item}
+                  showReviewAction={false}
+                />
+              ))}
+            </div>
+          </section>
+        ) : null}
       </div>
     </article>
   );
