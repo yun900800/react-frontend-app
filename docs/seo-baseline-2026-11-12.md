@@ -21,6 +21,10 @@ API：https://bayh.pp.ua
 
 2026-11-12 已执行书籍分类/标签/系列回填；《百年孤独-精装版》《我的书籍》《一本无名的书籍》改为草稿，未删除。详见 `docs/book-taxonomy-backfill-2026-11-12.md`。
 
+## Core Web Vitals 基线
+
+2026-11-12 的 Lighthouse 快照见 `docs/cwv-snapshot-2026-11-12.md`。结论：不需要现在专门做 CWV 项目；只建议给详情页封面图加 `fetchpriority="high"` 或改用直链，去掉短链重定向。
+
 ## Google Search Console 基线
 
 在 GSC 后台按以下位置填写。建议先记录“自验证以来”的累计值，再记录最近 3 个月和最近 28 天，方便后续对比。
