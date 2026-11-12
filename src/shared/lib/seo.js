@@ -70,7 +70,9 @@ export function usePageMeta({
           : `${title} | ${SITE_NAME}`
         : `${SITE_NAME} · 用书评记录每一次阅读`;
     const pageDescription = normalizeDescription(description);
-    const canonical = toAbsoluteUrl(path.split('?')[0] || '/');
+    // Keep pagination/filter params in the canonical URL. The caller decides
+    // whether a query string represents a distinct indexable page.
+    const canonical = toAbsoluteUrl((path || '/').split('#')[0]);
     const imageUrl = toAbsoluteUrl(image);
 
     document.title = pageTitle;

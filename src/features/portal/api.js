@@ -24,6 +24,13 @@ export const publicApi = {
   },
 
   /**
+   * 获取全站最新公开书评
+   */
+  async getLatestReviews(limit = 5) {
+    return unwrap(await fetcher.get(`/api/public/reviews?limit=${limit}`));
+  },
+
+  /**
    * 获取单本书籍 + 评论
    */
   async getBook(bookId) {

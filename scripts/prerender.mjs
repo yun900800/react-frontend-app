@@ -138,6 +138,17 @@ async function main() {
   );
   const books = await getPublishedBooks();
 
+  let latestReviewsData = { data: [] };
+  try {
+    latestReviewsData = await fetchJson(
+      `${API_URL}/api/public/reviews?limit=5`
+    );
+  } catch (error) {
+    console.warn(
+      `[prerender] Could not load latest reviews: ${error.message}`
+    );
+  }
+
   // Remove old prerendered details so unpublished/deleted books cannot keep
   // serving stale static pages after a build that reuses dist/.
   await rm(path.join(DIST, 'books'), { recursive: true, force: true });
@@ -179,6 +190,7 @@ async function main() {
 
     const homeHtml = await renderRoute(context, baseUrl, '/', {
       home: homeData,
+      latestReviews: latestReviewsData,
     });
 
     const detailHtmls = await mapWithConcurrency(

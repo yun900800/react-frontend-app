@@ -2,6 +2,7 @@ import React from 'react';
 import { Link } from 'react-router-dom';
 import { ArrowRight, BookOpen, MessageSquare } from 'lucide-react';
 import styles from './BookCard.module.css';
+import { toExcerpt } from '../utils/excerpt';
 
 function isHexColor(value) {
   return /^#[0-9a-f]{3}([0-9a-f]{3})?$/i.test(value || '');
@@ -10,6 +11,10 @@ function isHexColor(value) {
 export default function BookCard({ book, onOpenReviews }) {
   const reviewCount = book.reviews?.length || 0;
   const firstChar = (book.title || '书').trim().charAt(0) || '书';
+  const excerpt = toExcerpt(
+    book.description || book.seo_description,
+    96
+  );
 
   const fallbackStyle = isHexColor(book.font_color)
     ? { background: `linear-gradient(155deg, ${book.font_color} 0%, ${book.font_color}55 130%)` }
@@ -36,6 +41,7 @@ export default function BookCard({ book, onOpenReviews }) {
         <div className={styles.body}>
           <h3 className={styles.title}>{book.title || '未命名'}</h3>
           <p className={styles.author}>{book.author || '佚名'}</p>
+          {excerpt ? <p className={styles.excerpt}>{excerpt}</p> : null}
         </div>
       </Link>
 

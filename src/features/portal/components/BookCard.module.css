@@ -107,6 +107,19 @@
   white-space: nowrap;
 }
 
+.excerpt {
+  margin: 9px 0 0;
+  font-size: 0.82rem;
+  line-height: 1.6;
+  color: oklch(var(--color-foreground) / 0.58);
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 2;
+  line-clamp: 2;
+  overflow: hidden;
+  word-break: break-word;
+}
+
 .footer {
   display: flex;
   flex-direction: column;

@@ -1,8 +1,15 @@
 // shared/hooks/usePagination.js
 import { useState, useEffect, useCallback, useRef } from "react";
 
-export function usePagination(fetchFn, initialPage = 1, pageSize = 10, initialResult = null) {
-  const [page, setPage] = useState(initialPage);
+export function usePagination(
+  fetchFn,
+  initialPage = 1,
+  pageSize = 10,
+  initialResult = null,
+  { page: controlledPage } = {}
+) {
+  const [internalPage, setInternalPage] = useState(initialPage);
+  const page = controlledPage ?? internalPage;
   const [limit] = useState(pageSize);
   const [data, setData] = useState(initialResult?.data || []);
   const [total, setTotal] = useState(initialResult?.total || 0);
@@ -30,7 +37,7 @@ export function usePagination(fetchFn, initialPage = 1, pageSize = 10, initialRe
     (nextPage) => {
       if (nextPage === page || loading) return;
       setLoading(true);
-      setPage(nextPage);
+      setInternalPage(nextPage);
     },
     [page, loading]
   );
