@@ -6,10 +6,12 @@
   "scripts": {
     "dev": "vite",
     "seo:sitemap": "node scripts/generate-sitemap.mjs",
+    "seo:baseline": "node scripts/seo-baseline.mjs",
     "prebuild": "node scripts/generate-sitemap.mjs",
     "build": "vite build",
     "prerender": "node scripts/prerender.mjs",
-    "build:seo": "npm run build && npm run prerender",
+    "analytics:inject": "node scripts/inject-analytics.mjs",
+    "build:seo": "npm run build && npm run prerender && npm run analytics:inject",
     "lint": "eslint . --ext js,jsx --report-unused-disable-directives --max-warnings 0",
     "preview": "vite preview"
   },

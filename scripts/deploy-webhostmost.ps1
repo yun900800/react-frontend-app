@@ -6,10 +6,12 @@
   Local replacement for the GitHub Actions auto-deploy workflow. The script:
     1. optionally installs dependencies
     2. runs npm run build
-    3. creates a timestamped tar of dist/
-    4. backs up the remote public_html
-    5. uploads and extracts the tar
-    6. verifies the remote index.html references the new main JS asset
+    3. prerenders public pages
+    4. injects Cloudflare Web Analytics into every generated HTML file
+    5. creates a timestamped tar of dist/
+    6. backs up the remote public_html
+    7. uploads and extracts the tar
+    8. verifies the remote index.html references the new main JS asset
 
   The remote host defaults to the SSH config alias "webhostmost".
 
@@ -30,6 +32,10 @@
 
 .PARAMETER SkipPrerender
   Do not regenerate the static prerendered HTML pages.
+
+.PARAMETER SkipAnalytics
+  Do not inject Cloudflare Web Analytics. By default the deploy fails when
+  CLOUDFLARE_ANALYTICS_TOKEN is missing.
 
 .PARAMETER SkipBackup
   Do not create a remote public_html backup before uploading.
@@ -54,6 +60,7 @@ param(
     [switch]$InstallDeps,
     [switch]$SkipBuild,
     [switch]$SkipPrerender,
+    [switch]$SkipAnalytics,
     [switch]$SkipBackup,
     [switch]$SkipVerify,
     [switch]$KeepLocalArchive
@@ -153,6 +160,13 @@ try {
     if (-not $SkipPrerender) {
         Write-Step 'Prerendering public pages (npm run prerender)'
         Invoke-Native -FilePath $npm -Arguments @('run', 'prerender')
+    }
+
+    if (-not $SkipAnalytics) {
+        Write-Step 'Injecting Cloudflare Web Analytics'
+        Invoke-Native -FilePath $npm -Arguments @('run', 'analytics:inject', '--', '--require')
+    } else {
+        Write-Step 'Skipping Cloudflare Web Analytics injection'
     }
 
     $indexPath = Join-Path $distDir 'index.html'

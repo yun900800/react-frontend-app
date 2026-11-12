@@ -1,5 +1,7 @@
 # SEO 基线报告：书评集
 
+> 最新内容、GSC/Bing 和 Cloudflare Web Analytics 基线见 `docs/seo-baseline-2026-11-12.md`。
+
 日期：2026-11-10
 站点：https://home.bayh.pp.ua
 API：https://bayh.pp.ua
