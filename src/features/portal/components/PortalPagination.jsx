@@ -1,12 +1,16 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 
-const pageHref = (page) => (page <= 1 ? '/' : `/?page=${page}`);
+const pageHref = (page, basePath = '/') => {
+  if (page <= 1) return basePath;
+  return `${basePath}${basePath.includes('?') ? '&' : '?'}page=${page}`;
+};
 
 export default function PortalPagination({
   currentPage,
   totalPages,
   styles,
+  basePath = '/',
 }) {
   const previousDisabled = currentPage <= 1;
   const nextDisabled = currentPage >= totalPages;
@@ -22,7 +26,7 @@ export default function PortalPagination({
         />
       ) : (
         <Link
-          to={pageHref(currentPage - 1)}
+          to={pageHref(currentPage - 1, basePath)}
           className={`${linkClass(false)} bb-custom-icon-arrow-left`}
           rel="prev"
           aria-label="上一页"
@@ -40,7 +44,7 @@ export default function PortalPagination({
         />
       ) : (
         <Link
-          to={pageHref(currentPage + 1)}
+          to={pageHref(currentPage + 1, basePath)}
           className={`${linkClass(false)} bb-custom-icon-arrow-right`}
           rel="next"
           aria-label="下一页"

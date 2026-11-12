@@ -60,8 +60,67 @@ async function getPublicBooks() {
   return books;
 }
 
-async function writeSitemap(books) {
+async function getPublicTaxonomies() {
+  const response = await fetch(`${API_URL}/api/public/taxonomies`, {
+    signal: AbortSignal.timeout(15000),
+  });
+
+  if (!response.ok) {
+    throw new Error(`Public taxonomies API returned ${response.status}`);
+  }
+
+  const data = await response.json();
+  return {
+    categories: Array.isArray(data?.categories) ? data.categories : [],
+    tags: Array.isArray(data?.tags) ? data.tags : [],
+    series: Array.isArray(data?.series) ? data.series : [],
+  };
+}
+
+function deriveTaxonomies(books) {
+  const makeEntries = (values) => {
+    const counts = new Map();
+
+    for (const value of values) {
+      if (!value) continue;
+      counts.set(value, (counts.get(value) || 0) + 1);
+    }
+
+    return [...counts.entries()]
+      .map(([name, count]) => ({ name, count }))
+      .sort(
+        (a, b) => b.count - a.count || a.name.localeCompare(b.name, 'zh-CN')
+      );
+  };
+
+  return {
+    categories: makeEntries(books.map((book) => book.category)),
+    tags: makeEntries(
+      books.flatMap((book) => (Array.isArray(book.tags) ? book.tags : []))
+    ),
+    series: makeEntries(books.map((book) => book.series_name)),
+  };
+}
+
+async function writeSitemap(books, taxonomies) {
   const today = toDate();
+  const taxonomyEntries = ['categories', 'tags', 'series'].flatMap((kind) => [
+    urlEntry({
+      loc: `${SITE_URL}/${kind}/`,
+      lastmod: today,
+      changefreq: 'weekly',
+      priority: '0.7',
+    }),
+    ...(taxonomies[kind] || []).map((item) =>
+      urlEntry({
+        loc: `${SITE_URL}/${kind}/${encodeURIComponent(item.name)}/`,
+        lastmod: today,
+        changefreq: 'weekly',
+        priority: '0.6',
+      })
+    ),
+  ]);
+
   const entries = [
     urlEntry({
       loc: `${SITE_URL}/`,
@@ -69,6 +128,13 @@ async function writeSitemap(books) {
       changefreq: 'weekly',
       priority: '1.0',
     }),
+    urlEntry({
+      loc: `${SITE_URL}/about/`,
+      lastmod: today,
+      changefreq: 'monthly',
+      priority: '0.5',
+    }),
+    ...taxonomyEntries,
     ...books.map((book) =>
       urlEntry({
         loc: `${SITE_URL}/books/${book.slug || book.id}`,
@@ -85,20 +151,29 @@ ${entries.join('\n')}
 
   await mkdir(path.dirname(OUTPUT), { recursive: true });
   await writeFile(OUTPUT, xml, 'utf8');
+  return entries.length;
 }
 
 async function main() {
   let books = [];
+  let taxonomies = { categories: [], tags: [], series: [] };
 
   try {
     books = await getPublicBooks();
   } catch (error) {
     console.warn(`[sitemap] Could not load public books: ${error.message}`);
-    console.warn('[sitemap] Writing a home-page-only sitemap so the build can continue.');
+    console.warn('[sitemap] Writing a reduced sitemap so the build can continue.');
   }
 
-  await writeSitemap(books);
-  console.log(`[sitemap] Wrote ${books.length + 1} URLs to ${OUTPUT}`);
+  try {
+    taxonomies = await getPublicTaxonomies();
+  } catch (error) {
+    console.warn(`[sitemap] Could not load taxonomies: ${error.message}`);
+    taxonomies = deriveTaxonomies(books);
+  }
+
+  const count = await writeSitemap(books, taxonomies);
+  console.log(`[sitemap] Wrote ${count} URLs to ${OUTPUT}`);
 }
 
 main().catch((error) => {

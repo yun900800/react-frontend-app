@@ -44,7 +44,13 @@ export default function PortalLayout() {
       </main>
 
       <footer className={styles.footer}>
-        书评集 · 用书评记录每一次阅读
+        <nav className={styles.footerNav} aria-label="页脚导航">
+          <Link to="/categories/">分类</Link>
+          <Link to="/tags/">标签</Link>
+          <Link to="/series/">系列</Link>
+          <Link to="/about/">关于</Link>
+        </nav>
+        <p className={styles.footerText}>书评集 · 用书评记录每一次阅读</p>
       </footer>
     </div>
   );

@@ -1,15 +1,97 @@
 import React from 'react';
 import { Link, useParams } from 'react-router-dom';
-import { ArrowLeft, BookOpen, RefreshCw } from 'lucide-react';
+import { RefreshCw } from 'lucide-react';
 import { useBookDetail } from '../hooks/useBookDetail';
 import ReviewList from '../components/ReviewList';
 import styles from './BookDetailPage.module.css';
 import { formatDate } from '../utils/formatDate';
-import { usePageMeta } from '../../../shared/lib/seo';
+import { htmlToText } from '../utils/htmlToText';
+import { taxonomyPath } from '../utils/taxonomy';
+import { SITE_URL, usePageMeta } from '../../../shared/lib/seo';
 import { getPrerenderData } from '../../../shared/lib/prerenderData';
+import JsonLd from '../../../shared/components/JsonLd';
 
 function isHexColor(value) {
   return /^#[0-9a-f]{3}([0-9a-f]{3})?$/i.test(value || '');
+}
+
+function absoluteUrl(value) {
+  if (!value) return undefined;
+  return /^https?:\/\//i.test(value)
+    ? value
+    : `${SITE_URL}${value.startsWith('/') ? '' : '/'}${value}`;
+}
+
+function toIsoDate(value) {
+  if (!value) return undefined;
+  const date = new Date(value);
+  return Number.isNaN(date.getTime()) ? undefined : date.toISOString();
+}
+
+function buildBookJsonLd(book, bookUrl) {
+  return {
+    '@context': 'https://schema.org',
+    '@type': 'Book',
+    name: book.title || '未命名',
+    author: {
+      '@type': 'Person',
+      name: book.author || '佚名',
+    },
+    description: htmlToText(book.seo_description || book.description || '') || undefined,
+    image: absoluteUrl(book.cover_url),
+    url: bookUrl,
+    inLanguage: 'zh-CN',
+    datePublished: toIsoDate(book.published_at || book.created_at),
+  };
+}
+
+function buildBreadcrumbJsonLd(book, bookUrl) {
+  const items = [{ name: '首页', item: `${SITE_URL}/` }];
+
+  if (book.category) {
+    items.push({
+      name: book.category,
+      item: `${SITE_URL}${taxonomyPath('categories', book.category)}`,
+    });
+  }
+
+  items.push({ name: book.title || '未命名', item: bookUrl });
+
+  return {
+    '@context': 'https://schema.org',
+    '@type': 'BreadcrumbList',
+    itemListElement: items.map((item, index) => ({
+      '@type': 'ListItem',
+      position: index + 1,
+      name: item.name,
+      item: item.item,
+    })),
+  };
+}
+
+function buildReviewJsonLd(book, bookUrl, reviews) {
+  return reviews
+    .map((review) => {
+      const reviewBody = htmlToText(review.content).slice(0, 5000);
+      if (!reviewBody) return null;
+
+      return {
+        '@context': 'https://schema.org',
+        '@type': 'Review',
+        itemReviewed: {
+          '@type': 'Book',
+          name: book.title || '未命名',
+          url: bookUrl,
+        },
+        author: {
+          '@type': 'Person',
+          name: review.reviewer || '匿名',
+        },
+        reviewBody,
+        datePublished: toIsoDate(review.created_at),
+      };
+    })
+    .filter(Boolean);
 }
 
 function BookCover({ book }) {
@@ -71,14 +153,34 @@ export default function BookDetailPage() {
   if (!book) return null;
 
   const reviews = book.reviews || [];
+  const tags = Array.isArray(book.tags) ? book.tags : [];
+  const bookUrl = `${SITE_URL}/books/${book.slug || bookId}`;
+  const jsonLd = [
+    buildBookJsonLd(book, bookUrl),
+    buildBreadcrumbJsonLd(book, bookUrl),
+    ...buildReviewJsonLd(book, bookUrl, reviews),
+  ];
 
   return (
     <article className={styles.page}>
       <div className={styles.container}>
-        <Link to="/" className={styles.backLink}>
-          <ArrowLeft size={16} />
-          返回首页
-        </Link>
+        <JsonLd id="book-jsonld" data={jsonLd} />
+
+        <nav className={styles.breadcrumbs} aria-label="面包屑">
+          <Link to="/">首页</Link>
+          {book.category ? (
+            <>
+              <span className={styles.breadcrumbSep}>/</span>
+              <Link to={taxonomyPath('categories', book.category)}>
+                {book.category}
+              </Link>
+            </>
+          ) : null}
+          <span className={styles.breadcrumbSep}>/</span>
+          <span className={styles.breadcrumbCurrent} aria-current="page">
+            {book.title || '未命名'}
+          </span>
+        </nav>
 
         <header className={styles.hero}>
           <BookCover book={book} />
@@ -96,6 +198,36 @@ export default function BookDetailPage() {
               <span>·</span>
               <span>{reviews.length} 条评论</span>
             </div>
+
+            {book.category || book.series_name || tags.length > 0 ? (
+              <div className={styles.taxonomies}>
+                {book.category ? (
+                  <Link
+                    to={taxonomyPath('categories', book.category)}
+                    className={styles.taxonomyLink}
+                  >
+                    {book.category}
+                  </Link>
+                ) : null}
+                {book.series_name ? (
+                  <Link
+                    to={taxonomyPath('series', book.series_name)}
+                    className={styles.taxonomyLink}
+                  >
+                    系列 · {book.series_name}
+                  </Link>
+                ) : null}
+                {tags.map((tag) => (
+                  <Link
+                    key={tag}
+                    to={taxonomyPath('tags', tag)}
+                    className={styles.taxonomyLink}
+                  >
+                    #{tag}
+                  </Link>
+                ))}
+              </div>
+            ) : null}
 
             {book.description ? (
               <p className={styles.description}>{book.description}</p>

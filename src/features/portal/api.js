@@ -18,9 +18,22 @@ const unwrap = (result) => {
 export const publicApi = {
   /**
    * 分页获取书籍列表（每本书内嵌 reviews）
+   * 可选按分类 / 标签 / 系列过滤。
    */
-  async getBooks(page = 1, limit = 12) {
-    return unwrap(await fetcher.get(`/api/public/books?page=${page}&limit=${limit}`));
+  async getBooks(page = 1, limit = 12, filters = {}) {
+    const params = new URLSearchParams({ page, limit });
+    if (filters.category) params.set('category', filters.category);
+    if (filters.tag) params.set('tag', filters.tag);
+    if (filters.series) params.set('series', filters.series);
+
+    return unwrap(await fetcher.get(`/api/public/books?${params.toString()}`));
+  },
+
+  /**
+   * 获取公开站点的分类 / 标签 / 系列及数量
+   */
+  async getTaxonomies() {
+    return unwrap(await fetcher.get('/api/public/taxonomies'));
   },
 
   /**

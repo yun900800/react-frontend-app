@@ -11,6 +11,16 @@ const PAGE_SIZE = 12;
 const MAX_API_PAGES = 50;
 const PAGE_CONCURRENCY = 3;
 
+const TAXONOMY_KINDS = [
+  { kind: 'categories', match: (book, name) => book.category === name },
+  {
+    kind: 'tags',
+    match: (book, name) =>
+      Array.isArray(book.tags) && book.tags.includes(name),
+  },
+  { kind: 'series', match: (book, name) => book.series_name === name },
+];
+
 async function fetchJson(url) {
   const response = await fetch(url, {
     headers: { Accept: 'application/json' },
@@ -39,6 +49,48 @@ async function getPublishedBooks() {
   }
 
   return books;
+}
+
+function normalizeTaxonomies(value) {
+  const result = { categories: [], tags: [], series: [] };
+  if (!value || typeof value !== 'object') return result;
+
+  for (const kind of ['categories', 'tags', 'series']) {
+    if (Array.isArray(value[kind])) {
+      result[kind] = value[kind].filter((item) => item && item.name);
+    }
+  }
+
+  return result;
+}
+
+function deriveTaxonomies(books) {
+  const makeEntries = (values) => {
+    const counts = new Map();
+
+    for (const value of values) {
+      if (!value) continue;
+      counts.set(value, (counts.get(value) || 0) + 1);
+    }
+
+    return [...counts.entries()]
+      .map(([name, count]) => ({ name, count }))
+      .sort(
+        (a, b) => b.count - a.count || a.name.localeCompare(b.name, 'zh-CN')
+      );
+  };
+
+  return {
+    categories: makeEntries(books.map((book) => book.category)),
+    tags: makeEntries(
+      books.flatMap((book) => (Array.isArray(book.tags) ? book.tags : []))
+    ),
+    series: makeEntries(books.map((book) => book.series_name)),
+  };
+}
+
+function outputSegment(value) {
+  return String(value).replace(/[\\/]/g, '-');
 }
 
 async function mapWithConcurrency(items, concurrency, mapper) {
@@ -149,9 +201,31 @@ async function main() {
     );
   }
 
+  let taxonomiesData = deriveTaxonomies(books);
+  try {
+    const fetchedTaxonomies = normalizeTaxonomies(
+      await fetchJson(`${API_URL}/api/public/taxonomies`)
+    );
+    if (
+      fetchedTaxonomies.categories.length ||
+      fetchedTaxonomies.tags.length ||
+      fetchedTaxonomies.series.length
+    ) {
+      taxonomiesData = fetchedTaxonomies;
+    }
+  } catch (error) {
+    console.warn(
+      `[prerender] Could not load taxonomies, deriving them from books: ${error.message}`
+    );
+  }
+
   // Remove old prerendered details so unpublished/deleted books cannot keep
   // serving stale static pages after a build that reuses dist/.
   await rm(path.join(DIST, 'books'), { recursive: true, force: true });
+  await rm(path.join(DIST, 'categories'), { recursive: true, force: true });
+  await rm(path.join(DIST, 'tags'), { recursive: true, force: true });
+  await rm(path.join(DIST, 'series'), { recursive: true, force: true });
+  await rm(path.join(DIST, 'about'), { recursive: true, force: true });
 
   // A previous prerender run may have left window.__PRERENDER_DATA__ inside
   // dist/index.html. Strip it before starting preview; otherwise it would
@@ -211,6 +285,48 @@ async function main() {
       }
     );
 
+    const taxonomyJobs = [];
+
+    for (const { kind, match } of TAXONOMY_KINDS) {
+      taxonomyJobs.push(async () => {
+        const html = await renderRoute(context, baseUrl, `/${kind}/`, {
+          taxonomies: taxonomiesData,
+        });
+        return { output: `${kind}/index.html`, html };
+      });
+
+      for (const item of taxonomiesData[kind]) {
+        const filteredBooks = books.filter((book) => match(book, item.name));
+        const result = {
+          data: filteredBooks.slice(0, PAGE_SIZE),
+          total: filteredBooks.length,
+          page: 1,
+          limit: PAGE_SIZE,
+        };
+        const route = `/${kind}/${encodeURIComponent(item.name)}/`;
+        const output = `${kind}/${outputSegment(item.name)}/index.html`;
+
+        taxonomyJobs.push(async () => {
+          const html = await renderRoute(context, baseUrl, route, {
+            taxonomies: taxonomiesData,
+            collection: { kind, name: item.name, result },
+          });
+          return { output, html };
+        });
+      }
+    }
+
+    taxonomyJobs.push(async () => {
+      const html = await renderRoute(context, baseUrl, '/about/', {});
+      return { output: 'about/index.html', html };
+    });
+
+    const extraHtmls = await mapWithConcurrency(
+      taxonomyJobs,
+      PAGE_CONCURRENCY,
+      (job) => job()
+    );
+
     await context.close();
 
     const written = [];
@@ -220,6 +336,10 @@ async function main() {
       written.push(await writeOutput(`books/${routeKey}.html`, html));
     }
 
+    for (const { output, html } of extraHtmls) {
+      written.push(await writeOutput(output, html));
+    }
+
     await updateBookRedirects(books);
 
     const homeOutput = await readFile(path.join(DIST, 'index.html'), 'utf8');
@@ -227,8 +347,13 @@ async function main() {
       throw new Error('Prerendered homepage is missing an <h1>');
     }
 
+    const taxonomyDetailCount =
+      taxonomiesData.categories.length +
+      taxonomiesData.tags.length +
+      taxonomiesData.series.length;
+
     console.log(
-      `[prerender] Wrote ${written.length} pages (${books.length} book details).`
+      `[prerender] Wrote ${written.length} pages (${books.length} book details, ${taxonomyDetailCount} taxonomy details, 3 taxonomy indexes, 1 about).`
     );
   } finally {
     await browser.close();

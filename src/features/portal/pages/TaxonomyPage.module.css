@@ -1,0 +1,237 @@
+.page {
+  padding: 32px 24px 64px;
+}
+
+.container {
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+.breadcrumbs {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-bottom: 22px;
+  font-size: 0.86rem;
+  color: oklch(var(--color-foreground) / 0.55);
+}
+
+.breadcrumbs a {
+  color: oklch(var(--color-foreground) / 0.65);
+  text-decoration: none;
+  transition: color 0.2s ease;
+}
+
+.breadcrumbs a:hover {
+  color: oklch(var(--color-primary));
+}
+
+.breadcrumbSep {
+  color: oklch(var(--color-foreground) / 0.3);
+}
+
+.breadcrumbCurrent {
+  color: oklch(var(--color-foreground) / 0.8);
+  word-break: break-word;
+}
+
+.header {
+  margin-bottom: 28px;
+}
+
+.eyebrow {
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  padding: 6px 13px;
+  font-size: 0.78rem;
+  font-weight: 600;
+  color: oklch(var(--color-primary2));
+  background: oklch(var(--color-primary) / 0.12);
+  border: 1px solid oklch(var(--color-primary) / 0.3);
+  border-radius: 999px;
+}
+
+.title {
+  margin: 16px 0 0;
+  font-size: 2.35rem;
+  font-weight: 740;
+  line-height: 1.25;
+  word-break: break-word;
+  color: oklch(var(--color-foreground));
+}
+
+.description {
+  max-width: 680px;
+  margin: 12px 0 0;
+  font-size: 0.98rem;
+  line-height: 1.75;
+  color: oklch(var(--color-foreground) / 0.62);
+}
+
+.chipGrid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(190px, 1fr));
+  gap: 14px;
+}
+
+.chip {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 14px;
+  padding: 16px 18px;
+  color: oklch(var(--color-foreground));
+  text-decoration: none;
+  background: oklch(var(--color-background2));
+  border: 1px solid var(--color-border-input);
+  border-radius: 14px;
+  transition: border-color 0.2s ease, transform 0.2s ease,
+    background-color 0.2s ease;
+}
+
+.chip:hover {
+  background: oklch(var(--color-primary) / 0.06);
+  border-color: oklch(var(--color-primary) / 0.45);
+  transform: translateY(-1px);
+}
+
+.chipName {
+  font-size: 0.98rem;
+  font-weight: 620;
+  word-break: break-word;
+}
+
+.chipCount {
+  flex: none;
+  font-size: 0.76rem;
+  color: oklch(var(--color-primary2));
+  background: oklch(var(--color-primary) / 0.1);
+  border-radius: 999px;
+  padding: 3px 9px;
+}
+
+.grid {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 20px;
+}
+
+.skeletonCard {
+  aspect-ratio: 3 / 4.4;
+  border-radius: 16px;
+  background: linear-gradient(
+    90deg,
+    oklch(var(--color-foreground) / 0.06) 25%,
+    oklch(var(--color-foreground) / 0.11) 37%,
+    oklch(var(--color-foreground) / 0.06) 63%
+  );
+  background-size: 400% 100%;
+  animation: shimmer 1.4s ease infinite;
+  border: 1px solid var(--color-border-input);
+}
+
+.pagination {
+  display: flex;
+  justify-content: center;
+  margin-top: 28px;
+}
+
+.state {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 10px;
+  padding: 72px 20px;
+  text-align: center;
+  color: oklch(var(--color-foreground) / 0.55);
+}
+
+.state p {
+  margin: 0;
+  font-size: 0.95rem;
+}
+
+.stateHint {
+  font-size: 0.82rem !important;
+  color: oklch(var(--color-foreground) / 0.4) !important;
+}
+
+.stateLink {
+  margin-top: 4px;
+  font-size: 0.88rem;
+  color: oklch(var(--color-primary));
+  text-decoration: none;
+}
+
+.stateLink:hover {
+  text-decoration: underline;
+}
+
+.spin {
+  animation: rotate 1.2s linear infinite;
+}
+
+.backRow {
+  margin-top: 32px;
+}
+
+.backLink {
+  font-size: 0.86rem;
+  color: oklch(var(--color-foreground) / 0.6);
+  text-decoration: none;
+}
+
+.backLink:hover {
+  color: oklch(var(--color-primary));
+}
+
+@keyframes rotate {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+@keyframes shimmer {
+  0% {
+    background-position: 100% 0;
+  }
+  100% {
+    background-position: -100% 0;
+  }
+}
+
+@media (max-width: 1100px) {
+  .grid {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
+}
+
+@media (max-width: 820px) {
+  .grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .title {
+    font-size: 2rem;
+  }
+}
+
+@media (max-width: 520px) {
+  .page {
+    padding: 24px 16px 48px;
+  }
+
+  .grid {
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  .chipGrid {
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  .title {
+    font-size: 1.65rem;
+  }
+}

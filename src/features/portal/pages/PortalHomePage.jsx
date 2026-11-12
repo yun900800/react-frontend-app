@@ -10,8 +10,9 @@ import ReviewBookOverlay from '../components/ReviewBookOverlay';
 import { useLatestReviews } from '../hooks/useLatestReviews';
 import styles from './PortalHomePage.module.css';
 import { styles as paginationStyles } from '../../../shared/css/components/styles.js';
-import { usePageMeta } from '../../../shared/lib/seo';
+import { SITE_NAME, SITE_URL, usePageMeta } from '../../../shared/lib/seo';
 import { getPrerenderData } from '../../../shared/lib/prerenderData';
+import JsonLd from '../../../shared/components/JsonLd';
 
 const PAGE_SIZE = 12;
 
@@ -75,8 +76,19 @@ export default function PortalHomePage() {
     }
   }, [loading, totalPages, page, searchParams, setSearchParams]);
 
+  const websiteJsonLd = {
+    '@context': 'https://schema.org',
+    '@type': 'WebSite',
+    name: SITE_NAME,
+    url: `${SITE_URL}/`,
+    description: '书评集：记录每一次阅读。浏览书籍、经典评论与阅读笔记。',
+    inLanguage: 'zh-CN',
+  };
+
   return (
     <div className={styles.page}>
+      <JsonLd id="website-jsonld" data={websiteJsonLd} />
+
       <section className={styles.hero}>
         <div className={styles.heroInner}>
           <span className={styles.heroBadge}>
