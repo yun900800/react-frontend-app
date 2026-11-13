@@ -27,6 +27,19 @@ test('review checklist requires a book and non-empty content', () => {
   assert.equal(checklist.items.find((item) => item.id === 'content').passed, false);
 });
 
+test('review length check uses 100 characters as the threshold', () => {
+  assert.equal(REVIEW_MIN_CHARS, 100);
+
+  const build = (count) =>
+    buildReviewChecklist({
+      bookId: 12,
+      content: `<p>${'字'.repeat(count)}</p>`,
+    }).items.find((item) => item.id === 'length').passed;
+
+  assert.equal(build(99), false);
+  assert.equal(build(100), true);
+});
+
 test('review checklist passes the required items and reports optional gaps', () => {
   const checklist = buildReviewChecklist({
     bookId: 12,

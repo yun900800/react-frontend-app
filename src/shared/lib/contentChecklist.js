@@ -1,4 +1,4 @@
-export const REVIEW_MIN_CHARS = 300;
+export const REVIEW_MIN_CHARS = 100;
 export const SEO_TITLE_MIN = 20;
 export const SEO_TITLE_MAX = 60;
 export const SEO_DESCRIPTION_MIN = 60;
