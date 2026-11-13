@@ -15,6 +15,9 @@ DirectoryIndex index.html
   RewriteCond %{REQUEST_FILENAME} !-d
   RewriteRule ^books/([A-Za-z0-9_-]+)/?$ books/$1.html [L]
 
+  # /books/ is the admin book-management SPA route, not a missing book file.
+  RewriteRule ^books/?$ index.html [L]
+
   # Missing book files must return 404 instead of falling through to the SPA.
   RewriteRule ^books/ - [L]
 
