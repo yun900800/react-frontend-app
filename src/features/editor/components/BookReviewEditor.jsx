@@ -8,6 +8,8 @@ import { useBookReview  } from "../hooks/useBookReview.js";
 import { getReviewerName } from "../../../shared/lib/currentUser.js";
 import ReviewCard from "./ReviewCard.jsx";
 import { QUILL_MODULES, QUILL_FORMATS } from "../quillConfig.js";
+import { buildReviewChecklist } from "../../../shared/lib/contentChecklist.js";
+import { REVIEW_TEMPLATE_HTML } from "../utils/reviewTemplate.js";
 // 引入新的 Hook
 import { useAutoDraft } from "../hooks/useAutoDraft.js"; // 假设路径正确
 import { useToast } from '../../../shared/components/Toast'; 
@@ -72,6 +74,15 @@ export const BookReviewEditor = () => {
   const containerRef = useRef(null);
   const addToast = useToast();
   const reviewerName = useMemo(() => getReviewerName(), []);
+  const checklist = useMemo(
+    () =>
+      buildReviewChecklist({
+        bookId: book?.id,
+        chapterTitle,
+        content,
+      }),
+    [book?.id, chapterTitle, content]
+  );
 
   // 给 Quill 工具栏补充中文提示（title + aria-label）
   useEffect(() => {
@@ -156,6 +167,15 @@ export const BookReviewEditor = () => {
           // 否则，设置实际内容
           setContent(newContent);
       }
+  };
+
+  const handleInsertTemplate = () => {
+    const editor = quillRef.current?.getEditor();
+    if (!editor) return;
+
+    const insertionIndex = Math.max(0, editor.getLength() - 1);
+    editor.clipboard.dangerouslyPasteHTML(insertionIndex, REVIEW_TEMPLATE_HTML);
+    editor.setSelection(editor.getLength() - 1, 0);
   };
 
   // 字数统计：直接从 HTML 计算，避免 Quill 受控更新时序导致首次渲染统计为 0
@@ -282,6 +302,14 @@ export const BookReviewEditor = () => {
             </select>
           </label>
           <span className={styles.publishHint}>草稿不会显示在公开站点</span>
+          <button
+            type="button"
+            className={styles.templateButton}
+            onClick={handleInsertTemplate}
+            disabled={isSaving}
+          >
+            插入书评模板
+          </button>
         </div>
 
         <ReactQuill
@@ -298,6 +326,41 @@ export const BookReviewEditor = () => {
         <div className={styles.editorFooter}>
           <span>{charCount} 字 · {reviewerName}</span>
           <span>{book ? `正在编辑：${book.title}` : '请先选择书籍'}</span>
+        </div>
+
+        <div className={styles.checklist}>
+          <div className={styles.checklistHeader}>
+            <strong>发布前检查</strong>
+            <span>{checklist.passed}/{checklist.total} 项完成</span>
+          </div>
+          <ul className={styles.checklistItems}>
+            {checklist.items.map((item) => (
+              <li
+                key={item.id}
+                className={`${styles.checklistItem} ${
+                  item.passed
+                    ? styles.checklistPass
+                    : item.required
+                      ? styles.checklistFail
+                      : styles.checklistWarn
+                }`}
+              >
+                <span className={styles.checklistMark}>
+                  {item.passed ? '✓' : item.required ? '✗' : '!'}
+                </span>
+                <span>{item.label}</span>
+              </li>
+            ))}
+          </ul>
+          {!checklist.requiredPassed ? (
+            <p className={styles.checklistHint}>
+              请先选择书籍并填写正文，再保存或发布。
+            </p>
+          ) : checklist.warnings > 0 ? (
+            <p className={styles.checklistHint}>
+              还有 {checklist.warnings} 项建议未完成；不影响保存，但会影响收录和阅读体验。
+            </p>
+          ) : null}
         </div>
 
         <div className={styles.actions}>

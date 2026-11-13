@@ -7,6 +7,7 @@
     "dev": "vite",
     "seo:sitemap": "node scripts/generate-sitemap.mjs",
     "seo:baseline": "node scripts/seo-baseline.mjs",
+    "test": "node --test src/features/editor/utils/sanitizeColorStyle.test.js src/shared/lib/contentChecklist.test.js",
     "test:sanitize": "node --test src/features/editor/utils/sanitizeColorStyle.test.js",
     "prebuild": "node scripts/generate-sitemap.mjs",
     "build": "vite build",

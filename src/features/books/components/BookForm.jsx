@@ -1,6 +1,7 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useMemo, useState } from 'react';
 import { Image as ImageIcon, ImageOff } from 'lucide-react';
 import { translations } from '../model/i18n/translations';
+import { buildBookChecklist } from '../../../shared/lib/contentChecklist.js';
 import styles from './BookForm.module.css';
 import buttonStyles from './Buttons.module.css';
 
@@ -125,6 +126,28 @@ export default function BookForm({
   useEffect(() => {
     setFormData(toFormState(editingBook));
   }, [editingBook]);
+
+  const checklist = useMemo(
+    () =>
+      buildBookChecklist({
+        title: formData.title,
+        coverUrl: formData.cover_url,
+        description: formData.description,
+        category: formData.category,
+        tags: formData.tags,
+        seoTitle: formData.seo_title,
+        seoDescription: formData.seo_description,
+      }),
+    [
+      formData.title,
+      formData.cover_url,
+      formData.description,
+      formData.category,
+      formData.tags,
+      formData.seo_title,
+      formData.seo_description,
+    ]
+  );
 
   const handleChange = (event) => {
     const { name, value } = event.target;
@@ -381,6 +404,41 @@ export default function BookForm({
               placeholder={t.fields.seoDescriptionPlaceholder}
             />
           </Field>
+        </div>
+      </section>
+
+      <section className={styles.section}>
+        <h3 className={styles.sectionTitle}>发布前检查</h3>
+        <div className={styles.checklist} aria-live="polite">
+          <div className={styles.checklistSummary}>
+            <strong>{checklist.passed}/{checklist.total} 项完成</strong>
+            <span>
+              {!checklist.requiredPassed
+                ? '缺少必填项'
+                : checklist.warnings > 0
+                  ? `${checklist.warnings} 项建议`
+                  : '可以发布'}
+            </span>
+          </div>
+          <ul className={styles.checklistItems}>
+            {checklist.items.map((item) => (
+              <li
+                key={item.id}
+                className={`${styles.checklistItem} ${
+                  item.passed
+                    ? styles.checklistPass
+                    : item.required
+                      ? styles.checklistFail
+                      : styles.checklistWarn
+                }`}
+              >
+                <span className={styles.checklistMark}>
+                  {item.passed ? '✓' : item.required ? '✗' : '!'}
+                </span>
+                <span>{item.label}</span>
+              </li>
+            ))}
+          </ul>
         </div>
       </section>
 

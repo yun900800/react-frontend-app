@@ -84,6 +84,29 @@
   color: oklch(var(--color-foreground) / 0.55);
 }
 
+.templateButton {
+  margin-left: auto;
+  padding: 7px 12px;
+  font: inherit;
+  font-size: 0.85rem;
+  color: oklch(var(--color-primary));
+  background: oklch(var(--color-primary) / 0.08);
+  border: 1px solid oklch(var(--color-primary) / 0.35);
+  border-radius: 8px;
+  cursor: pointer;
+  transition: background-color 0.2s ease, border-color 0.2s ease;
+}
+
+.templateButton:not(:disabled):hover {
+  background: oklch(var(--color-primary) / 0.16);
+  border-color: oklch(var(--color-primary));
+}
+
+.templateButton:disabled {
+  opacity: 0.55;
+  cursor: not-allowed;
+}
+
 .statusField {
   display: flex;
   align-items: center;
@@ -237,6 +260,79 @@
   margin-bottom: 8px;
   font-size: 0.85rem;
   color: oklch(var(--color-foreground) / 0.65);
+}
+
+/* ---------- 发布前检查 ---------- */
+.checklist {
+  padding: 12px 14px;
+  margin-bottom: 16px;
+  background: oklch(var(--color-background));
+  border: 1px solid var(--color-border-input);
+  border-radius: 10px;
+}
+
+.checklistHeader {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  margin-bottom: 8px;
+  font-size: 0.9rem;
+}
+
+.checklistHeader span {
+  color: oklch(var(--color-foreground) / 0.6);
+  font-size: 0.8rem;
+}
+
+.checklistItems {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px 14px;
+  padding: 0;
+  margin: 0;
+  list-style: none;
+}
+
+.checklistItem {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  font-size: 0.82rem;
+  color: oklch(var(--color-foreground) / 0.7);
+}
+
+.checklistMark {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 16px;
+  height: 16px;
+  border-radius: 50%;
+  font-size: 0.7rem;
+  font-weight: 700;
+  line-height: 1;
+}
+
+.checklistPass .checklistMark {
+  color: oklch(var(--color-primary));
+  background: oklch(var(--color-primary) / 0.14);
+}
+
+.checklistFail .checklistMark {
+  color: oklch(var(--db-red));
+  background: oklch(var(--db-red) / 0.12);
+}
+
+.checklistWarn .checklistMark {
+  color: oklch(var(--color-foreground) / 0.75);
+  background: oklch(var(--color-foreground) / 0.1);
+}
+
+.checklistHint {
+  margin: 8px 0 0;
+  font-size: 0.78rem;
+  color: oklch(var(--color-foreground) / 0.55);
 }
 
 /* ---------- 操作区 ---------- */
