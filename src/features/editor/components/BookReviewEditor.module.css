@@ -68,7 +68,8 @@
 }
 
 .publishSelect,
-.statusSelect {
+.statusSelect,
+.publishInput {
   padding: 7px 10px;
   font: inherit;
   font-size: 0.9rem;

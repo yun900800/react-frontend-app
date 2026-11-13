@@ -3,6 +3,7 @@ import ReactQuill from "react-quill-new";
 import { Eye, EyeOff, Pencil, Trash2 } from "lucide-react";
 import styles from "./BookReviewEditor.module.css";
 import { sanitizeHtml } from "../utils/sanitizeHtml.js";
+import { toDateTimeLocal, toPublishedAtIso } from "../../../shared/lib/publishedAt.js";
 import { QUILL_MODULES, QUILL_FORMATS } from "../quillConfig.js";
 import { useToast } from "../../../shared/components/Toast";
 import ConfirmDialog from "../../books/components/ConfirmDialog";
@@ -39,6 +40,9 @@ export default function ReviewCard({ review, onUpdate, onDelete }) {
   const [chapterTitle, setChapterTitle] = useState(review.chapter_title ?? "");
   const [content, setContent] = useState(review.content ?? "");
   const [status, setStatus] = useState(review.status || "published");
+  const [publishedAt, setPublishedAt] = useState(() =>
+    toDateTimeLocal(review.published_at)
+  );
   const [isSaving, setIsSaving] = useState(false);
   const [isToggling, setIsToggling] = useState(false);
   const [isConfirmOpen, setIsConfirmOpen] = useState(false);
@@ -53,6 +57,7 @@ export default function ReviewCard({ review, onUpdate, onDelete }) {
     setChapterTitle(review.chapter_title ?? "");
     setContent(review.content ?? "");
     setStatus(review.status || "published");
+    setPublishedAt(toDateTimeLocal(review.published_at));
     setIsEditing(true);
   };
 
@@ -88,11 +93,18 @@ export default function ReviewCard({ review, onUpdate, onDelete }) {
 
     setIsSaving(true);
     try {
-      await onUpdate(review.id, {
+      const payload = {
         chapter_title: chapterTitle.trim() || "无章节标题",
         content,
         status,
-      });
+      };
+
+      if (status === "published") {
+        payload.published_at =
+          toPublishedAtIso(publishedAt) || new Date().toISOString();
+      }
+
+      await onUpdate(review.id, payload);
       addToast("评论已更新!", "success");
       setIsEditing(false);
     } catch (e) {
@@ -186,6 +198,16 @@ export default function ReviewCard({ review, onUpdate, onDelete }) {
               <option value="published">已发布</option>
             </select>
           </label>
+          <label className={styles.statusField}>
+            <span>定时发布</span>
+            <input
+              type="datetime-local"
+              className={styles.publishInput}
+              value={publishedAt}
+              onChange={(e) => setPublishedAt(e.target.value)}
+              title="留空表示立即发布"
+            />
+          </label>
           <input
             type="text"
             placeholder="章节标题"
@@ -234,6 +256,9 @@ export default function ReviewCard({ review, onUpdate, onDelete }) {
             创建于：{formatDateTime(review.created_at)}
             {review.updated_at && review.updated_at !== review.created_at
               ? ` · 修改于：${formatDateTime(review.updated_at)}`
+              : ""}
+            {currentStatus === "published" && review.published_at
+              ? ` · 发布时间：${formatDateTime(review.published_at)}`
               : ""}
           </p>
         </>

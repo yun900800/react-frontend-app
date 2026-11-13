@@ -27,6 +27,7 @@ export const translations = {
             seriesName: "Series",
             seriesOrder: "Series Order",
             status: "Status",
+            publishedAt: "Publish At",
             seoTitle: "SEO Title",
             seoDescription: "SEO Description",
             coverUrl: "Cover URL",
@@ -59,6 +60,8 @@ export const translations = {
             slug: "Leave empty to generate from the title when creating; keeps the current slug when editing.",
             tags: "Separate tags with commas.",
             status: "Drafts are hidden from the public site.",
+            publishedAt:
+                "Leave empty to publish immediately; future dates stay hidden until then.",
         },
         statusOptions: {
             draft: "Draft",
@@ -161,6 +164,7 @@ export const translations = {
             seriesName: "系列",
             seriesOrder: "系列序号",
             status: "发布状态",
+            publishedAt: "发布时间",
             seoTitle: "SEO 标题",
             seoDescription: "SEO 描述",
             coverUrl: "封面地址",
@@ -193,6 +197,7 @@ export const translations = {
             slug: "留空时，新建按书名自动生成；编辑时保留原 slug。",
             tags: "多个标签用逗号分隔。",
             status: "草稿不会出现在公开站点。",
+            publishedAt: "留空表示立即发布；未来时间会等到该时间后才出现在公开站点。",
         },
         statusOptions: {
             draft: "草稿",

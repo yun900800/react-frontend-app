@@ -2,6 +2,10 @@ import React, { useEffect, useMemo, useState } from 'react';
 import { Image as ImageIcon, ImageOff } from 'lucide-react';
 import { translations } from '../model/i18n/translations';
 import { buildBookChecklist } from '../../../shared/lib/contentChecklist.js';
+import {
+  toDateTimeLocal,
+  toPublishedAtIso,
+} from '../../../shared/lib/publishedAt.js';
 import styles from './BookForm.module.css';
 import buttonStyles from './Buttons.module.css';
 
@@ -20,6 +24,7 @@ const initialBookState = {
   series_name: '',
   series_order: '',
   status: 'draft',
+  published_at: '',
   seo_title: '',
   seo_description: '',
 };
@@ -39,6 +44,7 @@ const toFormState = (book) => {
     series_name: book.series_name ?? '',
     series_order: book.series_order ?? '',
     status: book.status || 'draft',
+    published_at: toDateTimeLocal(book.published_at),
     seo_title: book.seo_title ?? '',
     seo_description: book.seo_description ?? '',
   };
@@ -167,6 +173,13 @@ export default function BookForm({
       series_order: parseSeriesOrder(formData.series_order),
     };
 
+    if (formData.status === 'published') {
+      payload.published_at =
+        toPublishedAtIso(formData.published_at) || new Date().toISOString();
+    } else {
+      delete payload.published_at;
+    }
+
     if (String(payload.slug ?? '').trim() === '') {
       delete payload.slug;
     } else {
@@ -246,6 +259,17 @@ export default function BookForm({
               <option value="published">{t.statusOptions.published}</option>
             </select>
             <span className={styles.hint}>{t.hints.status}</span>
+          </Field>
+
+          <Field label={t.labels.publishedAt}>
+            <input
+              className={styles.input}
+              type="datetime-local"
+              name="published_at"
+              value={formData.published_at}
+              onChange={handleChange}
+            />
+            <span className={styles.hint}>{t.hints.publishedAt}</span>
           </Field>
 
           <Field label={t.labels.slug}>

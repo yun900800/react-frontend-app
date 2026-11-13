@@ -9,6 +9,7 @@ import { getReviewerName } from "../../../shared/lib/currentUser.js";
 import ReviewCard from "./ReviewCard.jsx";
 import { QUILL_MODULES, QUILL_FORMATS } from "../quillConfig.js";
 import { buildReviewChecklist } from "../../../shared/lib/contentChecklist.js";
+import { toPublishedAtIso } from "../../../shared/lib/publishedAt.js";
 import { REVIEW_TEMPLATE_HTML } from "../utils/reviewTemplate.js";
 // 引入新的 Hook
 import { useAutoDraft } from "../hooks/useAutoDraft.js"; // 假设路径正确
@@ -68,6 +69,7 @@ export const BookReviewEditor = () => {
 
   const [isSaving, setIsSaving] = useState(false);
   const [status, setStatus] = useState('draft');
+  const [publishedAt, setPublishedAt] = useState('');
   const [charCount, setCharCount] = useState(0);
   const [isFocusMode, setIsFocusMode] = useState(false);
   const quillRef = useRef(null);
@@ -132,18 +134,26 @@ export const BookReviewEditor = () => {
     setIsSaving(true); // 开始保存
 
     try {
-      await addReview({
+      const payload = {
         book_id: book.id,
         reviewer: reviewerName,
         chapter_title: chapterTitle.trim() || "无章节标题", // 保证至少有一个值
         content,
         status,
-      });
+      };
+
+      if (status === 'published') {
+        payload.published_at =
+          toPublishedAtIso(publishedAt) || new Date().toISOString();
+      }
+
+      await addReview(payload);
 
       // 成功后清空状态
       setChapterTitle("");
       setContent("");
       setStatus("draft");
+      setPublishedAt("");
       // 2. ✅ 提交成功：清空两个草稿和本地状态 (Hook 内部会自动清空状态)
       clearTitleDraft();
       clearContentDraft();
@@ -276,7 +286,10 @@ export const BookReviewEditor = () => {
         {/* 选择书籍 */}
           <BookSelector
             value={book?.title || ""}
-            onSelect={(b) => setBook(b)}
+            onSelect={(selectedBook) => {
+              setBook(selectedBook);
+              setPublishedAt('');
+            }}
           />
           <div style={{display: 'flex', alignItems: 'center'}}>
           <input
@@ -301,7 +314,19 @@ export const BookReviewEditor = () => {
               <option value="published">已发布</option>
             </select>
           </label>
-          <span className={styles.publishHint}>草稿不会显示在公开站点</span>
+          <label className={styles.publishLabel}>
+            <span>定时发布</span>
+            <input
+              type="datetime-local"
+              className={styles.publishInput}
+              value={publishedAt}
+              onChange={(e) => setPublishedAt(e.target.value)}
+              disabled={isSaving}
+            />
+          </label>
+          <span className={styles.publishHint}>
+            留空表示立即发布；未来时间会等到该时间后才出现在公开站点。
+          </span>
           <button
             type="button"
             className={styles.templateButton}
